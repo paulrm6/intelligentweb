@@ -14,5 +14,8 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/paulrm6/intelligentweb/issues"
+  },
+  "dependencies": {
+    "express": "~4.13.4"
   }
 }
