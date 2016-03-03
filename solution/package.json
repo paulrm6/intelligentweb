@@ -16,6 +16,8 @@
     "url": "https://github.com/paulrm6/intelligentweb/issues"
   },
   "dependencies": {
-    "express": "~4.13.4"
+    "express": "~4.13.4",
+    "twit": "~2.2.2",
+    "mongodb": "~2.1.7"
   }
 }
