@@ -1,23 +1,18 @@
 {
-  "name": "intelligentweb",
-  "version": "0.0.1",
-  "description": "",
-  "main": "intelligentweb.js",
+  "name": "webassignment",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/paulrm6/intelligentweb.git"
-  },
-  "author": "Paul MacDonald, Alex Burley, Ross Millward",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/paulrm6/intelligentweb/issues"
+    "start": "node ./bin/www"
   },
   "dependencies": {
-    "express": "~4.13.4",
-    "twit": "~2.2.2",
-    "mongodb": "~2.1.7"
+    "body-parser": "~1.13.2",
+    "cookie-parser": "~1.3.5",
+    "debug": "~2.2.0",
+    "express": "~4.13.1",
+    "hjs": "~0.0.6",
+    "less-middleware": "1.0.x",
+    "morgan": "~1.6.1",
+    "serve-favicon": "~2.3.0"
   }
 }
