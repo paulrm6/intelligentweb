@@ -6,10 +6,18 @@ block body
 			.container
 				h1 Query Twitter
 				br
-				p #{title}
 				br
 
 				form(action='/', method='POST')
 					input(type='text', name='querybox1', id='querybox1')
 					br
+					br
 					input(type='submit')
+
+				h1 Results
+
+				for tweet in tweets
+					div.tweetDiv
+						b
+							p #{tweet.user.name}
+						p #{tweet.text}
