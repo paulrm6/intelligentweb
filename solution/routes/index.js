@@ -2,10 +2,10 @@ var express = require('express');
 var router = express.Router();
 var Twit = require('twit');
 var client = new Twit({
-	consumer_key: 'nuNlCGGcPF2M5lRJ3niGf2WUf',
-	consumer_secret: 'ja3arH3fGuwiU93DCyhDWCVO1oyrfvLU1nOYeYtjXyCangiWc0',
-	access_token: '3433284611-dCs1sJWqDynYNjcDlzksKlq4UYFHxZ8zoAhPP75',
-	access_token_secret: 'pxxV0DWJOGJvm6ULV12YL8nZIEmK63X6ljidrKBuRI1Ji'
+	consumer_key: '1R5gIb6Nq3Q0CSEaz37bRt2F9',
+	consumer_secret: 'xZf90oSYBEBWvdxxzPcs3GBrh6r4XhuvaLF5s9xvTuLE0IW4pf',
+	access_token: '705393120402382848-LUTIG8CQyn8jmr3OMhDsRuvf22AC0C0',
+	access_token_secret: 'mEDTtSJtcRodO8FHBedwtAcqFTR9Vu16o93HzUrFP12L8'
 	});
 
 /* GET home page. */
@@ -14,15 +14,13 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next){
-	var querybox1 = req.body.querybox1
-	query = querybox1
-	client.get('search/tweets', { q: query, count: 100 },
+	var user_name = req.body.user_search;
+	client.get('statuses/user_timeline', { screen_name: user_name, count: 100 },
             function(err, data, response) {
-                console.log(data.statuses);
+                console.log(data);
                 res.render('results', {
-						title: 'results',
-						a: req.body.testbox1,
-						tweets: data.statuses
+						title: user_name,
+						tweets: data
 						});
 		});
 
