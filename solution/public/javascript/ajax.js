@@ -1,51 +1,56 @@
 function submitted() {
 	$.get('/search',{ user: $("#user").val()}, function(data) {
+		console.log(data);
 		$('#results').empty();
-		$.each(data, function(i, tweet) {
-			$('#results').append("<div id='"+i+"' class='tweet'>"
-				+ (tweet.retweeted_status != undefined ? 
-					"<div class='retweet'>"
-					+"<i class='fa fa-retweet'></i> Retweeted by "
+		if(data.length > 0) {
+			$.each(data, function(i, tweet) {
+				$('#results').append("<div id='"+i+"' class='tweet'>"
+					+ (tweet.retweeted_status != undefined ? 
+						"<div class='retweet'>"
+						+"<i class='fa fa-retweet'></i> Retweeted by "
+						+tweet.user.name
+						+" - <a href='https://twitter.com/"
+						+tweet.user.screen_name
+						+"' class='italic'> @"
+						+tweet.user.screen_name
+						+"</a></div>" : "")
+					);
+				if(tweet.retweeted_status != undefined) {
+					tweet = tweet.retweeted_status;
+				}
+				$('#'+i).append("<div class='user'>"
 					+tweet.user.name
 					+" - <a href='https://twitter.com/"
 					+tweet.user.screen_name
 					+"' class='italic'> @"
 					+tweet.user.screen_name
-					+"</a></div>" : "")
-				);
-			if(tweet.retweeted_status != undefined) {
-				tweet = tweet.retweeted_status;
-			}
-			$('#'+i).append("<div class='user'>"
-				+tweet.user.name
-				+" - <a href='https://twitter.com/"
-				+tweet.user.screen_name
-				+"' class='italic'> @"
-				+tweet.user.screen_name
-				+"</a></div>"
-				+"<div class='text'>"
-				+tweet.text
-				+"</div>");
-			if(tweet.entities.media != undefined) {
-				$.each(tweet.entities.media, function(j, media) {
-					if(media.type == "photo") {
-						$('#'+i).append("<img src='"
-							+media.media_url_https
-							+"'/>")
-					}
-				})
-			}
-			var date = (tweet.created_at).split(' ');
-			$('#'+i).append("<a class='link' href='https://twitter.com/"
-				+tweet.user.screen_name
-				+"/status/"
-				+tweet.id_str
-				+"'><i class='fa fa-twitter'></i> Link to tweet</a>"
-				+"<div class='time'>Published on "
-				+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]
-				+"</div>"
-				+"</div>")
-		})
+					+"</a></div>"
+					+"<div class='text'>"
+					+tweet.text
+					+"</div>");
+				if(tweet.entities.media != undefined) {
+					$.each(tweet.entities.media, function(j, media) {
+						if(media.type == "photo") {
+							$('#'+i).append("<img src='"
+								+media.media_url_https
+								+"'/>")
+						}
+					})
+				}
+				var date = (tweet.created_at).split(' ');
+				$('#'+i).append("<a class='link' href='https://twitter.com/"
+					+tweet.user.screen_name
+					+"/status/"
+					+tweet.id_str
+					+"'><i class='fa fa-twitter'></i> Link to tweet</a>"
+					+"<div class='time'>Published on "
+					+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]
+					+"</div>"
+					+"</div>")
+			})
+		} else {
+			$('#results').append("No such user exists");
+		}
 	})
 }
 
