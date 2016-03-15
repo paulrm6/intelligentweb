@@ -1,14 +1,46 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+nav {
+	width: 100%;
+	background-color: #1B1B1B;
+	padding: 15px;
+}
+
+nav a {
+	font-size: 160%;
+	color: #FFFFFF;
+	text-decoration: none;
+	padding-right: 10px;
+}
+
+nav a:hover {
+	color: #CDCDCD;
+}
+
+nav a:last-child {
+	padding-right: 0px;
+}
+
+#container {
+	padding: 20px;
 }
 
 .tweetDiv {
-    border: 2px solid grey; 
-    padding-bottom: 1px;
+    border: 2px solid #2E2E2E; 
+    padding: 3px;
     margin-bottom: 8px;
+}
+
+.italic {
+	font-style: italic;
+}
+
+.user {
+}
+
+.test {
+
 }

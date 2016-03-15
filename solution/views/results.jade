@@ -1,25 +1,36 @@
 extends layout
 
 block body
-	section.body
-		.jumbotron
-			.container
-				h1 Query Twitter
-				br
-				p #{title}
-				br
+	section#container
+		h1 Query Twitter
+		br
+		p #{title}
+		br
 
-				form(action='/', method='POST')
-					label Search for a user @
-					input(type='text', name='user_search', id='user_search')
-					br
-					br
-					input(type='submit')
+		form(action='/', method='POST')
+			label Search for a user @
+			input(type='text', name='user_search', id='user_search')
+			br
+			br
+			input(type='submit')
 
-				h1 Results
+		h1 Results
 
-				for tweet in tweets
-					div.tweetDiv
-						b
-							p #{tweet.user.name}
-						p #{tweet.text}
+		for tweet in tweets
+			div.tweetDiv
+				- var retweeted = tweet.retweeted_status
+				if retweeted != undefined
+					div.retweeted
+						| Retweeted by #{tweet.user.name} - 
+						a(href='https://twitter.com/#{tweet.user.screen_name}').italic @#{tweet.user.screen_name}
+					- var tweet = retweeted
+				div.user 
+					| #{tweet.user.name} - 
+					a(href='https://twitter.com/#{tweet.user.screen_name}').italic @#{tweet.user.screen_name}
+				div.text #{tweet.text}
+				if tweet.entities.media != undefined
+					for media in tweet.entities.media
+						if media.type == "photo"
+							img(src='#{media.media_url_https}', width='400px')
+				div.time #{tweet.created_at}
+				a(href='https://twitter.com/#{tweet.user.screen_name}/status/#{tweet.id_str}') Link to tweet
