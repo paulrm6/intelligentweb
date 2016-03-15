@@ -54,12 +54,18 @@ form input#submit {
     margin-bottom: 5px;
 }
 
+.tweet .retweet {
+	font-size: 130%;
+	color: #19CF86;
+}
+
 .italic {
 	font-style: italic;
 }
 
 .tweet .user {
 	font-size: 130%;
+	font
 }
 
 .tweet .text {
