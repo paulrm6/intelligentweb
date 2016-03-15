@@ -11,9 +11,8 @@ router.post('/', function(req, res, next){
 	var user_name = req.body.user_search;
 	client.get('statuses/user_timeline', { screen_name: user_name, count: 100 },
             function(err, data, response) {
-                console.log(data);
+                //console.log(data);
                 res.render('results', {
-						title: user_name,
 						tweets: data
 						});
 		});

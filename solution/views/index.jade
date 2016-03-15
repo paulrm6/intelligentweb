@@ -3,13 +3,8 @@ extends layout
 block body
 	section#container
 		h1 Query Twitter
-		br
-		p #{title}
-		br
-
 		form(onsubmit='submitted(); return false;')
 			label Search for a user @
-			input(type='text', name='user', id='user')
-			input(type='submit')
-
+			input(type='text', name='user', id='user', placeholder='e.g. manutd')
+			input(type='submit' id='submit')
 		div#results
