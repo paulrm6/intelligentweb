@@ -8,7 +8,7 @@ router.get('/', function(req, res, next){
 	var all_data = []
 	client.get('statuses/user_timeline', { screen_name: user, count: 100 },
 		function(err, data, response) {
-            //console.log(data);
+            console.log(data);
             //res.send(data);
             all_data = all_data.concat(data);
 			client.get('search/tweets', { q: search, count: 100 },

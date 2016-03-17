@@ -48,10 +48,11 @@ form input#submit {
 
 .tweet {
     border: 2px solid #2E2E2E;
-    width: 90%;
-    margin-left: 5%;
+    width: 50%;
+    margin: 0 auto;
     padding: 3px;
     margin-bottom: 5px;
+    min-width: 450px;
 }
 
 .tweet .retweet {
