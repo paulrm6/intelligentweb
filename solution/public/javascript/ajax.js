@@ -1,5 +1,7 @@
 function submitted() {
-	$.get('/search',{ user: $("#user").val()}, function(data) {
+	var search_comma = $("#search_terms").val()
+	var search_and = search_comma.replace(/\,/g,'&');
+	$.get('/search',{ user: $("#user").val(), search: search_and}, function(data) {
 		console.log(data);
 		$('#results').empty();
 		if(data.length > 0) {

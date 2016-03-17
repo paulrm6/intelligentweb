@@ -6,5 +6,9 @@ block body
 		form(onsubmit='submitted(); return false;')
 			label Search for a user @
 			input(type='text', name='user', id='user', placeholder='e.g. manutd')
+			br
+			label Search for a hashtag or keyword (comma seperated) 
+			input(type='text', name='search_terms' id='search_terms' placeholder='i.e. #paul,hello')
+			br
 			input(type='submit' id='submit')
 		div#results
