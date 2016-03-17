@@ -38,7 +38,7 @@ function submitted() {
 						if(media.type == "photo") {
 							$('#'+i).append("<img src='"
 								+media.media_url_https
-								+"'/>")
+								+"'/><div class='clear'></div>")
 						}
 					})
 				}

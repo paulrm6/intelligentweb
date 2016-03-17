@@ -77,6 +77,11 @@ form input#submit {
 	width: 400px;
 }
 
+.clear {
+	clear: both;
+	width:100%;
+}
+
 .tweet .time {
 	display: inline-block;
 	width:50%;
