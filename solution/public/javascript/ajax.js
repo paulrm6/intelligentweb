@@ -2,11 +2,11 @@ function submitted() {
 	var search_comma = $("#search_terms").val()
 	var search_and = search_comma.replace(/\,/g,'&');
 	$.get('/search',{ user: $("#user").val(), search: search_and}, function(data) {
-		console.log(data);
+		//console.log(data);
 		$('#results').empty();
 		if(data.length > 0) {
 			$.each(data, function(i, tweet) {
-				var date = (tweet.created_at).split(' ');
+				var date = tweet.created_at.split(' ');
 				$('#results').append("<div id='"+i+"' class='tweet'>"
 					+ (tweet.retweeted_status != undefined ? 
 						"<div class='retweet'>"
