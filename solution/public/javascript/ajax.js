@@ -9,27 +9,31 @@ function submitted() {
 				var date = tweet.created_at.split(' ');
 				$('#results').append("<div id='"+i+"' class='tweet'>"
 					+ (tweet.retweeted_status != undefined ? 
-						"<div class='retweet'>"
-						+"<i class='fa fa-retweet'></i> Retweeted by "
-						+tweet.user.name
-						+" - <a href='https://twitter.com/"
+						"<div class='retweet'><div class='pictures'>"
+						+"<a href='https://twitter.com/"
 						+tweet.user.screen_name
-						+"' class='italic'> @"
+						+"'>"
+						+"<i class='fa fa-retweet'></i></div><div class='text'>Retweeted by "
+						+"<span class='underline'>"+tweet.user.name+"</span>"
+						+" @"
 						+tweet.user.screen_name
-						+"</a> on "
-						+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]
-						+"</div>" : "")
+						//+" on "
+						//+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]
+						+"</div></a></div>" : "")
 					);
 				if(tweet.retweeted_status != undefined) {
 					tweet = tweet.retweeted_status;
 				}
-				$('#'+i).append("<div class='user'>"
+				$('#'+i).append("<div class='pictures'><img class='profile' src='"
+					+tweet.user.profile_image_url
+					+"'/></div><div class='text'><div class='user'>"
+					+"<a href='https://twitter.com/"
+					+tweet.user.screen_name
+					+"'><span class='underline'>"
 					+tweet.user.name
-					+" - <a href='https://twitter.com/"
+					+"</span> <span class='handle'>"
 					+tweet.user.screen_name
-					+"' class='italic'> @"
-					+tweet.user.screen_name
-					+"</a></div>"
+					+"</span></a></div>"
 					+"<div class='text'>"
 					+tweet.text
 					+"</div>");
@@ -51,7 +55,7 @@ function submitted() {
 					+"<div class='time'>Published on "
 					+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]
 					+"</div>"
-					+"</div>")
+					+"</div></div>")
 			})
 		} else {
 			$('#results').append("No such user exists");
