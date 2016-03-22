@@ -8,12 +8,12 @@
 			$("#searchContainer").append(
 				"<div><input type='text', name='search_terms' id='search_terms'"
 				+" placeholder='i.e. #paul or hello'/><input type='button'"
-				+", value='Delete', id='dltBtn'></div>");
+				+", name='dltBtn', value='Delete', id='dltBtn'></div>");
     	} else {
 			$("#searchContainer").append(
 				"<div><label name='andor'></label><br /><input type='text', name='search_terms' id='search_terms'"
 				+" placeholder='i.e. #paul or hello'/><input type='button'"
-				+", value='Delete', id='dltBtn'></div>");
+				+", value='Delete', name='dltBtn', id='dltBtn'></div>");
     	}
     	updateAndOr();
 	});
@@ -31,3 +31,37 @@
 			$(this).text($("#searchtermsandor").find(":selected").text());
 		});
 	}
+	$(document).on("change", "#userSearch", function() {
+		if ($('#userSearch').is(':checked')) {
+    		$("#username").removeAttr("disabled"); 
+    		$("#replies").removeAttr("disabled"); 
+    		$("#user").css("color","inherit")
+		} else {
+    		$("#username").attr("disabled", "disabled"); 
+    		$("#replies").attr("disabled", "disabled");
+    		$("#user").css("color","#939393")
+		}
+	})
+	$(document).on("change", "#keywordSearch", function() {
+		if ($('#keywordSearch').is(':checked')) {
+    		$("#searchtermsandor").removeAttr("disabled"); 
+    		$("#addBtn").removeAttr("disabled");  
+    		$("input[name=dltBtn]").each(function() {
+    			$(this).removeAttr("disabled");  
+    		});
+    		$("input[name=search_terms]").each(function() {
+    			$(this).removeAttr("disabled"); 
+    		});
+    		$("#keywords").css("color","inherit");
+		} else {
+    		$("#searchtermsandor").attr("disabled", "disabled"); 
+    		$("#addBtn").attr("disabled", "disabled"); 
+    		$("input[name=dltBtn]").each(function() {
+    			$(this).attr("disabled", "disabled");
+    		});
+    		$("input[name=search_terms]").each(function() {
+    			$(this).attr("disabled", "disabled");
+    		});
+    		$("#keywords").css("color","#939393");
+		}
+	})

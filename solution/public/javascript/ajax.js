@@ -1,16 +1,22 @@
 function submitted() {
 	$('#cover').fadeIn(500);
 	var search = "";
+	var user = "";
 	var replies = "true"
-	$("input[name=search_terms]").each(function () {
-		if($(this).val() != "") {
-			search += $(this).val()+$("#searchtermsandor").val();
-		}
-	});
+	if ($('#keywordSearch').is(':checked')) {
+		$("input[name=search_terms]").each(function () {
+			if($(this).val() != "") {
+				search += $(this).val()+$("#searchtermsandor").val();
+			}
+		});
+	}
+	if ($('#userSearch').is(':checked')) {
+		user = $("#username").val();
+	}
 	if ($('#replies').is(':checked')) {
 		replies = "false";
 	}
-	$.get('/search',{ user: $("#user").val(), search: search, replies: replies}, function(data) {
+	$.get('/search',{ user: user, search: search, replies: replies}, function(data) {
 		$('#results').empty();
 		if(data.length > 1) {
 			$.each(data, function(i, tweet) {
