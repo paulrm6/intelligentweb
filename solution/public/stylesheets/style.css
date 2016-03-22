@@ -130,3 +130,12 @@ a:hover .underline {
 .tweet .link:hover {
 	color: #323333;
 }
+
+#cover {
+    background: url("http://www.aveva.com/Images/ajax-loader.gif") no-repeat scroll center center #FFF;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: none;
+    opacity: 0.7;
+}

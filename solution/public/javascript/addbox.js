@@ -6,7 +6,7 @@
     $(document).on("click", "#addBtn", function () {
 		$("#searchContainer").append(
 			"<input type='text', name='search_terms' id='search_terms'"
-			+" placeholder='i.e. #paul,hello'/><input type='button'"
+			+" placeholder='i.e. #paul or hello'/><input type='button'"
 			+", value='Delete', id='dltBtn'><br />");
 	});
     $(document).on("click", "#dltBtn", function () {

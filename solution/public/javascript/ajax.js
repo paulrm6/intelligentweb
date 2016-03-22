@@ -1,10 +1,11 @@
 function submitted() {
+	$('#cover').fadeIn(500);
 	var search = "";
 	$("input[name=search_terms]").each(function () {
-		search += $(this).val()+$("#andor").val();
+		if($(this).val() != "") {
+			search += $(this).val()+$("#andor").val();
+		}
 	});
-	//var search_comma = $("#search_terms").val()
-	//var search_and = search_comma.replace(/\,/g,'&');
 	$.get('/search',{ user: $("#user").val(), search: search}, function(data) {
 		//console.log(data);
 		$('#results').empty();
@@ -14,7 +15,7 @@ function submitted() {
 				$('#results').append("<div id='"+i+"' class='tweet'>"
 					+ (tweet.retweeted_status != undefined ? 
 						"<div class='retweet'><div class='pictures'>"
-						+"<a href='https://twitter.com/"
+						+"<a target='_blank' href='https://twitter.com/"
 						+tweet.user.screen_name
 						+"'>"
 						+"<i class='fa fa-retweet'></i></div><div class='text'>Retweeted by "
@@ -23,15 +24,16 @@ function submitted() {
 						+tweet.user.screen_name
 						//+" on "
 						//+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]
-						+"</div></a></div>" : "")
-					);
+						+"</div></a></div>" : ""
+					)
+				);
 				if(tweet.retweeted_status != undefined) {
 					tweet = tweet.retweeted_status;
 				}
 				$('#'+i).append("<div class='pictures'><img class='profile' src='"
 					+tweet.user.profile_image_url
 					+"'/></div><div class='text'><div class='user'>"
-					+"<a href='https://twitter.com/"
+					+"<a target='_blank' href='https://twitter.com/"
 					+tweet.user.screen_name
 					+"'><span class='underline'>"
 					+tweet.user.name
@@ -46,12 +48,12 @@ function submitted() {
 						if(media.type == "photo") {
 							$('#'+i).append("<img src='"
 								+media.media_url_https
-								+"'/><div class='clear'></div>")
+								+"'/><div class='clear'></div>");
 						}
-					})
+					});
 				}
 				var date = (tweet.created_at).split(' ');
-				$('#'+i).append("<a class='link' href='https://twitter.com/"
+				$('#'+i).append("<a target='_blank' class='link' href='https://twitter.com/"
 					+tweet.user.screen_name
 					+"/status/"
 					+tweet.id_str
@@ -59,12 +61,13 @@ function submitted() {
 					+"<div class='time'>Published on "
 					+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]
 					+"</div>"
-					+"</div></div>")
-			})
+					+"</div></div>");
+			});	
 		} else {
 			$('#results').append("No such user exists");
 		}
-	})
+	});
+	$('#cover').fadeOut(500);
 }
 
 function day(day) {
