@@ -4,16 +4,18 @@ var client = require('../private/twit');
 var all_data;
 var username;
 var searchterms;
+var replies;
 
 router.get('/', function(req, res, next){
 	username = req.query.user;
 	searchterms = req.query.search;
+	replies = req.query.replies;
 	all_data = [];
 	usertimelinetweets(searchtweets, send, res);
 });
 
 function usertimelinetweets(callback, callback_2, res) {
-	client.get('statuses/user_timeline', { screen_name: username, count: 100 },
+	client.get('statuses/user_timeline', { screen_name: username, exclude_replies: replies, count: 100 },
 		function(err, data, response) {
             all_data = all_data.concat(data);
             callback(send, res);

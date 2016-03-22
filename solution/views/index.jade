@@ -3,16 +3,23 @@ extends layout
 block body
 	div(id='cover')
 	section#container
-		h1 Query Twitter
 		form(onsubmit='submitted(); return false;')
+			div(id='searchHeader') Search Options
 			label Search for a user @
 			input(type='text', name='user', id='user', placeholder='e.g. manutd')
 			br
-			label Search for a hashtag or keyword 
-			input(type='button', value='Add Search Term', id='addBtn')
-			div(id='searchContainer')
-			select(name='andor' id='andor')
+			input(type='checkbox' checked id='replies')
+			| Include Replies?
+			div(class='line')
+				select(class='or' name='userandorsearch')
+					option(value='%20OR%20') OR
+					option(value='%20AND%20') AND
+			label Search for a hashtag or keyword:
+			select(name='andor' id='searchtermsandor' class='normBut')
 				option(value='%20AND%20') AND
 				option(value='%20OR%20') OR
+			div(id='searchContainer')
+			input(type='button' value='Add a Search Term' id='addBtn')
+			br
 			input(type='submit' id='submit')
 		div#results

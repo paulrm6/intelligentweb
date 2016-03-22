@@ -1,15 +1,18 @@
 function submitted() {
 	$('#cover').fadeIn(500);
 	var search = "";
+	var replies = "true"
 	$("input[name=search_terms]").each(function () {
 		if($(this).val() != "") {
-			search += $(this).val()+$("#andor").val();
+			search += $(this).val()+$("#searchtermsandor").val();
 		}
 	});
-	$.get('/search',{ user: $("#user").val(), search: search}, function(data) {
-		//console.log(data);
+	if ($('#replies').is(':checked')) {
+		replies = "false";
+	}
+	$.get('/search',{ user: $("#user").val(), search: search, replies: replies}, function(data) {
 		$('#results').empty();
-		if(data.length > 0) {
+		if(data.length > 1) {
 			$.each(data, function(i, tweet) {
 				var date = tweet.created_at.split(' ');
 				$('#results').append("<div id='"+i+"' class='tweet'>"
@@ -37,7 +40,7 @@ function submitted() {
 					+tweet.user.screen_name
 					+"'><span class='underline'>"
 					+tweet.user.name
-					+"</span> <span class='handle'>"
+					+"</span> <span class='handle'>@"
 					+tweet.user.screen_name
 					+"</span></a></div>"
 					+"<div class='text'>"
@@ -46,7 +49,7 @@ function submitted() {
 				if(tweet.entities.media != undefined) {
 					$.each(tweet.entities.media, function(j, media) {
 						if(media.type == "photo") {
-							$('#'+i).append("<img src='"
+							$('#'+i).append("<img class='media' src='"
 								+media.media_url_https
 								+"'/><div class='clear'></div>");
 						}
@@ -62,12 +65,13 @@ function submitted() {
 					+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]
 					+"</div>"
 					+"</div></div>");
+					$('#cover').fadeOut(500);
 			});	
 		} else {
-			$('#results').append("No such user exists");
+			$('#results').append("No tweets found");
+			$('#cover').fadeOut(500);
 		}
 	});
-	$('#cover').fadeOut(500);
 }
 
 function day(day) {
