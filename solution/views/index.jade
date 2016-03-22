@@ -7,8 +7,11 @@ block body
 			label Search for a user @
 			input(type='text', name='user', id='user', placeholder='e.g. manutd')
 			br
-			label Search for a hashtag or keyword (comma seperated) 
-			input(type='text', name='search_terms' id='search_terms' placeholder='i.e. #paul,hello')
-			br
+			label Search for a hashtag or keyword 
+			input(type='button', value='Add Search Term', id='addBtn')
+			div(id='searchContainer')
+			select(name='andor' id='andor')
+				option(value='%20AND%20') AND
+				option(value='%20OR%20') OR
 			input(type='submit' id='submit')
 		div#results
