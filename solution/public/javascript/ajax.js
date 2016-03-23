@@ -26,7 +26,6 @@ function submitted() {
 		$('#results').append("<div class='tweet header'>Tweets</div>");
 		if(data.length > 0) {
 			$.each(data, function(i, tweet) {
-				var date = tweet.created_at.split(' ');
 				$('#results').append("<div id='"+i+"' class='tweet'>"
 					+ (tweet.retweeted_status != undefined ? 
 						"<div class='retweet'><div class='pictures'>"
@@ -37,8 +36,6 @@ function submitted() {
 						+"<span class='underline'>"+tweet.user.name+"</span>"
 						+" @"
 						+tweet.user.screen_name
-						//+" on "
-						//+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]
 						+"</div></a></div>" : ""
 					)
 				);

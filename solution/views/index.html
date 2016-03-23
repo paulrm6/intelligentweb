@@ -1,48 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Intelligent Web App</title>
-    <link href="http://meyerweb.com/eric/tools/css/reset/reset.css" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/stylesheets/style.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <script src="/javascript/ajax.js"></script>
-    <script src="/javascript/addbox.js"></script>
-  </head>
-  <body>
-    <nav><a href="/">Intelligent Web App</a>
-    </nav>
-      <div id="cover"></div>
-  <section id="container">
-    <form onsubmit="submitted(); return false;">
-      <div class="header">Search Options</div>
-      <div id="user">
-        <input type="checkbox" checked id="userSearch">
-        <label>Search for a user @</label>
-        <input type="text" required id="username" placeholder="e.g. manutd"><br>
-        <input type="checkbox" checked id="mentions">Include Mentions?
-      </div>
-      <div class="line">
-        <select id="userandorsearch" class="or">
-          <option value="OR">OR</option>
-          <option value="AND">AND</option>
-        </select>
-      </div>
-      <div id="keywords">
-        <input type="checkbox" checked id="keywordSearch">
-        <label>Search for a hashtag or keyword:</label>
-        <select name="andor" id="searchtermsandor" class="normBut">
-          <option value="AND">AND</option>
-          <option value="OR">OR</option>
-        </select>
-        <div id="searchContainer">
-          <input type="text" name="search_terms" id="search_terms" placeholder="i.e. #paul or hello" required>
-        </div>
-        <input type="button" value="Add a Search Term" id="addBtn">
-      </div><br>
-      <input type="submit" id="submit">
-    </form>
-    <div id="results"></div>
-  </section>
-  </body>
+<head>
+	<title>Intelligent Web App</title>
+	<link href="http://meyerweb.com/eric/tools/css/reset/reset.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/stylesheets/style.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	<script src="/javascript/ajax.js"></script>
+	<script src="/javascript/addbox.js"></script>
+</head>
+<body>
+	<nav><a href="/">Intelligent Web App</a>
+	</nav>
+	<div id="cover"></div>
+	<section id="container">
+		<form onsubmit="submitted(); return false;">
+			<div class="header">Search Options</div>
+			<div id="user">
+				<input type="checkbox" checked id="userSearch">
+				<label>Search for a user @</label>
+				<input type="text" required id="username" placeholder="e.g. manutd"><br>
+				<input type="checkbox" checked id="mentions">Include Mentions?
+			</div>
+			<div class="line">
+				<select id="userandorsearch" class="or">
+					<option value="OR">OR</option>
+					<option value="AND">AND</option>
+				</select>
+			</div>
+			<div id="keywords">
+				<input type="checkbox" checked id="keywordSearch">
+				<label>Search for a hashtag or keyword:</label>
+				<select name="andor" id="searchtermsandor" class="normBut">
+					<option value="AND">AND</option>
+					<option value="OR">OR</option>
+				</select>
+				<div id="searchContainer">
+					<input type="text" name="search_terms" id="search_terms" placeholder="i.e. #paul or hello" required>
+				</div>
+				<input type="button" value="Add a Search Term" id="addBtn">
+			</div><br>
+			<input type="submit" id="submit">
+		</form>
+		<div id="results"></div>
+	</section>
+</body>
 </html>
