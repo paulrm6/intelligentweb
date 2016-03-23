@@ -2,23 +2,29 @@ function submitted() {
 	$('#cover').fadeIn(500);
 	var search = "";
 	var user = "";
-	var replies = "true"
+	var query = ""
 	if ($('#keywordSearch').is(':checked')) {
+		search += '(';
 		$("input[name=search_terms]").each(function () {
 			if($(this).val() != "") {
-				search += $(this).val()+$("#searchtermsandor").val();
+				search += $(this).val()+" "+$("#searchtermsandor").val()+" ";
 			}
 		});
+		search += ')'
 	}
 	if ($('#userSearch').is(':checked')) {
-		user = $("#username").val();
+		var username = $("#username").val();
+		user = '(from:@'+username;
+		if ($('#mentions').is(':checked')) {
+			user += ' OR "@'+username+'"';
+		}
+		user += ')';
 	}
-	if ($('#replies').is(':checked')) {
-		replies = "false";
-	}
-	$.get('/search',{ user: user, search: search, replies: replies}, function(data) {
+	query = user+" "+$("#userandorsearch").val()+" "+search;
+	$.get('/search',{ q: query }, function(data) {
 		$('#results').empty();
-		if(data.length > 1) {
+		$('#results').append("<div class='tweet header'>Tweets</div>");
+		if(data.length > 0) {
 			$.each(data, function(i, tweet) {
 				var date = tweet.created_at.split(' ');
 				$('#results').append("<div id='"+i+"' class='tweet'>"
@@ -74,7 +80,7 @@ function submitted() {
 					$('#cover').fadeOut(500);
 			});	
 		} else {
-			$('#results').append("No tweets found");
+			$('#results').append("<div class='tweet error'>No tweets found! Try changing the search criteria!</div>");
 			$('#cover').fadeOut(500);
 		}
 	});

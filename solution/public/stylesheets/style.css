@@ -41,21 +41,19 @@ form {
 	width: 398px;
 	vertical-align: top;
     border: solid 1px #e1e8ed;
-    border-radius: 5px;
     position: fixed;
     background-color: #FFFFFF;
 	text-align: center;
-	padding-top: 5px;
+	padding:5px 0;
 }
 
-form #searchHeader {
+.header {
 	font-size: 170%;
 	padding-bottom: 10px;
 	color: #1DA1F2;
-}
-
-form input {
-
+	width:100%;
+	text-align: center;
+	background-color: #FFFFFF;
 }
 
 .line {
@@ -92,7 +90,6 @@ form input#submit {
     background-color: white;
     padding: 5px;
     border: solid 1px #e1e8ed;
-    border-radius: 5px;
 }
 
 .pictures {
@@ -144,7 +141,12 @@ a:hover .underline {
 
 .tweet img.media {
 	width: 400px;
-	padding-left: 25px;
+	padding: 10px 25px;
+}
+
+.error {
+	color: red;
+	text-align: center;
 }
 
 .clear {

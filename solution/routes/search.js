@@ -1,40 +1,22 @@
 var express = require('express');
 var router = express.Router();
 var client = require('../private/twit');
-var all_data;
-var username;
-var searchterms;
-var replies;
+var q;
 
 router.get('/', function(req, res, next){
-	username = req.query.user;
-	searchterms = req.query.search;
-	replies = req.query.replies;
-	all_data = [];
-	usertimelinetweets(searchtweets, send, res);
+	q = req.query.q;
+	searchtweets(res);
 });
 
-function usertimelinetweets(callback, callback_2, res) {
-	client.get('statuses/user_timeline', { screen_name: username, exclude_replies: replies, count: 100 },
-		function(err, data, response) {
-            all_data = all_data.concat(data);
-            callback(send, res);
-        }
-    );
-}
-
-function searchtweets(callback, res) {
-	client.get('search/tweets', { q: searchterms, count: 100 },
+function searchtweets(res) {
+	client.get('search/tweets', { q: q, count: 100 },
         function(err, data, response) {
-            all_data = all_data.concat(data.statuses);
-            callback(res);
+            //all_data = all_data.concat(data.statuses);
+            //callback(res);
+            console.log(data.statuses);
+			res.send(data.statuses);
 		}
 	);
-}
-
-function send(res) {
-	all_data.sort(sortfunction());
-	res.send(all_data);
 }
 
 function sortfunction() {
