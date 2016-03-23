@@ -57,12 +57,11 @@ form {
 }
 
 .line {
-	margin: 3px 0;
+	margin-bottom: 20px;
 	width:100%;
 	height: 8px;
 	border-bottom: 1px solid #e1e8ed;
 	text-align: center;
-	margin-bottom: 10px;
 }
 
 .or {
@@ -84,7 +83,33 @@ form label, form input {
 form input#submit {
 	margin-left: 15px;
 }
+label.beforeInput {
+	z-index: 1;
+    position: relative;
+}
 
+input.label {
+	padding-left: 15px;
+	margin-left: -20px;
+	z-index: 0;
+    position: relative;
+}
+
+input.hashtag {	
+	margin-left: -15px;
+}
+
+.fa-plus:hover {
+	color: green;
+}
+
+.fa-plus, .fa-minus {
+	padding-left: 2px;
+}
+
+.fa-minus:hover {
+	color: red;
+}
 .tweet {
     width: 450px;
     background-color: white;

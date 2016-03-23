@@ -11,7 +11,7 @@ router.get('/', function(req, res, next){
 function searchtweets(res) {
 	client.get('search/tweets', { q: q, count: 100 },
         function(err, data, response) {
-            console.log(data.statuses.length);
+            //console.log(data.statuses.length);
 			res.send(data.statuses);
 		}
 	);

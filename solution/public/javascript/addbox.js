@@ -1,22 +1,18 @@
 $(document).on("click", "#addBtn", function () {
 	$("#searchContainer").append(
-		"<div><label name='andor'></label><br /><input type='text', name='search_terms' id='search_terms'"
-		+" placeholder='i.e. #paul or hello' required/><input type='button'"
-		+", value='Delete', name='dltBtn', id='dltBtn'></div>");
+		"<div><label name='andor'></label><br /><label class='beforeInput'>#</label><input type='text' class='label hashtag' name='hashtagBox' id='search_terms' placeholder='ManUtdVArsenal' required/><i class='fa fa-minus fa-lg' id='dltBtn'></i></div>");
 	updateAndOr();
+	lockInput();
 });
 $(document).on("click", "#dltBtn", function () {
 	$(this).parent().remove();
-	$(this).prev().remove();
-	$(this).next().remove();
-	$(this).remove();
 });
-$(document).on("change", "#searchtermsandor", function() {
+$(document).on("change", "#hashtagandor", function() {
 	updateAndOr();
 });
 function updateAndOr() {
 	$("label[name=andor]").each(function() {
-		$(this).text($("#searchtermsandor").find(":selected").text());
+		$(this).text($("#hashtagandor").find(":selected").text());
 	});
 }
 $(document).on("change", "#userSearch", function() {
@@ -34,26 +30,31 @@ $(document).on("change", "#userSearch", function() {
 		$("#user").css("color","#939393")
 	}
 })
-$(document).on("change", "#keywordSearch", function() {
-	if ($('#keywordSearch').is(':checked')) {
-		$("#searchtermsandor").removeAttr("disabled"); 
+$(document).on("change", "#hashtagSearch", function() {
+	lockInput();
+});
+
+function lockInput() {
+	if ($('#hashtagSearch').is(':checked')) {
+		$("#hashtagandor").removeAttr("disabled"); 
 		$("#addBtn").removeAttr("disabled");  
 		$("input[name=dltBtn]").each(function() {
 			$(this).removeAttr("disabled");  
 		});
-		$("input[name=search_terms]").each(function() {
+		$("input[name=hashtagBox]").each(function() {
 			$(this).removeAttr("disabled"); 
 		});
 		$("#keywords").css("color","inherit");
 	} else {
-		$("#searchtermsandor").attr("disabled", "disabled"); 
+		$("#hashtagandor").attr("disabled", "disabled"); 
 		$("#addBtn").attr("disabled", "disabled"); 
 		$("input[name=dltBtn]").each(function() {
 			$(this).attr("disabled", "disabled");
 		});
-		$("input[name=search_terms]").each(function() {
+		$("input[name=hashtagBox]").each(function() {
 			$(this).attr("disabled", "disabled");
 		});
 		$("#keywords").css("color","#939393");
 	}
-})
+
+}

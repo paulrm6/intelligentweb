@@ -16,30 +16,53 @@
 	<section id="container">
 		<form onsubmit="submitted(); return false;">
 			<div class="header">Search Options</div>
+			<div class="line">
+				<span class="or">
+					<input type="checkbox" checked id="userSearch">
+					Team
+				</span>
+			</div>
 			<div id="user">
-				<input type="checkbox" checked id="userSearch">
-				<label>Search for a user @</label>
-				<input type="text" required id="username" placeholder="e.g. manutd"><br>
+				<label class="beforeInput">Search for a team @</label>
+				<input type="text" required id="username" class="label" placeholder="manutd"><br>
 				<input type="checkbox" checked id="mentions">Include Mentions?
 			</div>
 			<div class="line">
-				<select id="userandorsearch" class="or">
+				<span class="or">Players
+				<select id="userandorplayer" class="normBut">
 					<option value="OR">OR</option>
 					<option value="AND">AND</option>
 				</select>
+				</span>
+			</div>
+			<div class="line">
+				<span class="or">
+				<input type="checkbox" checked id="hashtagSearch">
+				Hashtag
+				<select id="playerandorhashtag" class="normBut">
+					<option value="OR">OR</option>
+					<option value="AND">AND</option>
+				</select>
+				</span>
 			</div>
 			<div id="keywords">
-				<input type="checkbox" checked id="keywordSearch">
-				<label>Search for a hashtag or keyword:</label>
-				<select name="andor" id="searchtermsandor" class="normBut">
+				<label>Search for a hashtag:</label>
+				<select name="andor" id="hashtagandor" class="normBut">
 					<option value="AND">AND</option>
 					<option value="OR">OR</option>
 				</select>
 				<div id="searchContainer">
-					<input type="text" name="search_terms" id="search_terms" placeholder="i.e. #paul or hello" required>
+					<div><label class='beforeInput'>#</label><input type='text' class='label hashtag' name='hashtagBox' id='search_terms' placeholder='ManUtdVArsenal' required/><i class='fa fa-plus fa-lg' id='addBtn'></i></div>
 				</div>
-				<input type="button" value="Add a Search Term" id="addBtn">
-			</div><br>
+			</div>
+			<div class="line">
+				<span class="or">Keywords
+				<select id="hastagandorsearch" class="normBut">
+					<option value="OR">OR</option>
+					<option value="AND">AND</option>
+				</select>
+				</span>
+			</div>
 			<input type="submit" id="submit">
 		</form>
 		<div id="results"></div>

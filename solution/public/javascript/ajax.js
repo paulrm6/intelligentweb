@@ -1,16 +1,16 @@
 function submitted() {
 	$('#cover').fadeIn(500);
-	var search = "";
+	var hashtag = "";
 	var user = "";
 	var query = ""
-	if ($('#keywordSearch').is(':checked')) {
-		search += '(';
-		$("input[name=search_terms]").each(function () {
+	if ($('#hashtagSearch').is(':checked')) {
+		hashtag += '(';
+		$("input[name=hashtagBox]").each(function () {
 			if($(this).val() != "") {
-				search += $(this).val()+" "+$("#searchtermsandor").val()+" ";
+				hashtag += "#"+$(this).val()+" "+$("#hashtagandor").val()+" ";
 			}
 		});
-		search += ')'
+		hashtag += ')'
 	}
 	if ($('#userSearch').is(':checked')) {
 		var username = $("#username").val();
@@ -20,7 +20,7 @@ function submitted() {
 		}
 		user += ')';
 	}
-	query = user+" "+$("#userandorsearch").val()+" "+search;
+	query = user+" "+$("#playerandorhashtag").val()+" "+hashtag;
 	$.get('/search',{ q: query }, function(data) {
 		$('#results').empty();
 		$('#results').append("<div class='tweet header'>Tweets</div>");
