@@ -7,6 +7,7 @@ body {
 
 nav {
 	width: calc( 100% - 30px );
+	min-width: 1000px;
 	background-color: #1B1B1B;
 	padding: 15px;
 }
@@ -41,7 +42,7 @@ form {
 	width: 398px;
 	vertical-align: top;
     border: solid 1px #e1e8ed;
-    position: fixed;
+    position: relative;
     background-color: #FFFFFF;
 	text-align: center;
 	padding:5px 0;
