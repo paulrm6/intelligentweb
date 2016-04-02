@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Intelligent Web App</title>
+	<link href="http://meyerweb.com/eric/tools/css/reset/reset.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/stylesheets/style.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<script src="/javascript/ajax.js"></script>
+	<script src="/javascript/addbox.js"></script>
+	<script src="/javascript/tabs.js"></script>
+</head>
+<body onload="show();">
+	<section id="search">
+		<h1>Search Options
+			<select id="andOrToggle">
+				<option value="OR">OR</option>
+				<option value="AND">AND</option>
+			</select>
+		</h1>
+		<form id='form' onsubmit="submitted(); return false;">
+			<div id="inputs">
+				<div id="team" class="searchSection">
+					<h3><input type="checkbox" checked id="teamSearch" class="enabler">Team</h3>
+					<label class="beforeInput">Search for a team @</label>
+					<input type="text" required id="teamInput" placeholder="manutd"><br>
+					<input type="checkbox" checked id="mentions">Include Mentions?
+				</div>
+				<div id="players" class="searchSection">
+					<h3>
+						<input type="checkbox" class="enabler" checked id="playersSearch">
+						Players
+					</h3>
+					<label>Search for a player:</label>
+					<select name="andor" id="playerandor" class="andor">
+						<option value="AND">AND</option>
+						<option value="OR">OR</option>
+					</select>
+					<div class="searchContainer">
+						<div class="searchInput"><label class='beforeInput'>@</label><input type='text' name='playerBox' id='playerInput' placeholder='WayneRooney' required/><i class='fa fa-plus fa-lg' id='addBtn'></i></div>
+					</div>
+				</div>
+				<div id="hashtag" class="searchSection">
+					<h3>
+						<input type="checkbox" class="enabler" checked id="hashtagSearch">
+						Hashtag
+					</h3>
+					<label>Search for a hashtag:</label>
+					<select name="andor" id="hashtagandor" class="andor">
+						<option value="AND">AND</option>
+						<option value="OR">OR</option>
+					</select>
+					<div class="searchContainer">
+						<div class="searchInput"><label class='beforeInput'>#</label><input type='text' name='hashtagBox' id='hashtagInput' placeholder='ManUtdVArsenal' required/><i class='fa fa-plus fa-lg' id='addBtn'></i></div>
+					</div>
+				</div>
+				<div id="keyword" class="searchSection">
+					<h3>
+						<input type="checkbox" class="enabler" checked id="keywordSearch">
+						Keywords
+					</h3>
+					<label>Search for a keyword:</label>
+					<select name="andor" id="keywordandor" class="andor">
+						<option value="AND">AND</option>
+						<option value="OR">OR</option>
+					</select>
+					<div class="searchContainer">
+						<div class="searchInput"><input type='text' name='keywordBox' id='keywordInput' placeholder='football' required/><i class='fa fa-plus fa-lg' id='addBtn'></i></div>
+					</div>
+				</div>
+			</div>
+			<input type="submit" id="submit">
+		</form>
+	</section>
+	<div id="cover"></div>
+	<div id='wrapper'>
+	<section id="results">
+		<div id='tabs'>
+			<div id='tweetsTabSelector' class='tab'>Tweets</div>
+			<div id='analysisTabSelector' class='tab notSelected'>Analysis</div>
+		</div>
+		<div id='tweets'>
+		</div>
+		<div id='analysis'>
+			Analysis
+		</div>
+	</section>
+	</div>
+</body>
+</html>
