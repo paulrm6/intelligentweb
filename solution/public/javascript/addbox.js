@@ -3,7 +3,7 @@ $(document).on("click", "#addBtn", function () {
 		$(this).closest('.searchInput').clone().appendTo(this.closest(".searchContainer"));
 		$(this).closest(".searchContainer").find(".searchInput:last").find("i").remove();
 		$(this).closest(".searchContainer").find(".searchInput:last").prepend("<label name='andor'></label><br />");
-		$(this).closest(".searchContainer").find(".searchInput:last").append("<i class='fa fa-minus fa-lg' id='dltBtn'></i>");
+		$("<i class='fa fa-minus fa-lg' id='dltBtn'></i>").insertAfter($(this).closest(".searchContainer").find(".searchInput:last").find("input:first"));
 		$(this).closest(".searchContainer").find(".searchInput:last").find("input").val("");
 		//$(this).closest("#searchContainer").append(
 		//	"<div><label name='andor'></label><br /><label class='beforeInput'>#</label><input type='text' class='label hashtag' name='hashtagBox' id='search_terms' placeholder='ManUtdVArsenal' required/><i class='fa fa-minus fa-lg' id='dltBtn'></i></div>");

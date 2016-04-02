@@ -18,7 +18,11 @@ function submitted() {
 		players = "(";
 		$("input[name=playerBox]").each(function () {
 			if($(this).val() != "") {
-				players += "from:@"+$(this).val()+" "+$("#playerandor").val()+" ";
+				players += "(from:@"+$(this).val();
+				if($(this).closest(".searchInput").find("#playerMentions").is(":checked")) {
+					players += ' OR "@'+$(this).val()+'"';
+				}
+				players += ") "+$("#playerandor").val()+" ";
 			}
 		});
 		players = players.substring(0,players.length - $("#playerandor").val().length-2);
