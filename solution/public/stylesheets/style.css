@@ -211,3 +211,10 @@ a:hover .underline {
     display: none;
     opacity: 0.9;
 }
+
+/* MAP */
+
+#map {
+	width: 500px;
+	height: 400px;
+}
