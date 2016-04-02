@@ -21,6 +21,7 @@ function submitted() {
 				players += "from:@"+$(this).val()+" "+$("#playerandor").val()+" ";
 			}
 		});
+		players = players.substring(0,players.length - $("#playerandor").val().length-2);
 		players += ')'+andor;
 	}
 	if ($('#hashtagSearch').is(':checked')) {
@@ -30,6 +31,7 @@ function submitted() {
 				hashtag += "#"+$(this).val()+" "+$("#hashtagandor").val()+" ";
 			}
 		});
+		hashtag = hashtag.substring(0,hashtag.length - $("#hashtagandor").val().length-2);
 		hashtag += ')'+andor;
 	}
 	if ($('#keywordSearch').is(':checked')) {
@@ -39,6 +41,7 @@ function submitted() {
 				keyword += '"'+$(this).val()+'" '+$("#keywordandor").val()+" ";
 			}
 		});
+		keyword = keyword.substring(0,keyword.length - $("#keywordandor").val().length-2);
 		keyword += ')'+andor
 	}
 	query = team+players+hashtag+keyword;
