@@ -1,32 +1,53 @@
 function submitted() {
 	$('#cover').fadeIn(500);
+	var team = "";
+	var players = "";
 	var hashtag = "";
-	var user = "";
-	var query = ""
+	var keyword = "";
+	var query = "";
+	var andor = " "+$("#andOrToggle").val()+" ";;
+	if ($('#teamSearch').is(':checked')) {
+		var teamname = $("#teamInput").val();
+		team = '(from:@'+teamname;
+		if ($('#mentions').is(':checked')) {
+			team += ' OR "@'+teamname+'"';
+		}
+		team += ')'+andor;
+	}
+	if ($('#playersSearch').is(':checked')) {
+		players = "(";
+		$("input[name=playerBox]").each(function () {
+			if($(this).val() != "") {
+				players += "from:@"+$(this).val()+" "+$("#playerandor").val()+" ";
+			}
+		});
+		players += ')'+andor;
+	}
 	if ($('#hashtagSearch').is(':checked')) {
-		hashtag += '(';
+		hashtag = '(';
 		$("input[name=hashtagBox]").each(function () {
 			if($(this).val() != "") {
 				hashtag += "#"+$(this).val()+" "+$("#hashtagandor").val()+" ";
 			}
 		});
-		hashtag += ')'
+		hashtag += ')'+andor;
 	}
-	if ($('#userSearch').is(':checked')) {
-		var username = $("#username").val();
-		user = '(from:@'+username;
-		if ($('#mentions').is(':checked')) {
-			user += ' OR "@'+username+'"';
-		}
-		user += ')';
+	if ($('#keywordSearch').is(':checked')) {
+		keyword = '(';
+		$("input[name=keywordBox]").each(function () {
+			if($(this).val() != "") {
+				keyword += '"'+$(this).val()+'" '+$("#keywordandor").val()+" ";
+			}
+		});
+		keyword += ')'+andor
 	}
-	query = user+" "+$("#playerandorhashtag").val()+" "+hashtag;
+	query = team+players+hashtag+keyword;
+	query = query.substring(0,query.length - andor.length);
 	$.get('/search',{ q: query }, function(data) {
-		$('#results').empty();
-		$('#results').append("<div class='tweet header'>Tweets</div>");
+		$('#tweets').empty();
 		if(data.length > 0) {
 			$.each(data, function(i, tweet) {
-				$('#results').append("<div id='"+i+"' class='tweet'>"
+				$('#tweets').append("<div id='"+i+"' class='tweet'>"
 					+ (tweet.retweeted_status != undefined ? 
 						"<div class='retweet'><div class='pictures'>"
 						+"<a target='_blank' href='https://twitter.com/"
@@ -52,7 +73,7 @@ function submitted() {
 					+"</span> <span class='handle'>@"
 					+tweet.user.screen_name
 					+"</span></a></div>"
-					+"<div class='text'>"
+					+"<div class='tweetContent'>"
 					+tweet.text
 					+"</div>");
 				if(tweet.entities.media != undefined) {
@@ -77,7 +98,7 @@ function submitted() {
 					$('#cover').fadeOut(500);
 			});	
 		} else {
-			$('#results').append("<div class='tweet error'>No tweets found! Try changing the search criteria!</div>");
+			$('#tweets').append("<div class='tweet error'>No tweets found! Try changing the search criteria!</div>");
 			$('#cover').fadeOut(500);
 		}
 	});

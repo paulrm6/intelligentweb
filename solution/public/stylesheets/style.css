@@ -1,125 +1,122 @@
-body {
-	font-size: 12px;
+html, body {
+	background-color: #c0deed;
 	font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
-	background-color: #F5F8FA;
-    overflow-y: scroll;
+	height: 100%;
+}
+body {
+	overflow-y: scroll; 
 }
 
-nav {
-	width: calc( 100% - 30px );
-	min-width: 1000px;
-	background-color: #1B1B1B;
-	padding: 15px;
-}
-
-nav a {
-	font-size: 160%;
-	color: #FFFFFF;
-	text-decoration: none;
-	padding-right: 10px;
-}
-
-nav a:hover {
-	color: #CDCDCD;
-}
-
-nav a:last-child {
-	padding-right: 0px;
-}
-
-h1 {
-	text-align: center;
-	font-size: 260%;
+/* SEARCH */
+section#search {
+	background-color: #0084b4;
+	width: 100%;
 	padding: 10px 0;
+	min-width: 1000px;
+	color: #ffffff;
+	text-align: center
 }
-
-#container {
-	width: 1000px;
-	margin: 0 auto;
+section#search h1 {
+	font-size: 200%;
 }
-
-form {
-	width: 398px;
-	vertical-align: top;
-    border: solid 1px #e1e8ed;
-    position: relative;
-    background-color: #FFFFFF;
-	text-align: center;
-	padding:5px 0;
+select option {
+	color: #000000;
 }
-
-.header {
-	font-size: 170%;
-	padding-bottom: 10px;
-	color: #1DA1F2;
-	width:100%;
-	text-align: center;
-	background-color: #FFFFFF;
-}
-
-.line {
-	margin-bottom: 20px;
-	width:100%;
-	height: 8px;
-	border-bottom: 1px solid #e1e8ed;
-	text-align: center;
-}
-
-.or {
-	font-size: 14px;
-	background-color: #FFFFFF;
-	padding: 0 10px;
+select {
+	background-color: inherit;
 	border: none;
+	vertical-align: middle;
+	color: #ffffff;
+	font-size: 100%;
 }
-
-#results {
-	float:right;
-	width: 500px;
+section#search h1 select#andOrToggle{
+	font-size: 70%;
 }
-
-form label, form input {
+section#search form #inputs {
+	display: flex;
+	padding:10px 0;
+}
+section#search form .searchSection {
+	border-right: 1px solid #c0deed;
+	flex: 1;
+	margin-right: 5px;
+}
+section#search form .searchSection:last-child {
+	margin-right:0;
+	border-right: 0;
+}
+section#search form .searchSection h3 {
 	font-size: 120%;
+	padding-bottom: 5px;
+}
+section#search form .searchSection .searchInput {
+	padding-top: 0;
+	padding-bottom: 3px;
+}
+section#search .fa {
+	margin-left: 3px;
+}
+section#search #addBtn:hover {
+	color: #00aced;
+}
+section#search #dltBtn:hover {
+	color: #000000;
 }
 
-form input#submit {
-	margin-left: 15px;
+/* RESULTS */
+#wrapper {
+	width:1000px;
+	margin: 0 auto;
+	height: 100%;
 }
-label.beforeInput {
-	z-index: 1;
-    position: relative;
+section#results {
+	width:500px;
+	margin: 0 auto;
+	background-color: #FFFFFF;
+	height:100%;
+}
+section#results #tabs {
+	width:100%;
+	text-align: center;
+	display: flex;
+}
+section#results .tab {
+	padding: 10px 0;
+	flex: 1;
+}
+section#results .tab:first-child {
+	width: calc( 50% - 1px) ;
+	border-right: 1px solid gray;
+}
+.notSelected {
+	border-bottom: 1px solid gray;
+	background-color: #c0deed;
+}
+.notSelected:hover {
+	background-color: #e0e0e0;
+	cursor: pointer;
+}
+section#results #tweets {
+	width:500px;
+	background-color: #FFFFFF;
+	position: absolute;
+}
+section#results #analysis {
+	width:500px;
+	background-color: #FFFFFF;
+	position: absolute;
 }
 
-input.label {
-	padding-left: 15px;
-	margin-left: -20px;
-	z-index: 0;
-    position: relative;
-}
-
-input.hashtag {	
-	margin-left: -15px;
-}
-
-.fa-plus:hover {
-	color: green;
-}
-
-.fa-plus, .fa-minus {
-	padding-left: 2px;
-}
-
-.fa-minus:hover {
-	color: red;
-}
+/* TWEETS */
 .tweet {
-    width: 450px;
-    background-color: white;
+    width: calc( 100% - 10px);
     padding: 5px;
-    border: solid 1px #e1e8ed;
+    border-top: solid 1px #e1e8ed;
+    border-bottom: solid 1px #e1e8ed;
 }
 
 .pictures {
-	width:50px;
+	width:10%;
 	text-align: right;
 	display: inline-block;
 	vertical-align: top;
@@ -148,7 +145,7 @@ a:hover .underline {
 }
 
 .pictures .profile {
-	width:50px;
+	width:100%;
 }
 
 .italic {
@@ -160,14 +157,14 @@ a:hover .underline {
 }
 
 .tweet .text {
-	width: calc( 100% - 52px );
-	margin-left: 2px;
+	width: calc( 90% - 8px );
+	margin-left: 4px;
 	display: inline-block;
 }
 
 .tweet img.media {
-	width: 400px;
-	padding: 10px 25px;
+	width: 80%;
+	margin: 0 auto;
 }
 
 .error {
@@ -177,7 +174,7 @@ a:hover .underline {
 
 .clear {
 	clear: both;
-	width:100%;
+	width: 100%;
 }
 
 .tweet .time {
@@ -205,10 +202,5 @@ a:hover .underline {
     height: 100%;
     width: 100%;
     display: none;
-    opacity: 0.7;
-}
-
-.normBut {
-	background-color: #FFFFFF;
-	border: none;
+    opacity: 0.9;
 }
