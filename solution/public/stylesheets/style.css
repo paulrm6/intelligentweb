@@ -29,6 +29,9 @@ select {
 	color: #ffffff;
 	font-size: 100%;
 }
+select:disabled {
+	color: #6B8F9C;
+}
 section#search h1 select#andOrToggle{
 	font-size: 70%;
 }
