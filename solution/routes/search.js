@@ -1,20 +1,28 @@
 var express = require('express');
 var router = express.Router();
-var client = require('../private/twit');
-var q;
+var twitter = require('../private/twit');
+var database = require('../private/sql');
 
 router.get('/', function(req, res, next){
-	q = req.query.q;
-	searchtweets(res);
+	var q = req.query.q;
+	var type = req.query.type;
+	if(type=="databaseQuery") {
+		searchDatabase(q, res);
+	} else {
+		searchTwitter(q, res);
+	}
 });
 
-function searchtweets(res) {
-	client.get('search/tweets', { q: q, count: 100 },
+function searchTwitter(q, res) {
+	twitter.get('search/tweets', { q: q, count: 100 },
         function(err, data, response) {
-            //console.log(data.statuses.length);
 			res.send(data.statuses);
 		}
 	);
+}
+
+function searchDatabase(q, res) {
+
 }
 
 module.exports = router;
