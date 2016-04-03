@@ -117,10 +117,10 @@ section#results .tab:first-child {
 }
 .notSelected {
 	border-bottom-color: gray !important;
-	background-color: #c0deed;
+	background-color: #eaeaea;
 }
 .notSelected:hover {
-	background-color: #e0e0e0;
+	background-color: #f4f4f4;
 	cursor: pointer;
 }
 section#results #tweets {
