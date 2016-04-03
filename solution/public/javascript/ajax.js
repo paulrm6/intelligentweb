@@ -1,16 +1,12 @@
 $(document).on("click", ".button", function () {
 	var valid = $('#form')[0].checkValidity();
 	if(valid) {
-		submitted(this.id);
+		$('#cover').fadeIn(500);
+		getVariables(this.id);
 	} else {
 		$('<input type="submit">').hide().appendTo($('#form')).click().remove();
 	}
 });
-
-function submitted(type) {
-	$('#cover').fadeIn(500);
-	getVariables(type);
-}
 
 function getVariables(type) {
 	var team = "";
