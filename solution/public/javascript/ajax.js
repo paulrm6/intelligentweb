@@ -8,8 +8,11 @@ $(document).on("click", ".button", function () {
 });
 
 function submitted(type) {
-	alert(type);
 	$('#cover').fadeIn(500);
+	getVariables(type);
+}
+
+function getVariables(type) {
 	var team = "";
 	var players = "";
 	var hashtag = "";
@@ -60,65 +63,71 @@ function submitted(type) {
 	}
 	query = team+players+hashtag+keyword;
 	query = query.substring(0,query.length - andor.length);
-	$.get('/search',{ q: query }, function(data) {
-		$('#tweets').empty();
-		if(data.length > 0) {
-			$.each(data, function(i, tweet) {
-				$('#tweets').append("<div id='"+i+"' class='tweet'>"
-					+ (tweet.retweeted_status != undefined ? 
-						"<div class='retweet'><div class='pictures'>"
-						+"<a target='_blank' href='https://twitter.com/"
-						+tweet.user.screen_name
-						+"'>"
-						+"<i class='fa fa-retweet'></i></div><div class='text'>Retweeted by "
-						+"<span class='underline'>"+tweet.user.name+"</span>"
-						+" @"
-						+tweet.user.screen_name
-						+"</div></a></div>" : ""
-					)
-				);
-				if(tweet.retweeted_status != undefined) {
-					tweet = tweet.retweeted_status;
-				}
-				$('#'+i).append("<div class='pictures'><img class='profile' src='"
-					+tweet.user.profile_image_url
-					+"'/></div><div class='text'><div class='user'>"
+	callSearch(type, query);
+}
+
+function callSearch(type, query) {
+	$.get('/search',{ q: query, type: type }, fillTweets);
+}
+
+function fillTweets(data) {
+	$('#tweets').empty();
+	if(data.length > 0) {
+		$.each(data, function(i, tweet) {
+			$('#tweets').append("<div id='"+i+"' class='tweet'>"
+				+ (tweet.retweeted_status != undefined ? 
+					"<div class='retweet'><div class='pictures'>"
 					+"<a target='_blank' href='https://twitter.com/"
 					+tweet.user.screen_name
-					+"'><span class='underline'>"
-					+tweet.user.name
-					+"</span> <span class='handle'>@"
+					+"'>"
+					+"<i class='fa fa-retweet'></i></div><div class='text'>Retweeted by "
+					+"<span class='underline'>"+tweet.user.name+"</span>"
+					+" @"
 					+tweet.user.screen_name
-					+"</span></a></div>"
-					+"<div class='tweetContent'>"
-					+tweet.text
-					+"</div>");
-				if(tweet.entities.media != undefined) {
-					$.each(tweet.entities.media, function(j, media) {
-						if(media.type == "photo") {
-							$('#'+i).append("<img class='media' src='"
-								+media.media_url_https
-								+"'/><div class='clear'></div>");
-						}
-					});
-				}
-				var date = (tweet.created_at).split(' ');
-				$('#'+i).append("<a target='_blank' class='link' href='https://twitter.com/"
-					+tweet.user.screen_name
-					+"/status/"
-					+tweet.id_str
-					+"'><i class='fa fa-twitter'></i> Link to tweet</a>"
-					+"<div class='time'>Published on "
-					+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]
-					+"</div>"
-					+"</div></div>");
-					$('#cover').fadeOut(500);
-			});	
-		} else {
-			$('#tweets').append("<div class='tweet error'>No tweets found! Try changing the search criteria!</div>");
-			$('#cover').fadeOut(500);
-		}
-	});
+					+"</div></a></div>" : ""
+				)
+			);
+			if(tweet.retweeted_status != undefined) {
+				tweet = tweet.retweeted_status;
+			}
+			$('#'+i).append("<div class='pictures'><img class='profile' src='"
+				+tweet.user.profile_image_url
+				+"'/></div><div class='text'><div class='user'>"
+				+"<a target='_blank' href='https://twitter.com/"
+				+tweet.user.screen_name
+				+"'><span class='underline'>"
+				+tweet.user.name
+				+"</span> <span class='handle'>@"
+				+tweet.user.screen_name
+				+"</span></a></div>"
+				+"<div class='tweetContent'>"
+				+tweet.text
+				+"</div>");
+			if(tweet.entities.media != undefined) {
+				$.each(tweet.entities.media, function(j, media) {
+					if(media.type == "photo") {
+						$('#'+i).append("<img class='media' src='"
+							+media.media_url_https
+							+"'/><div class='clear'></div>");
+					}
+				});
+			}
+			var date = (tweet.created_at).split(' ');
+			$('#'+i).append("<a target='_blank' class='link' href='https://twitter.com/"
+				+tweet.user.screen_name
+				+"/status/"
+				+tweet.id_str
+				+"'><i class='fa fa-twitter'></i> Link to tweet</a>"
+				+"<div class='time'>Published on "
+				+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]
+				+"</div>"
+				+"</div></div>");
+				$('#cover').fadeOut(500);
+		});	
+	} else {
+		$('#tweets').append("<div class='tweet error'>No tweets found! Try changing the search criteria!</div>");
+		$('#cover').fadeOut(500);
+	}
 }
 
 function day(day) {
