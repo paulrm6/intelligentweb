@@ -1,4 +1,14 @@
-function submitted() {
+$(document).on("click", ".button", function () {
+	var valid = $('#form')[0].checkValidity();
+	if(valid) {
+		submitted(this.id);
+	} else {
+		$('<input type="submit">').hide().appendTo($('#form')).click().remove();
+	}
+});
+
+function submitted(type) {
+	alert(type);
 	$('#cover').fadeIn(500);
 	var team = "";
 	var players = "";
