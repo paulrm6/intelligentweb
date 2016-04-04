@@ -1,12 +1,18 @@
+/**
+ * Adds a listener for a click to everything with id addBtn 
+ */
 $(document).on("click", "#addBtn", function () {
+	//Checks to see if the search section is currently enabled
 	if($(this).closest(".searchSection").find(".enabler").is(':checked')) {
+		//If it is then it copies the search box to the bottom of the search container
 		$(this).closest('.searchInput').clone().appendTo(this.closest(".searchContainer"));
-		$(this).closest(".searchContainer").find(".searchInput:last").find("i").remove();
+		//It replaces the button on the new search box to a delete, rather than an add
+		$(this).closest(".searchContainer").find(".searchInput:last").find("i").replaceWith("<i class='fa fa-minus fa-lg' id='dltBtn'></i>");
+		//It adds an indicator to wether the search is and/or
 		$(this).closest(".searchContainer").find(".searchInput:last").prepend("<label name='andor'></label><br />");
-		$("<i class='fa fa-minus fa-lg' id='dltBtn'></i>").insertAfter($(this).closest(".searchContainer").find(".searchInput:last").find("input:first"));
+		//It clears any values already in the new search box
 		$(this).closest(".searchContainer").find(".searchInput:last").find("input").val("");
-		//$(this).closest("#searchContainer").append(
-		//	"<div><label name='andor'></label><br /><label class='beforeInput'>#</label><input type='text' class='label hashtag' name='hashtagBox' id='search_terms' placeholder='ManUtdVArsenal' required/><i class='fa fa-minus fa-lg' id='dltBtn'></i></div>");
+		//It then calls updateAndOr
 		updateAndOr();
 	}
 });
