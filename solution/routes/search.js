@@ -14,6 +14,14 @@ router.get('/', function(req, res, next){
 });
 
 function databaseOnly(q, res) {
+	queryDatabase(q, function(status, data) {
+		if(status==true) {
+			//database has searched that query return data
+			res.send(data);
+		} else {
+			res.status(400).send("Query not in database, try changing the search options");
+		}
+	});
 	//check if query has been searched before
 	//if so return tweets for that query
 	//if not return an error
@@ -23,7 +31,11 @@ function databaseAndTwitter(q, res) {
 	//query database
 	//query twitter for any new tweets since the most recent tweet
 	queryTwitter(q,null,function(data) {
-		res.send(data)
+		if(data.length > 0) {
+			res.send(data)
+		} else {
+			res.status(400).send("Query returned no results, try changing the search options");
+		}
 	});
 	//save any new tweets into the database
 	//return combined data and stats
@@ -38,6 +50,7 @@ function queryTwitter(q, since, callback) {
 }
 
 function queryDatabase(q, callback) {
+	callback(false,"some data");
 	//check if query has been searched before
 	//if so get data from database and find most recent tweet
 	//return all info

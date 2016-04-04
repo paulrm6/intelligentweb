@@ -131,6 +131,14 @@ section#results #analysis {
 	position: absolute;
 	display: none;
 }
+.error {
+	text-align: center;
+	color: red;
+    width: calc( 100% - 10px);
+    padding: 5px;
+    border-top: solid 1px #e1e8ed;
+    border-bottom: solid 1px #e1e8ed;
+}
 
 /* TABS */
 section#results #tabs .tab {

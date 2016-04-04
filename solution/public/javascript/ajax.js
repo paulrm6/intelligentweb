@@ -79,25 +79,29 @@ function getVariables(type) {
 }
 
 function callSearch(type, query) {
-	$.get('/search',{ q: query, type: type }, populateData);
+	$.get('/search',{ q: query, type: type })
+		.done(populateData)
+		.fail(error);
+}
+
+function error(error) {
+	$('#tweets').empty();
+	$('#analysis').empty();
+	$('#tweets').append("<div class='error'>"+error.responseText+"</div>");
+	$('#analysis').append("<div class='error'>"+error.responseText+"</div>");
+	$('#cover').fadeOut(500);
 }
 
 function populateData(data) {
 	$('#tweets').empty();
 	$('#analysis').empty();
 	analysisReset();
-	if(data.length > 0) {
-		$.each(data, function(i, tweet) {
-			addToAnalysis(tweet);
-			addTweet(i,tweet);
-		});	
-		fillAnalysis();
-		$('#cover').fadeOut(500);
-	} else {
-		$('#tweets').append("<div class='tweet error'>No tweets found! Try changing the search criteria!</div>");
-		$('#analysis').append("<div class='error'>No tweets found to analyse! Try changing the search criteria!</div>");
-		$('#cover').fadeOut(500);
-	}
+	$.each(data, function(i, tweet) {
+		addToAnalysis(tweet);
+		addTweet(i,tweet);
+	});	
+	fillAnalysis();
+	$('#cover').fadeOut(500);
 }
 
 function addToAnalysis(tweet) {
