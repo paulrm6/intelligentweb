@@ -165,7 +165,7 @@ function fillAnalysis() {
 			+topUsers[topUser][0]
 			+"</div><div class='noOfTweets'>tweeted <span>"
 			+topUsers[topUser][1]
-			+"<span> times</div>Most frequent words:<div class='keywords'>";
+			+"<span> times</div><div>Most frequent words:</div><div class='keywords'>";
 		for(var keyword=0;keyword<5;keyword++){
 			topUsersHTML += "<div class='keyword'>"
 				+topUsers[topUser][2][keyword][0]
