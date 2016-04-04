@@ -15,6 +15,7 @@
 <body>
 	<section id="search">
 		<h1>Search Options
+			<br>
 			<select id="andOrToggle">
 				<option value="OR">OR</option>
 				<option value="AND">AND</option>
@@ -23,28 +24,25 @@
 		<form id='form' onsubmit="submitted(); return false;">
 			<div id="inputs">
 				<div id="team" class="searchSection">
-					<h3><input type="checkbox" checked id="teamSearch" class="enabler">Team</h3>
-					<label class="beforeInput">Search for a team @</label>
-					<input type="text" required id="teamInput" placeholder="manutd" /><br>
-					<input type="checkbox" checked id="mentions">Include Mentions?</input>
+					<h3><input type="checkbox" checked id="teamSearch" class="enabler">Team</h3><br>
+					@<input type="text" required id="teamInput" placeholder="manutd" /><br>
+					<input type="checkbox" checked id="mentions">Include Mentions</input>
 				</div>
 				<div id="players" class="searchSection">
 					<h3>
 						<input type="checkbox" class="enabler" checked id="playersSearch">
 						Players
-					</h3>
-					<label>Search for a player:</label>
+					</h3><br>
 					<div class="searchContainer">
 						<div class="searchInput"><label class='beforeInput'>@</label><input type='text' name='playerBox' id='playerInput' placeholder='WayneRooney' required/><i class='fa fa-plus fa-lg' id='addBtn'></i><br />
-						<input type="checkbox" checked id="playerMentions">Include Mentions?</input></div>
+						<input type="checkbox" checked id="playerMentions">Include Mentions</input></div>
 					</div>
 				</div>
 				<div id="hashtag" class="searchSection">
 					<h3>
 						<input type="checkbox" class="enabler" checked id="hashtagSearch">
 						Hashtag
-					</h3>
-					<label>Search for a hashtag:</label>
+					</h3><br>
 					<div class="searchContainer">
 						<div class="searchInput"><label class='beforeInput'>#</label><input type='text' name='hashtagBox' id='hashtagInput' placeholder='ManUtdVArsenal' required/><i class='fa fa-plus fa-lg' id='addBtn'></i></div>
 					</div>
@@ -53,8 +51,7 @@
 					<h3>
 						<input type="checkbox" class="enabler" checked id="keywordSearch">
 						Keywords
-					</h3>
-					<label>Search for a keyword:</label>
+					</h3><br>
 					<div class="searchContainer">
 						<div class="searchInput"><input type='text' name='keywordBox' id='keywordInput' placeholder='football' required/><i class='fa fa-plus fa-lg' id='addBtn'></i></div>
 					</div>

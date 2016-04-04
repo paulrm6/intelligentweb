@@ -13,7 +13,7 @@ section#search {
 	width: 100%;
 	padding: 10px 0;
 	min-width: 1000px;
-	color: #ffffff;
+	color: #f8f8ff;
 	text-align: center
 }
 section#search h1 {
@@ -26,7 +26,7 @@ select {
 	background-color: inherit;
 	border: none;
 	vertical-align: middle;
-	color: #ffffff;
+	color: #f8f8ff;
 	font-size: 100%;
 }
 select:disabled {
@@ -79,10 +79,18 @@ section#search form .button {
 }
 section#search form .button i {
 	transition: all 0.5s ease;
-	color: #FFFFFF;
+	color: #f8f8ff;
 }
 section#search form .button:hover i {
 	color: #1dcaff;
+}
+
+input[type="text"]{
+	margin-left: 1px;
+	padding-left: 1px;
+      border-radius:5px;
+      -moz-border-radius:5px;
+      -webkit-border-radius:5px;
 }
 
 
@@ -103,7 +111,7 @@ section#search form .button:hover i {
 section#results {
 	width:500px;
 	margin: 0 auto;
-	background-color: #FFFFFF;
+	background-color: #f8f8ff;
 	height:100%;
 	display: none;
 }
@@ -114,12 +122,12 @@ section#results #tabs {
 }
 section#results #tweets {
 	width:500px;
-	background-color: #FFFFFF;
+	background-color: #f8f8ff;
 	position: absolute;
 }
 section#results #analysis {
 	width:500px;
-	background-color: #FFFFFF;
+	background-color: #f8f8ff;
 	position: absolute;
 	display: none;
 }
