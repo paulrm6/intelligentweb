@@ -92,6 +92,14 @@ section#search form .button:hover i {
 	margin: 0 auto;
 	height: 100%;
 }
+#cover {
+    background: url("/images/ajax-loader.gif") no-repeat scroll center center #FFF;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: none;
+    opacity: 0.9;
+}
 section#results {
 	width:500px;
 	margin: 0 auto;
@@ -102,26 +110,6 @@ section#results #tabs {
 	width:100%;
 	text-align: center;
 	display: flex;
-}
-section#results .tab {
-	padding: 10px 0;
-	flex: 1;
-	transition: all 1s ease;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	border-bottom-color: white;
-}
-section#results .tab:first-child {
-	width: calc( 50% - 1px) ;
-	border-right: 1px solid gray;
-}
-.notSelected {
-	border-bottom-color: gray !important;
-	background-color: #eaeaea;
-}
-.notSelected:hover {
-	background-color: #f4f4f4;
-	cursor: pointer;
 }
 section#results #tweets {
 	width:500px;
@@ -134,84 +122,106 @@ section#results #analysis {
 	position: absolute;
 }
 
+/* TABS */
+section#results #tabs .tab {
+	padding: 10px 0;
+	flex: 1;
+	transition: all 1s ease;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: white;
+}
+section#results #tabs .tab:first-child {
+	width: calc( 50% - 1px) ;
+	border-right: 1px solid gray;
+}
+section#results #tabs .notSelected {
+	border-bottom-color: gray !important;
+	background-color: #eaeaea;
+}
+section#results #tabs .notSelected:hover {
+	background-color: #f4f4f4;
+	cursor: pointer;
+}
+
 /* TWEETS */
-.tweet {
+#tweets .tweet {
     width: calc( 100% - 10px);
     padding: 5px;
     border-top: solid 1px #e1e8ed;
     border-bottom: solid 1px #e1e8ed;
 }
 
-.pictures {
+#tweets .pictures {
 	width:10%;
 	text-align: right;
 	display: inline-block;
 	vertical-align: top;
 }
 
-.retweet i {
+#tweets .retweet i {
 	color: #19CF86;
 }
 
-.retweet a {
+#tweets .retweet a {
 	color: #444242;
 	text-decoration: none;
 }
 
-.text .user a {
+#tweets .text .user a {
 	text-decoration: none;
 	color: #444242;
 }
 
-a:hover .underline {
+#tweets a:hover .underline {
 	text-decoration: underline;
 }
 
-.retweet {
+#tweets .retweet {
 	margin-bottom: 4px;
 }
 
-.pictures .profile {
+#tweets .pictures .profile {
 	width:100%;
 }
 
-.italic {
+#tweets .italic {
 	font-style: italic;
 }
 
-.tweet .user {
+#tweets .tweet .user {
 	font-size: 130%;
 }
 
-.tweet .text {
+#tweets .tweet .text {
 	width: calc( 90% - 8px );
 	margin-left: 4px;
 	display: inline-block;
 }
 
-.tweet img.media {
+#tweets .tweet img.media {
 	width: 80%;
 	margin: 0 auto;
 }
 
-.error {
+#tweets .error {
 	color: red;
 	text-align: center;
 }
 
-.clear {
+#tweets .clear {
 	clear: both;
 	width: 100%;
 }
 
-.tweet .time {
+#tweets .tweet .time {
 	display: inline-block;
 	width:50%;
 	text-align: right;
 	color: #686868;
 }
 
-.tweet .link {
+#tweets .tweet .link {
 	display: inline-block;
 	width: 50%;
 	text-align: left;
@@ -219,17 +229,46 @@ a:hover .underline {
 	color: #1DA1F2;
 }
 
-.tweet .link:hover {
+#tweets .tweet .link:hover {
 	color: #323333;
 }
 
-#cover {
-    background: url("/images/ajax-loader.gif") no-repeat scroll center center #FFF;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    display: none;
-    opacity: 0.9;
+/* ANALYSIS */
+#analysis #keywords {
+
+}
+#analysis #keywords h2 {
+
+}
+#analysis #keywords .keywordBox {
+
+}
+#analysis #keywords .keywordBox .keyword {
+	
+}
+#analysis #keywords .keywordBox .quantity {
+	
+}
+#analysis #topUsers {
+
+}
+#analysis #topUsers h2 {
+
+}
+#analysis #topUsers .userBox{
+
+}
+#analysis #topUsers .userBox .userHandle{
+
+}
+#analysis #topUsers .userBox .noOfTweets{
+
+}
+#analysis #topUsers .userBox .keywords{
+
+}
+#analysis #topUsers .userBox .keywords .keyword{
+
 }
 
 /* MAP */

@@ -146,48 +146,40 @@ function addTweet(i, tweet) {
 function fillAnalysis() {
 	var topWords = returnTopWords();
 	var topUsers = returnTopUsers();
-
-	$('#analysis').append("<br>"
-		+"<div>"
+	$('#analysis').append("<div id='keywords'>"
 		+"<h2> Top 20 Keywords </h2>"
-		+"<br>"
-		+"<ul>")
-		;
+	);
 	for(var keyWord = 0; keyWord<topWords.length;keyWord++){
-		$('#analysis').append("<li>"
+		$('#analysis').append("<div class='keywordBox'>"
+			+"<div class='keyword'>"
 			+topWords[keyWord][0]
-			+" : "
+			+"</div><div class='quantity'>"
 			+topWords[keyWord][1]
-			+"</li>"
+			+"</div></div>"
 			);
 	}
-	$('#analysis').append("</ul></div>");
+	$('#analysis').append("</div>");
 
-
-
-	$('#analysis').append("<br>"
-		+"<div>"
-		+"<h2> Top 10 Users:Number of Tweets:Top Keywords</h2>"
-		+"<br>"
-		+"<ul>")
-		;
+	$('#analysis').append("<div id='topUsers'>"
+		+"<h2>Top 10 Users</h2>"
+	);
 	for(var topUser = 0; topUser<topUsers.length;topUser++){
-		$('#analysis').append("<li>"
+		$('#analysis').append("<div class='userBox'>"
+			+"<div class='userHandle'>"
 			+topUsers[topUser][0]
-			+" : "
+			+"</div><div class='noOfTweets'>"
 			+topUsers[topUser][1]
-			+"<br>");
-		
+			+"</div><div class='keywords'>");
 		for(var keyword=0;keyword<5;keyword++){
 			$('#analysis').append(
-				topUsers[topUser][2][keyword][0]
-				+" , "
-				);
+				"<div class='keyword'>"
+				+topUsers[topUser][2][keyword][0]
+				+"</div>"
+			);
 		}
-		
-		$('#analysis').append("<li>");
+		$('#analysis').append("</div>");
 	}
-	$('#analysis').append("</ul></div>");	
+	$('#analysis').append("</div>");	
 }
 
 function day(day) {
