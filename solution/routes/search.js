@@ -30,8 +30,8 @@ function databaseOnly(q, res) {
 function databaseAndTwitter(q, res) {
 	//query database
 	//query twitter for any new tweets since the most recent tweet
-	queryTwitter(q,null,function(data) {
-		if(data.length > 0) {
+	queryTwitter(q,null,function(status, data) {
+		if(status) {
 			res.send(data)
 		} else {
 			res.status(400).send("Query returned no results, try changing the search options");
@@ -44,7 +44,11 @@ function databaseAndTwitter(q, res) {
 function queryTwitter(q, since, callback) {
 	twitter.get('search/tweets', { q: q, count: 100 },
         function(err, data, response) {
-			callback(data.statuses);
+        	if(data.statuses.length>0) {
+				callback(true, data.statuses);
+        	} else {
+        		callback(false)
+        	}
 		}
 	);
 }
