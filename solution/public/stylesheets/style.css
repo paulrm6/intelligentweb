@@ -238,7 +238,7 @@ section#results #tabs .notSelected:hover {
 
 }
 #analysis #keywords h2 {
-
+	font-size: 130%;
 }
 #analysis #keywords .keywordBox {
 
@@ -253,7 +253,7 @@ section#results #tabs .notSelected:hover {
 
 }
 #analysis #topUsers h2 {
-
+	font-size: 130%;
 }
 #analysis #topUsers .userBox{
 
