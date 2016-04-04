@@ -9,11 +9,11 @@ $(document).on("click", "#addBtn", function () {
 		//It replaces the button on the new search box to a delete, rather than an add
 		$(this).closest(".searchContainer").find(".searchInput:last").find("i").replaceWith("<i class='fa fa-minus fa-lg' id='dltBtn'></i>");
 		//It adds an indicator to wether the search is and/or
-		$(this).closest(".searchContainer").find(".searchInput:last").prepend("<label name='andor'></label><br />");
+		$(this).closest(".searchContainer").find(".searchInput:last").prepend("<select name='andor' class='andor'><option value='AND'>AND</option><option value='OR'>OR</option></select><br/>");
 		//It clears any values already in the new search box
 		$(this).closest(".searchContainer").find(".searchInput:last").find("input").val("");
 		//It then calls updateAndOr
-		updateAndOr();
+		updateAndOr($(this).closest(".searchContainer").find("select:first"));
 	}
 });
 $(document).on("click", "#dltBtn", function () {
@@ -33,11 +33,11 @@ $(document).on("change", ".enabler", function() {
 	}
 })
 $(document).on("change", ".andor", function() {
-	updateAndOr();
+	updateAndOr(this);
 });
-function updateAndOr() {
-	$("label[name=andor]").each(function() {
-		var option = $(this).closest(".searchSection").find(".andor").find(":selected").text();
-		$(this).text(option);
+function updateAndOr(object) {
+	var option = $(object).find(":selected").val();
+	$(object).closest(".searchContainer").find("select[name=andor]").each(function() {
+		$(this).val(option);
 	});
 }

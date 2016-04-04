@@ -28,6 +28,10 @@ function getVariables(type) {
 		team += ')'+andor;
 	}
 	if ($('#playersSearch').is(':checked')) {
+		var andor = $("#players").find("select[name=andor]").find(":selected").val();
+		if(andor == undefined) {
+			andor = "";
+		}
 		players = "(";
 		$("input[name=playerBox]").each(function () {
 			if($(this).val() != "") {
@@ -35,30 +39,38 @@ function getVariables(type) {
 				if($(this).closest(".searchInput").find("#playerMentions").is(":checked")) {
 					players += ' OR "@'+$(this).val()+'"';
 				}
-				players += ") "+$("#playerandor").val()+" ";
+				players += ") "+andor+" ";
 			}
 		});
-		players = players.substring(0,players.length - $("#playerandor").val().length-2);
+		players = players.substring(0,players.length - andor.length-2);
 		players += ')'+andor;
 	}
 	if ($('#hashtagSearch').is(':checked')) {
+		var andor = $("#hashtag").find("select[name=andor]").find(":selected").val();
+		if(andor == undefined) {
+			andor = "";
+		}
 		hashtag = '(';
 		$("input[name=hashtagBox]").each(function () {
 			if($(this).val() != "") {
-				hashtag += "#"+$(this).val()+" "+$("#hashtagandor").val()+" ";
+				hashtag += "#"+$(this).val()+" "+andor+" ";
 			}
 		});
-		hashtag = hashtag.substring(0,hashtag.length - $("#hashtagandor").val().length-2);
+		hashtag = hashtag.substring(0,hashtag.length - andor.length-2);
 		hashtag += ')'+andor;
 	}
 	if ($('#keywordSearch').is(':checked')) {
+		var andor = $("#keyword").find("select[name=andor]").find(":selected").val();
+		if(andor == undefined) {
+			andor = "";
+		}
 		keyword = '(';
 		$("input[name=keywordBox]").each(function () {
 			if($(this).val() != "") {
-				keyword += '"'+$(this).val()+'" '+$("#keywordandor").val()+" ";
+				keyword += '"'+$(this).val()+'" '+andor+" ";
 			}
 		});
-		keyword = keyword.substring(0,keyword.length - $("#keywordandor").val().length-2);
+		keyword = keyword.substring(0,keyword.length - andor.length-2);
 		keyword += ')'+andor
 	}
 	query = team+players+hashtag+keyword;
