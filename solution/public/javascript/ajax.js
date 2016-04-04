@@ -1,8 +1,12 @@
+var firstTime = true;
 $(document).on("click", ".button", function () {
 	var valid = $('#form')[0].checkValidity();
 	if(valid) {
 		$('#cover').fadeIn(500);
 		getVariables(this.id);
+		if(firstTime) {
+			$("#results").show("slide",{direction:"up"},1000);
+		}
 	} else {
 		$('<input type="submit">').hide().appendTo($('#form')).click().remove();
 	}
