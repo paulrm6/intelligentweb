@@ -1,8 +1,279 @@
+html, body {
+	background-color: #c0deed;
+	font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+	height: 100%;
+}
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	overflow-y: scroll; 
 }
 
-a {
-  color: #00B7FF;
+/* SEARCH */
+section#search {
+	background-color: #0084b4;
+	width: 100%;
+	padding: 10px 0;
+	min-width: 1000px;
+	color: #ffffff;
+	text-align: center
+}
+section#search h1 {
+	font-size: 200%;
+}
+select option {
+	color: #000000;
+}
+select {
+	background-color: inherit;
+	border: none;
+	vertical-align: middle;
+	color: #ffffff;
+	font-size: 100%;
+}
+select:disabled {
+	color: #6B8F9C;
+}
+section#search h1 select#andOrToggle{
+	font-size: 70%;
+}
+section#search form #inputs {
+	display: flex;
+	padding:10px 0;
+}
+section#search form .searchSection {
+	border-right: 1px solid #c0deed;
+	flex: 1;
+	margin-right: 5px;
+}
+section#search form .searchSection:last-child {
+	margin-right:0;
+	border-right: 0;
+}
+section#search form .searchSection h3 {
+	font-size: 120%;
+	padding-bottom: 5px;
+}
+section#search form .searchSection .searchInput {
+	padding-top: 0;
+	padding-bottom: 3px;
+}
+section#search .fa {
+	margin-left: 3px;
+}
+section#search #addBtn:hover {
+	color: #00aced;
+}
+section#search #dltBtn:hover {
+	color: #000000;
+}
+section#search form #submitButtons:hover .button:not(:hover) {
+	color: #6B8F9C;
+}
+section#search form #submitButtons:hover .button:not(:hover) i {
+	color: #6B8F9C;
+}
+section#search form .button {
+	cursor: pointer;
+	padding: 0 5px;
+	font-size: 120%;
+	transition: all 0.5s ease;
+}
+section#search form .button i {
+	transition: all 0.5s ease;
+	color: #FFFFFF;
+}
+section#search form .button:hover i {
+	color: #1dcaff;
+}
+
+
+/* RESULTS */
+#wrapper {
+	width:1000px;
+	margin: 0 auto;
+	height: 100%;
+}
+#cover {
+    background: url("/images/ajax-loader.gif") no-repeat scroll center center #FFF;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: none;
+    opacity: 0.9;
+}
+section#results {
+	width:500px;
+	margin: 0 auto;
+	background-color: #FFFFFF;
+	height:100%;
+}
+section#results #tabs {
+	width:100%;
+	text-align: center;
+	display: flex;
+}
+section#results #tweets {
+	width:500px;
+	background-color: #FFFFFF;
+	position: absolute;
+}
+section#results #analysis {
+	width:500px;
+	background-color: #FFFFFF;
+	position: absolute;
+}
+
+/* TABS */
+section#results #tabs .tab {
+	padding: 10px 0;
+	flex: 1;
+	transition: all 1s ease;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: white;
+}
+section#results #tabs .tab:first-child {
+	width: calc( 50% - 1px) ;
+	border-right: 1px solid gray;
+}
+section#results #tabs .notSelected {
+	border-bottom-color: gray !important;
+	background-color: #eaeaea;
+}
+section#results #tabs .notSelected:hover {
+	background-color: #f4f4f4;
+	cursor: pointer;
+}
+
+/* TWEETS */
+#tweets .tweet {
+    width: calc( 100% - 10px);
+    padding: 5px;
+    border-top: solid 1px #e1e8ed;
+    border-bottom: solid 1px #e1e8ed;
+}
+
+#tweets .pictures {
+	width:10%;
+	text-align: right;
+	display: inline-block;
+	vertical-align: top;
+}
+
+#tweets .retweet i {
+	color: #19CF86;
+}
+
+#tweets .retweet a {
+	color: #444242;
+	text-decoration: none;
+}
+
+#tweets .text .user a {
+	text-decoration: none;
+	color: #444242;
+}
+
+#tweets a:hover .underline {
+	text-decoration: underline;
+}
+
+#tweets .retweet {
+	margin-bottom: 4px;
+}
+
+#tweets .pictures .profile {
+	width:100%;
+}
+
+#tweets .italic {
+	font-style: italic;
+}
+
+#tweets .tweet .user {
+	font-size: 130%;
+}
+
+#tweets .tweet .text {
+	width: calc( 90% - 8px );
+	margin-left: 4px;
+	display: inline-block;
+}
+
+#tweets .tweet img.media {
+	width: 80%;
+	margin: 0 auto;
+}
+
+#tweets .error {
+	color: red;
+	text-align: center;
+}
+
+#tweets .clear {
+	clear: both;
+	width: 100%;
+}
+
+#tweets .tweet .time {
+	display: inline-block;
+	width:50%;
+	text-align: right;
+	color: #686868;
+}
+
+#tweets .tweet .link {
+	display: inline-block;
+	width: 50%;
+	text-align: left;
+	text-decoration: none;
+	color: #1DA1F2;
+}
+
+#tweets .tweet .link:hover {
+	color: #323333;
+}
+
+/* ANALYSIS */
+#analysis #keywords {
+
+}
+#analysis #keywords h2 {
+	font-size: 130%;
+}
+#analysis #keywords .keywordBox {
+
+}
+#analysis #keywords .keywordBox .keyword {
+	
+}
+#analysis #keywords .keywordBox .quantity {
+	
+}
+#analysis #topUsers {
+
+}
+#analysis #topUsers h2 {
+	font-size: 130%;
+}
+#analysis #topUsers .userBox{
+
+}
+#analysis #topUsers .userBox .userHandle{
+
+}
+#analysis #topUsers .userBox .noOfTweets{
+
+}
+#analysis #topUsers .userBox .keywords{
+
+}
+#analysis #topUsers .userBox .keywords .keyword{
+
+}
+
+/* MAP */
+
+#map {
+	width: 500px;
+	height: 400px;
 }
