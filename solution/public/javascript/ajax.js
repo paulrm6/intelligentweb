@@ -63,10 +63,10 @@ function getVariables(type) {
 }
 
 function callSearch(type, query) {
-	$.get('/search',{ q: query, type: type }, fillTweets);
+	$.get('/search',{ q: query, type: type }, populateData);
 }
 
-function fillTweets(data) {
+function populateData(data) {
 	$('#tweets').empty();
 	$('#analysis').empty();
 	analysisReset();
