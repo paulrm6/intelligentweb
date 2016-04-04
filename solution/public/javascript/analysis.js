@@ -24,16 +24,40 @@ function countWords(text){
 
 	console.log(text);
 	var	wordCount = {};
+	//insert into this list the hashtag query and stuff like RT
+	var stopList = ["RT","v","the","to","and"];
+
+	//WIll make regex for single letters on their own [a-zA-z]
+
+
 	var tokens = text.match(/\S+/g);
-	
 
 	for(var x = 0;x<tokens.length;x++){
-		if (wordCount[tokens[x]]){
-			wordCount[tokens[x]] += 1;
+
+		var word = tokens[x];
+
+		//If the word is not present in the stopList and is greater than a single character
+		if (stopList.indexOf(word) == -1 && word.length>1) {
+
+			//if a word ends in punctuation return substring of word.length-1, turn into recursive if more
+			//	test cases are discovered
+			if (word.charAt(word.length-1).match(/[^\w\s]/)){
+				word = word.substring(0,word.length-1);
+			}
+
+			//change words that start like .@Alex i h8 u
+			if (word.charAt(0) == "."){
+				word = word.substring(1,word.length);
+			}
+
+			//If word has been counted before increment ELSE create new entry
+			if (wordCount[word]){
+				wordCount[word] += 1;
+			}
+	    	else {
+	    		wordCount[word] = 1;
+			} 
 		}
-    	else {
-    	wordCount[tokens[x]] = 1;
-		} 
 	}
 
 	return wordCount
@@ -125,10 +149,13 @@ function returnTopUsers(){
 		topUsers[i][2] = sortWordCount(topUsers[i][2]);
 	}
 
+	console.log(topUsers);
 	return topUsers;
-
 }
 
+//Returns the sorted word dictionary
 function returnTopWords(){
+	var tWords = sortWordCount(totalCount);
+	console.log(tWords);
 	return sortWordCount(totalCount);
 }
