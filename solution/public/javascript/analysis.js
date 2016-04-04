@@ -13,10 +13,10 @@ var users = {};
 //Unused but will probably not want to return 20 keywords for each user
 var numKeyWords = 20;
 
+//Function to reset the variables if a new search is made
 function analysisReset() {
 	totalCount = {};
 	users = {};
-	numKeyWords = 20;
 }
 
 //Returns an object for a given a tweet containing each unique word and it's number of occurences within the text
