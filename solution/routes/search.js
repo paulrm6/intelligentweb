@@ -13,7 +13,6 @@ router.get('/', function(req, res, next){
 	}
 });
 
-
 function databaseOnly(q, res) {
 	//check if query has been searched before
 	//if so return tweets for that query
