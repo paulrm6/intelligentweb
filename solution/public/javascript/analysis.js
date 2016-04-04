@@ -20,21 +20,20 @@ function analysisReset() {
 }
 
 //Returns an object for a given a tweet containing each unique word and it's number of occurences within the text
-function countWords(text){
+function countWords(text,queryTerms){
 
 	console.log(text);
 	var	wordCount = {};
 	//insert into this list the hashtag query and stuff like RT
-	var stopList = ["RT","v","the","to","and"];
-
+	var stopList = ["rt","v","the","to","and","for","of","have","your","at"];
 	//WIll make regex for single letters on their own [a-zA-z]
 
 
-	var tokens = text.match(/\S+/g);
+	var tokens = text.toLowerCase().match(/\S+/g);
 
 	for(var x = 0;x<tokens.length;x++){
 
-		var word = tokens[x];
+		var word = tokens[x].toLowerCase();
 
 		//If the word is not present in the stopList and is greater than a single character
 		if (stopList.indexOf(word) == -1 && word.length>1) {
@@ -91,7 +90,13 @@ function addWordCountToTotalCount(wordCount,totalCount){
 //Sorts a given list of words and values, returning the 20 most common words
 function sortWordCount(wordList){
 
-	var sortedCount = []
+	var sortedCount = [];
+	if (wordList.length < 20){
+		var size = wordList.length;
+	}
+	else {
+		var size = 20;
+	}
 
 	for (word in wordList){
 		sortedCount.push([word,wordList[word]]);
@@ -99,7 +104,7 @@ function sortWordCount(wordList){
 	return sortedCount.sort(function(a,b) {
 								return b[1] - a[1];
 							})
-								.slice(0,20); //CHECK FOR SIZE HERE
+								.slice(0,size); //CHECK FOR SIZE HERE
 }
 
 
