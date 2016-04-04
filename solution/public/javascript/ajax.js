@@ -161,17 +161,19 @@ function fillAnalysis() {
 	topUsersHTML += "<div id='topUsers'><h2>Top 10 Users</h2>";
 	for(var topUser = 0; topUser<topUsers.length;topUser++){
 		topUsersHTML += "<div class='userBox'>"
-			+"<div class='userHandle'>"
+			+"<div class='userHandle'>@"
 			+topUsers[topUser][0]
-			+"</div><div class='noOfTweets'>"
+			+"</div><div class='noOfTweets'>tweeted <span>"
 			+topUsers[topUser][1]
-			+"</div><div class='keywords'>";
+			+"<span> times</div>Most frequent words:<div class='keywords'>";
 		for(var keyword=0;keyword<5;keyword++){
 			topUsersHTML += "<div class='keyword'>"
 				+topUsers[topUser][2][keyword][0]
-				+"</div>";
+				+" ("
+				+topUsers[topUser][2][keyword][1]
+				+")</div>";
 		}
-		topUsersHTML += "</div>";
+		topUsersHTML += "</div></div>";
 	}
 	$('#analysis').append(topUsersHTML+"</div>");	
 }

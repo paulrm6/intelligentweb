@@ -221,7 +221,7 @@ section#results #tabs .notSelected:hover {
 #analysis #keywords {
 
 }
-#analysis #keywords h2 {
+#analysis h2 {
 	font-size: 130%;
 	padding:5px;
 }
@@ -247,23 +247,28 @@ section#results #tabs .notSelected:hover {
 #analysis #topUsers {
 
 }
-#analysis #topUsers h2 {
-	font-size: 130%;
-}
 #analysis #topUsers .userBox{
-
+	padding-left: 10px;
+	padding-bottom: 5px;
 }
 #analysis #topUsers .userBox .userHandle{
-
+	display: inline-block;
+	font-weight: bold;
+	font-size: 115%;
+	color:  #0084b4;
 }
 #analysis #topUsers .userBox .noOfTweets{
-
+	display: inline-block;
+	font-style: italic;
+	padding-left: 3px;	
+}
+#analysis #topUsers .userBox .noOfTweets span{
+	color:  #0084b4;
+	font-weight: bold;
 }
 #analysis #topUsers .userBox .keywords{
-
 }
 #analysis #topUsers .userBox .keywords .keyword{
-
 }
 
 /* MAP */
