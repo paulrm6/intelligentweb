@@ -1,12 +1,4 @@
 /**
- * Shows and hides the tabs for inital load
- */
-function show() {
-	$("#tweets").show();
-	$("#analysis").hide();	
-}
-
-/**
  * Adds a listener to the Analysis tab button 
  */
 $(document).on("click", "#analysisTabSelector", function () {

@@ -1,8 +1,12 @@
+var firstTime = true;
 $(document).on("click", ".button", function () {
 	var valid = $('#form')[0].checkValidity();
 	if(valid) {
 		$('#cover').fadeIn(500);
 		getVariables(this.id);
+		if(firstTime) {
+			$("#results").show("slide",{direction:"up"},1000);
+		}
 	} else {
 		$('<input type="submit">').hide().appendTo($('#form')).click().remove();
 	}
@@ -24,6 +28,10 @@ function getVariables(type) {
 		team += ')'+andor;
 	}
 	if ($('#playersSearch').is(':checked')) {
+		var andor = $("#players").find("select[name=andor]").find(":selected").val();
+		if(andor == undefined) {
+			andor = "";
+		}
 		players = "(";
 		$("input[name=playerBox]").each(function () {
 			if($(this).val() != "") {
@@ -31,30 +39,38 @@ function getVariables(type) {
 				if($(this).closest(".searchInput").find("#playerMentions").is(":checked")) {
 					players += ' OR "@'+$(this).val()+'"';
 				}
-				players += ") "+$("#playerandor").val()+" ";
+				players += ") "+andor+" ";
 			}
 		});
-		players = players.substring(0,players.length - $("#playerandor").val().length-2);
+		players = players.substring(0,players.length - andor.length-2);
 		players += ')'+andor;
 	}
 	if ($('#hashtagSearch').is(':checked')) {
+		var andor = $("#hashtag").find("select[name=andor]").find(":selected").val();
+		if(andor == undefined) {
+			andor = "";
+		}
 		hashtag = '(';
 		$("input[name=hashtagBox]").each(function () {
 			if($(this).val() != "") {
-				hashtag += "#"+$(this).val()+" "+$("#hashtagandor").val()+" ";
+				hashtag += "#"+$(this).val()+" "+andor+" ";
 			}
 		});
-		hashtag = hashtag.substring(0,hashtag.length - $("#hashtagandor").val().length-2);
+		hashtag = hashtag.substring(0,hashtag.length - andor.length-2);
 		hashtag += ')'+andor;
 	}
 	if ($('#keywordSearch').is(':checked')) {
+		var andor = $("#keyword").find("select[name=andor]").find(":selected").val();
+		if(andor == undefined) {
+			andor = "";
+		}
 		keyword = '(';
 		$("input[name=keywordBox]").each(function () {
 			if($(this).val() != "") {
-				keyword += '"'+$(this).val()+'" '+$("#keywordandor").val()+" ";
+				keyword += '"'+$(this).val()+'" '+andor+" ";
 			}
 		});
-		keyword = keyword.substring(0,keyword.length - $("#keywordandor").val().length-2);
+		keyword = keyword.substring(0,keyword.length - andor.length-2);
 		keyword += ')'+andor
 	}
 	query = team+players+hashtag+keyword;
@@ -63,24 +79,29 @@ function getVariables(type) {
 }
 
 function callSearch(type, query) {
-	$.get('/search',{ q: query, type: type }, populateData);
+	$.get('/search',{ q: query, type: type })
+		.done(populateData)
+		.fail(error);
+}
+
+function error(error) {
+	$('#tweets').empty();
+	$('#analysis').empty();
+	$('#tweets').append("<div class='error'>"+error.responseText+"</div>");
+	$('#analysis').append("<div class='error'>"+error.responseText+"</div>");
+	$('#cover').fadeOut(500);
 }
 
 function populateData(data) {
 	$('#tweets').empty();
 	$('#analysis').empty();
 	analysisReset();
-	if(data.length > 0) {
-		$.each(data, function(i, tweet) {
-			addToAnalysis(tweet);
-			addTweet(i,tweet);
-		});	
-		fillAnalysis();
-	} else {
-		$('#tweets').append("<div class='tweet error'>No tweets found! Try changing the search criteria!</div>");
-		$('#analysis').append("<div class='error'>No tweets found to analyse! Try changing the search criteria!</div>");
-		$('#cover').fadeOut(500);
-	}
+	$.each(data, function(i, tweet) {
+		addToAnalysis(tweet);
+		addTweet(i,tweet);
+	});	
+	fillAnalysis();
+	$('#cover').fadeOut(500);
 }
 
 function addToAnalysis(tweet) {
@@ -94,9 +115,10 @@ function addToAnalysis(tweet) {
 }
 
 function addTweet(i, tweet) {
-	$('#tweets').append("<div id='"+i+"' class='tweet'>"
-		+ (tweet.retweeted_status != undefined ? 
-			"<div class='retweet'><div class='pictures'>"
+	var HTML = "";
+	HTML+="<div id='"+i+"' class='tweet'>";
+	if(tweet.retweeted_status != undefined) {
+		HTML+="<div class='retweet'><div class='pictures'>"
 			+"<a target='_blank' href='https://twitter.com/"
 			+tweet.user.screen_name
 			+"'>"
@@ -104,13 +126,10 @@ function addTweet(i, tweet) {
 			+"<span class='underline'>"+tweet.user.name+"</span>"
 			+" @"
 			+tweet.user.screen_name
-			+"</div></a></div>" : ""
-		)
-	);
-	if(tweet.retweeted_status != undefined) {
+			+"</div></a></div>";
 		tweet = tweet.retweeted_status;
 	}
-	$('#'+i).append("<div class='pictures'><img class='profile' src='"
+	HTML+="<div class='pictures'><img class='profile' src='"
 		+tweet.user.profile_image_url
 		+"'/></div><div class='text'><div class='user'>"
 		+"<a target='_blank' href='https://twitter.com/"
@@ -122,18 +141,18 @@ function addTweet(i, tweet) {
 		+"</span></a></div>"
 		+"<div class='tweetContent'>"
 		+tweet.text
-		+"</div>");
+		+"</div>";
 	if(tweet.entities.media != undefined) {
 		$.each(tweet.entities.media, function(j, media) {
 			if(media.type == "photo") {
-				$('#'+i).append("<img class='media' src='"
+				HTML+="<img class='media' src='"
 					+media.media_url_https
-					+"'/><div class='clear'></div>");
+					+"'/>";
 			}
 		});
 	}
 	var date = (tweet.created_at).split(' ');
-	$('#'+i).append("<a target='_blank' class='link' href='https://twitter.com/"
+	HTML+="</div><a target='_blank' class='link' href='https://twitter.com/"
 		+tweet.user.screen_name
 		+"/status/"
 		+tweet.id_str
@@ -141,55 +160,44 @@ function addTweet(i, tweet) {
 		+"<div class='time'>Published on "
 		+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]
 		+"</div>"
-		+"</div></div>");
-		$('#cover').fadeOut(500);
+		+"</div></div>";
+	$("#tweets").append(HTML);
 }
 
 function fillAnalysis() {
 	var topWords = returnTopWords();
 	var topUsers = returnTopUsers();
-
-	$('#analysis').append("<br>"
-		+"<div>"
-		+"<h2> Top 20 Keywords </h2>"
-		+"<br>"
-		+"<ul>")
-		;
+	var keywordsHTML = "";
+	var topUsersHTML = "";
+	keywordsHTML += "<div id='keywords'><h2>Top 20 Keywords</h2>";
 	for(var keyWord = 0; keyWord<topWords.length;keyWord++){
-		$('#analysis').append("<li>"
+		keywordsHTML+="<div class='keywordBox'>"
+			+"<div class='keyword'>"
 			+topWords[keyWord][0]
-			+" : "
+			+"</div><div class='quantity'>mentioned <span>"
 			+topWords[keyWord][1]
-			+"</li>"
-			);
+			+"</span> times</div></div>";
 	}
-	$('#analysis').append("</ul></div>");
+	$("#analysis").append(keywordsHTML+"</div>");
 
-
-
-	$('#analysis').append("<br>"
-		+"<div>"
-		+"<h2> Top 10 Users:Number of Tweets:Top Keywords</h2>"
-		+"<br>"
-		+"<ul>")
-		;
+	topUsersHTML += "<div id='topUsers'><h2>Top 10 Users</h2>";
 	for(var topUser = 0; topUser<topUsers.length;topUser++){
-		$('#analysis').append("<li>"
+		topUsersHTML += "<div class='userBox'>"
+			+"<div class='userHandle'>@"
 			+topUsers[topUser][0]
-			+" : "
+			+"</div><div class='noOfTweets'>tweeted <span>"
 			+topUsers[topUser][1]
-			+"<br>");
-		
+			+"<span> times</div><div>Most frequent words:</div><div class='keywords'>";
 		for(var keyword=0;keyword<5;keyword++){
-			$('#analysis').append(
-				topUsers[topUser][2][keyword][0]
-				+" , "
-				);
+			topUsersHTML += "<div class='keyword'>"
+				+topUsers[topUser][2][keyword][0]
+				+" ("
+				+topUsers[topUser][2][keyword][1]
+				+")</div>";
 		}
-		
-		$('#analysis').append("<li>");
+		topUsersHTML += "</div></div>";
 	}
-	$('#analysis').append("</ul></div>");	
+	$('#analysis').append(topUsersHTML+"</div>");	
 }
 
 function day(day) {
