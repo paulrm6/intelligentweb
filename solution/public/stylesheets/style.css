@@ -84,13 +84,15 @@ section#search form .button i {
 section#search form .button:hover i {
 	color: #1dcaff;
 }
-
 input[type="text"]{
 	margin-left: 1px;
 	padding-left: 1px;
       border-radius:5px;
       -moz-border-radius:5px;
       -webkit-border-radius:5px;
+}
+section#search form #team #otherInput {
+	display: none;
 }
 
 

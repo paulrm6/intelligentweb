@@ -8,7 +8,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 	<script src="/javascript/ajax.js"></script>
-	<script src="/javascript/addbox.js"></script>
+	<script src="/javascript/searchOptions.js"></script>
 	<script src="/javascript/tabs.js"></script>
 	<script src="/javascript/analysis.js"></script>
 </head>
@@ -25,7 +25,16 @@
 			<div id="inputs">
 				<div id="team" class="searchSection">
 					<h3><input type="checkbox" checked id="teamSearch" class="enabler">Team</h3>
-					@<input type="text" required id="teamInput" placeholder="manutd" /><br />
+					<div>
+					<select id="teamSelect">
+						<option disabled selected>Select Team</option>
+						<option value="manutd">Manchester United</option>
+						<option value="other">Other...</option>
+					</select>
+					</div>
+					<div id="otherInput">
+						@<input type="text" required id="teamInput" placeholder="manutd" />
+					</div>
 					<input type="checkbox" checked id="mentions">Include Mentions</input>
 				</div>
 				<div id="players" class="searchSection">
