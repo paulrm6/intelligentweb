@@ -20,7 +20,10 @@ function getVariables(type) {
 	var query = "";
 	var andor = " "+$("#andOrToggle").val()+" ";;
 	if ($('#teamSearch').is(':checked')) {
-		var teamname = $("#teamInput").val();
+		var teamname = $("#teamSelect").find(":selected").val();
+		if(teamname=="other") {
+			teamname = $("#teamInput").val();
+		}
 		team = '(from:@'+teamname;
 		if ($('#mentions').is(':checked')) {
 			team += ' OR "@'+teamname+'"';

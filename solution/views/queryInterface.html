@@ -26,14 +26,14 @@
 				<div id="team" class="searchSection">
 					<h3><input type="checkbox" checked id="teamSearch" class="enabler">Team</h3>
 					<div>
-					<select id="teamSelect">
-						<option disabled selected>Select Team</option>
+					<select id="teamSelect" required="required">
+						<option disabled selected value>Select Team</option>
 						<option value="manutd">Manchester United</option>
 						<option value="other">Other...</option>
 					</select>
 					</div>
 					<div id="otherInput">
-						@<input type="text" required id="teamInput" placeholder="manutd" />
+						@<input type="text" id="teamInput" placeholder="manutd" />
 					</div>
 					<input type="checkbox" checked id="mentions">Include Mentions</input>
 				</div>
