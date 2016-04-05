@@ -44,7 +44,7 @@ function databaseAndTwitter(q, res) {
 function queryTwitter(q, since, callback) {
 	twitter.get('search/tweets', { q: q, count: 100 },
         function(err, data, response) {
-        	if(data.statuses.length>0) {
+        	if(err==undefined && data.statuses.length>0) {
 				callback(true, data.statuses);
         	} else {
         		callback(false)
