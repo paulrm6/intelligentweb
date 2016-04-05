@@ -53,9 +53,9 @@ $(document).ready(function() {
 	.done(function(data){
 		$.each(data, function(i, team) {
 			$('#teamSelect').append("<option value='"
-				+team.twitter_handle
+				+team.handle
 				+"'>"
-				+team.teamname
+				+team.name
 				+"</option>");
 		});
 		$('#teamSelect').append("<option value='other'>Other...</option>");
