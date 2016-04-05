@@ -167,8 +167,11 @@ function addTweet(i, tweet) {
 function fillAnalysis() {
 	var topWords = returnTopWords();
 	var topUsers = returnTopUsers();
+	var topHashtags = returnTopHashtags();
 	var keywordsHTML = "";
 	var topUsersHTML = "";
+	var topHashtagsHTML = "";
+
 	keywordsHTML += "<div id='keywords'><h2>Top 20 Keywords</h2>";
 	for(var keyWord = 0; keyWord<topWords.length;keyWord++){
 		keywordsHTML+="<div class='keywordBox'>"
@@ -197,7 +200,21 @@ function fillAnalysis() {
 		}
 		topUsersHTML += "</div></div>";
 	}
+
 	$('#analysis').append(topUsersHTML+"</div>");	
+
+	//HTML for trending hashtags, not sure how we want to display it
+	topHashtagsHTML = "<div id='topHashtags'><h2>Trending Hashtags</h2>";
+	for (var topHashtag = 0; topHashtag<topHashtags.length; topHashtag++){
+
+		topHashtagsHTML += "<p>" 
+		+topHashtags[topHashtag];
+		+ "</p>";
+
+	}
+
+	$('#analysis').append(topHashtagsHTML+"</div>");	
+	
 }
 
 function day(day) {

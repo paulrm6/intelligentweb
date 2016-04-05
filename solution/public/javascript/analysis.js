@@ -11,7 +11,10 @@ var totalCount = {};
 //The list of users and their tweets
 var users = {};
 //Unused but will probably not want to return 20 keywords for each user
-var numKeyWords = 20;
+var numKeyWordsPerUser = 5;
+var numHashtags = 5
+var totalHashtags = {}
+
 
 //Function to reset the variables if a new search is made
 function analysisReset() {
@@ -25,9 +28,8 @@ function countWords(text,queryTerms){
 	console.log(text);
 	var	wordCount = {};
 	//insert into this list the hashtag query and stuff like RT
-	var stopList = ["rt","v","the","to","and","for","of","have","your","at"];
+	var stopList = ["rt","the","to","and","for","of","have","your","at","in","on"];
 	//WIll make regex for single letters on their own [a-zA-z]
-
 
 	var tokens = text.toLowerCase().match(/\S+/g);
 
@@ -37,6 +39,15 @@ function countWords(text,queryTerms){
 
 		//If the word is not present in the stopList and is greater than a single character
 		if (stopList.indexOf(word) == -1 && word.length>1) {
+
+			if (/#+\w+/.test(word)){
+				if(totalHashtags[word]){
+					totalHashtags[word] += 1;
+				}
+				else{
+					totalHashtags[word] = 1;
+				}
+			}
 
 			//if a word ends in punctuation return substring of word.length-1, turn into recursive if more
 			//	test cases are discovered
@@ -58,7 +69,6 @@ function countWords(text,queryTerms){
 			} 
 		}
 	}
-
 	return wordCount
 }
 
@@ -88,14 +98,14 @@ function addWordCountToTotalCount(wordCount,totalCount){
 
 
 //Sorts a given list of words and values, returning the 20 most common words
-function sortWordCount(wordList){
+function sortWordCount(wordList,maxSize){
 
 	var sortedCount = [];
-	if (wordList.length < 20){
+	if (wordList.length < maxSize){
 		var size = wordList.length;
 	}
 	else {
-		var size = 20;
+		var size = maxSize;
 	}
 
 	for (word in wordList){
@@ -151,16 +161,32 @@ function returnTopUsers(){
 
 
 	for (var i = 0; i<topUsers.length; i++){
-		topUsers[i][2] = sortWordCount(topUsers[i][2]);
+		topUsers[i][2] = sortWordCount(topUsers[i][2],numKeyWordsPerUser);
 	}
 
+
+	//IF A USER TWEETS ONLY ONCE DONT INCLUDE THEM
+	for (var user = topUsers.length-1; user>-1;user--){
+		if (topUsers[user][1] == 1){
+			topUsers.pop();
+		}
+	}
 	console.log(topUsers);
 	return topUsers;
 }
 
+
 //Returns the sorted word dictionary
 function returnTopWords(){
-	var tWords = sortWordCount(totalCount);
-	console.log(tWords);
-	return sortWordCount(totalCount);
+	var totWords = sortWordCount(totalCount,20);
+	console.log(totWords);
+	return totWords;
 }
+
+function returnTopHashtags(){
+
+	var hashtags = sortWordCount(totalHashtags,numHashtags);
+	console.log(hashtags)
+	return hashtags;
+}
+
