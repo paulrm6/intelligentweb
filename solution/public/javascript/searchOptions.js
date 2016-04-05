@@ -51,7 +51,7 @@ $(document).on("change", "#teamSelect", function() {
 $(document).ready(function() {
 	$.get('/teaminfo',{ type: "team" })
 	.done(function(data){
-		$.each(JSON.parse(data), function(i, team) {
+		$.each(data, function(i, team) {
 			$('#teamSelect').append("<option value='"
 				+team.twitter_handle
 				+"'>"
