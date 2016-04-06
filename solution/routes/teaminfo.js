@@ -18,8 +18,11 @@ router.get('/', function(req, res, next){
  */
 function getTeams(res) {
 	database.query('SELECT * FROM teams;', function(err, results, fields) {
-		if(err) throw err;
-		res.send(results);
+		if(err) {
+			res.status(400).send("Database is unreachable");
+		} else {
+			res.send(results);
+		}
 	});
 }
 

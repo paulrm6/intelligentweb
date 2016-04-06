@@ -62,6 +62,6 @@ $(document).ready(function() {
 	})
 	.fail(function(err) {
 		$('#teamSelect').append("<option value='other'>Other...</option>");
-		throw err;
+		alert(err.responseText);
 	});
 });
