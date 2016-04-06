@@ -32,13 +32,15 @@ function getVariables(type) {
 	}
 	if ($('#playersSearch').is(':checked')) {
 		var andor = $("#players").find("select[name=andor]").find(":selected").val();
+		var orderedList = getListAndOrder("playerBox");
+		console.log(orderedList);
 		if(andor == undefined) {
 			andor = "";
 		}
 		players = "(";
 		$("input[name=playerBox]").each(function () {
 			if($(this).val() != "") {
-				players += "(from:@"+$(this).val();
+				players += '(from:"@'+$(this).val()+'"';
 				if($(this).closest(".searchInput").find("#playerMentions").is(":checked")) {
 					players += ' OR "@'+$(this).val()+'"';
 				}
@@ -79,6 +81,14 @@ function getVariables(type) {
 	query = team+players+hashtag+keyword;
 	query = query.substring(0,query.length - andor.length);
 	callSearch(type, query);
+}
+
+function getListAndOrder(name) {
+	var unordered = [];
+	$("input[name="+name+"]").each(function() {
+		unordered.push($(this).val());
+	});
+	return unordered.sort();
 }
 
 function callSearch(type, query) {
@@ -192,11 +202,13 @@ function fillAnalysis() {
 			+topUsers[topUser][1]
 			+"<span> times</div><div>Most frequent words:</div><div class='keywords'>";
 		for(var keyword=0;keyword<5;keyword++){
-			topUsersHTML += "<div class='keyword'>"
-				+topUsers[topUser][2][keyword][0]
-				+" ("
-				+topUsers[topUser][2][keyword][1]
-				+")</div>";
+			if(topUsers[topUser][2][keyword] != undefined) {
+				topUsersHTML += "<div class='keyword'>"
+					+topUsers[topUser][2][keyword][0]
+					+" ("
+					+topUsers[topUser][2][keyword][1]
+					+")</div>";
+			}
 		}
 		topUsersHTML += "</div></div>";
 	}
