@@ -52,16 +52,14 @@ $(document).ready(function() {
 	$.get('/teaminfo',{ type: "team" })
 	.done(function(data){
 		$.each(data, function(i, team) {
-			$('#teamSelect').append("<option value='"
+			$('#teamSelect').find('option[name=other]').before("<option value='"
 				+team.handle
 				+"'>"
 				+team.name
 				+"</option>");
 		});
-		$('#teamSelect').append("<option value='other'>Other...</option>");
 	})
 	.fail(function(err) {
-		$('#teamSelect').append("<option value='other'>Other...</option>");
 		alert(err.responseText);
 	});
 });
