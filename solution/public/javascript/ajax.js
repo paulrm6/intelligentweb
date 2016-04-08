@@ -43,14 +43,14 @@ function getVariables(type) {
 			andorPlayers = "";
 		}
 		players = "(";
-		$("input[name=playerBox]").each(function () {
-			if($(this).val() != "") {
-				players += '(from:"@'+$(this).val()+'"';
-				if($(this).closest(".searchInput").find("#playerMentions").is(":checked")) {
-					players += ' OR "@'+$(this).val()+'"';
-				}
-				players += ") "+andorPlayers+" ";
-			}
+		$.each(orderedList, function(i,value) {
+			players += '(from:"@'+value+'"';
+			if($("#players").find("input").filter(function() {
+				return this.value == value;
+			}).closest(".searchInput").find("#playerMentions").is(":checked")) {
+				players += ' OR "@'+value+'"';
+			};
+			players += ") "+andorPlayers+" ";
 		});
 		players = players.substring(0,players.length - andorPlayers.length-2);
 		players += ')'+andor;
