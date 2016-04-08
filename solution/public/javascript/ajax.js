@@ -1,3 +1,9 @@
+function emoji() {
+	twemoji.size = '16x16';
+	twemoji.parse(document.body);
+}
+
+
 var firstTime = true;
 $(document).on("click", ".button", function () {
 	var valid = $('#form')[0].checkValidity();
@@ -31,11 +37,10 @@ function getVariables(type) {
 		team += ')'+andor;
 	}
 	if ($('#playersSearch').is(':checked')) {
-		var andor = $("#players").find("select[name=andor]").find(":selected").val();
+		var andorPlayers = $("#players").find("select[name=andor]").find(":selected").val();
 		var orderedList = getListAndOrder("playerBox");
-		console.log(orderedList);
-		if(andor == undefined) {
-			andor = "";
+		if(andorPlayers == undefined) {
+			andorPlayers = "";
 		}
 		players = "(";
 		$("input[name=playerBox]").each(function () {
@@ -44,38 +49,36 @@ function getVariables(type) {
 				if($(this).closest(".searchInput").find("#playerMentions").is(":checked")) {
 					players += ' OR "@'+$(this).val()+'"';
 				}
-				players += ") "+andor+" ";
+				players += ") "+andorPlayers+" ";
 			}
 		});
-		players = players.substring(0,players.length - andor.length-2);
+		players = players.substring(0,players.length - andorPlayers.length-2);
 		players += ')'+andor;
 	}
 	if ($('#hashtagSearch').is(':checked')) {
-		var andor = $("#hashtag").find("select[name=andor]").find(":selected").val();
-		if(andor == undefined) {
-			andor = "";
+		var andorHashtag = $("#hashtag").find("select[name=andor]").find(":selected").val();
+		var orderedList = getListAndOrder("hashtagBox");
+		if(andorHashtag == undefined) {
+			andorHashtag = "";
 		}
 		hashtag = '(';
-		$("input[name=hashtagBox]").each(function () {
-			if($(this).val() != "") {
-				hashtag += "#"+$(this).val()+" "+andor+" ";
-			}
+		$.each(orderedList, function(i,value) {
+			hashtag += "#"+value+" "+andorHashtag+" ";
 		});
-		hashtag = hashtag.substring(0,hashtag.length - andor.length-2);
+		hashtag = hashtag.substring(0,hashtag.length - andorHashtag.length-2);
 		hashtag += ')'+andor;
 	}
 	if ($('#keywordSearch').is(':checked')) {
-		var andor = $("#keyword").find("select[name=andor]").find(":selected").val();
-		if(andor == undefined) {
-			andor = "";
+		var andorKeyword = $("#keyword").find("select[name=andor]").find(":selected").val();
+		var orderedList = getListAndOrder("keywordBox");
+		if(andorKeyword == undefined) {
+			andorKeyword = "";
 		}
 		keyword = '(';
-		$("input[name=keywordBox]").each(function () {
-			if($(this).val() != "") {
-				keyword += '"'+$(this).val()+'" '+andor+" ";
-			}
+		$.each(orderedList, function(i,value) {
+			keyword += '"'+value+'" '+andorKeyword+" ";
 		});
-		keyword = keyword.substring(0,keyword.length - andor.length-2);
+		keyword = keyword.substring(0,keyword.length - andorKeyword.length-2);
 		keyword += ')'+andor
 	}
 	query = team+players+hashtag+keyword;
@@ -98,22 +101,20 @@ function callSearch(type, query) {
 }
 
 function error(error) {
-	$('#tweets').empty();
-	$('#analysis').empty();
-	$('#tweets').append("<div class='error'>"+error.responseText+"</div>");
-	$('#analysis').append("<div class='error'>"+error.responseText+"</div>");
+	$('#tweets,#analysis').empty();
+	$('#tweets,#analysis').append("<div class='error'>"+error.responseText+"</div>");
 	$('#cover').fadeOut(500);
 }
 
 function populateData(data) {
-	$('#tweets').empty();
-	$('#analysis').empty();
+	$('#tweets,#analysis').empty();
 	analysisReset();
 	$.each(data, function(i, tweet) {
 		addToAnalysis(tweet);
 		addTweet(i,tweet);
 	});	
 	fillAnalysis();
+	emoji();
 	$('#cover').fadeOut(500);
 }
 
@@ -216,8 +217,8 @@ function fillAnalysis() {
 }
 
 function day(day) {
-	if(day == "Mon") {
-		return "Monday"
+	if(day == "Mon" || day == "Fri" || day == "Sun") {
+		return day+"day"
 	}
 	if(day == "Tue") {
 		return "Tuesday"
@@ -228,14 +229,8 @@ function day(day) {
 	if(day == "Thu") {
 		return "Thursday"
 	}
-	if(day == "Fri") {
-		return "Friday"
-	}
 	if(day == "Sat") {
 		return "Saturday"
-	}
-	if(day == "Sun") {
-		return "Sunday"
 	}
 }
 
