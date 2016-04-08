@@ -16,6 +16,7 @@ router.get('/', function(req, res, next){
 function databaseOnly(q, res) {
 	queryDatabase(q, function(status, data) {
 		if(status==true) {
+			var id = data[0].id;
 			//database has searched that query return data
 			res.send(data);
 		} else {
@@ -28,15 +29,23 @@ function databaseOnly(q, res) {
 }
 
 function databaseAndTwitter(q, res) {
-	//query database
-	//query twitter for any new tweets since the most recent tweet
-	queryTwitter(q,null,function(status, data) {
-		if(status) {
-			res.send(data)
+	queryDatabase(q, function(status, data) {
+		if(status==true) {
+			var id = data[0].id;
+			var update = data[0].updatelink;
+			res.send(data);
 		} else {
-			res.status(400).send("Query returned no results, try changing the search options");
+			queryTwitter(q,null,function(status, data) {
+				if(status) {
+					res.send(data)
+				} else {
+					res.status(400).send("Query returned no results, try changing the search options");
+				}
+			});
 		}
 	});
+	//query database
+	//query twitter for any new tweets since the most recent tweet
 	//save any new tweets into the database
 	//return combined data and stats
 }
@@ -54,7 +63,19 @@ function queryTwitter(q, since, callback) {
 }
 
 function queryDatabase(q, callback) {
-	callback(false,"some data");
+	database.query('SELECT * FROM searches WHERE `query` = "'+encodeURIComponent(q)+'"', function(err,results,fields) {
+		if(err) {
+			console.log(err);
+		} else {
+			console.log(encodeURIComponent(q));
+			if(results.length==0) {
+				callback(false, results);
+			} else {
+				callback(true,results);
+			}
+		}
+	});
+	//callback(false,"some data");
 	//check if query has been searched before
 	//if so get data from database and find most recent tweet
 	//return all info

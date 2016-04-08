@@ -48,7 +48,7 @@ function getVariables(type) {
 			if($("#players").find("input").filter(function() {
 				return this.value == value;
 			}).closest(".searchInput").find("#playerMentions").is(":checked")) {
-				players += ' OR "@'+value+'"';
+				players += " OR '@"+value+"'";
 			};
 			players += ") "+andorPlayers+" ";
 		});
@@ -83,6 +83,7 @@ function getVariables(type) {
 	}
 	query = team+players+hashtag+keyword;
 	query = query.substring(0,query.length - andor.length);
+
 	callSearch(type, query);
 }
 
