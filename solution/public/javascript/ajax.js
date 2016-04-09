@@ -15,7 +15,6 @@ $(document).on("click", ".button", function () {
 		$('<input type="submit">').hide().appendTo($('#form')).click().remove();
 	}
 });
-
 function getVariables(type) {
 	var team = "";
 	var players = "";
