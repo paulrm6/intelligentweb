@@ -104,6 +104,7 @@ function populateData(data) {
 		addTweet(i,tweet);
 	});	
 	fillAnalysis();
+	addMapMarkers(data);
 	$('#cover').fadeOut(500);
 }
 
@@ -115,6 +116,7 @@ function addToAnalysis(tweet) {
 	var wordCount = countWords(text,queryTerms);
 	userWordCount(wordCount, user);
 	addWordCountToTotalCount(wordCount, totalCount);
+	console.log('add to analysis');
 }
 
 function addTweet(i, tweet) {
@@ -165,6 +167,8 @@ function addTweet(i, tweet) {
 		+"</div>"
 		+"</div></div>";
 	$("#tweets").append(HTML);
+	console.log(tweet.created_at);
+	console.log(tweet.place);
 }
 
 function fillAnalysis() {
@@ -172,6 +176,7 @@ function fillAnalysis() {
 	var topUsers = returnTopUsers();
 	var keywordsHTML = "";
 	var topUsersHTML = "";
+	var mapHTML = "<div id='map'></div>";
 	keywordsHTML += "<div id='keywords'><h2>Top 20 Keywords</h2>";
 	for(var keyWord = 0; keyWord<topWords.length;keyWord++){
 		keywordsHTML+="<div class='keywordBox'>"
@@ -200,7 +205,35 @@ function fillAnalysis() {
 		}
 		topUsersHTML += "</div></div>";
 	}
-	$('#analysis').append(topUsersHTML+"</div>");	
+	$('#analysis').append(topUsersHTML+"</div>"+mapHTML);	
+	initMap();
+}
+
+function initMap() {
+	geocoder = new google.maps.Geocoder();
+	var mapDiv = document.getElementById('map');
+	map = new google.maps.Map(mapDiv, {
+		center: {lat: 52.776186, lng: -1.713867},
+		zoom: 5
+	});
+	google.maps.event.trigger(map, 'resize');
+}
+
+function addMapMarkers(data){
+	$.each(data, function(i, tweet) {
+		if (tweet.place != null){
+			geocoder.geocode( { 'address': tweet.place.full_name}, function(results, status) {
+     				if (status == google.maps.GeocoderStatus.OK) {
+					map.setCenter(results[0].geometry.location);
+					var marker = new google.maps.Marker({
+						map: map,
+						position: results[0].geometry.location,
+						title: tweet.text
+					});
+				}
+			});
+		}
+	});
 }
 
 function day(day) {

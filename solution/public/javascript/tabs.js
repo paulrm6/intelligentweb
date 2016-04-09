@@ -8,6 +8,7 @@ $(document).on("click", "#analysisTabSelector", function () {
 	// slides the tweets window out and the analysis window in
 	$("#tweets").hide("slide",{direction:"left"},1000);
 	$("#analysis").show("slide",{direction:"right"},1000);
+	google.maps.event.trigger(map, 'resize');
 });
 
 /**
@@ -20,4 +21,5 @@ $(document).on("click", "#tweetsTabSelector", function () {
 	// slides the analysis window out and the tweets window in
 	$("#tweets").show("slide",{direction:"left"},1000);
 	$("#analysis").hide("slide",{direction:"right"},1000);
+	google.maps.event.trigger(map, 'resize');
 });
