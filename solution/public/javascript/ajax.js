@@ -129,20 +129,19 @@ function addToAnalysis(tweet) {
 function addTweet(i, tweet) {
 	var HTML = "";
 	HTML+="<div id='"+i+"' class='tweet'>";
-	if(tweet.retweeted_status != undefined) {
+	if(tweet.rt_user != undefined) {
 		HTML+="<div class='retweet'><div class='pictures'>"
 			+"<a target='_blank' href='https://twitter.com/"
-			+tweet.user.screen_name
+			+tweet.rt_user.screen_name
 			+"'>"
 			+"<i class='fa fa-retweet'></i></div><div class='text'>Retweeted by "
-			+"<span class='underline'>"+tweet.user.name+"</span>"
+			+"<span class='underline'>"+tweet.rt_user.name+"</span>"
 			+" @"
-			+tweet.user.screen_name
+			+tweet.rt_user.screen_name
 			+"</div></a></div>";
-		tweet = tweet.retweeted_status;
 	}
 	HTML+="<div class='pictures'><img class='profile' src='"
-		+tweet.user.profile_image_url
+		+tweet.user.profile_image_url_https
 		+"'/></div><div class='text'><div class='user'>"
 		+"<a target='_blank' href='https://twitter.com/"
 		+tweet.user.screen_name
@@ -154,8 +153,8 @@ function addTweet(i, tweet) {
 		+"<div class='tweetContent'>"
 		+tweet.text
 		+"</div>";
-	if(tweet.entities.media != undefined) {
-		$.each(tweet.entities.media, function(j, media) {
+	if(tweet.media.lenght != 0) {
+		$.each(tweet.media, function(j, media) {
 			if(media.type == "photo") {
 				HTML+="<img class='media' src='"
 					+media.media_url_https

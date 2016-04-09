@@ -16,7 +16,6 @@ router.get('/', function(req, res, next){
 function databaseOnly(q, res) {
 	queryDatabase(q, function(status, data) {
 		if(status==true) {
-			var id = data[0].id;
 			//database has searched that query return data
 			res.send(data);
 		} else {
@@ -29,20 +28,14 @@ function databaseOnly(q, res) {
 }
 
 function databaseAndTwitter(q, res) {
-	queryDatabase(q, function(status, data) {
-		if(status==true) {
-			var id = data[0].id;
-			var update = data[0].updatelink;
-			//res.send(data);
-		} //else {
-			queryTwitter(q,null,function(status, data) {
-				if(status) {
-					res.send(data)
-				} else {
-					res.status(400).send(data);
-				}
+	queryTwitter(q,null,function(status, data) {
+		if(status) {
+			getDataFromDatabase(q, function(data) {
+				res.send(data);
 			});
-		//}
+		} else {
+			res.status(400).send(data);
+		}
 	});
 	//query database
 	//query twitter for any new tweets since the most recent tweet
@@ -70,6 +63,9 @@ function queryTwitter(q, since, callback) {
         			tweetInfo.created_at = tweet.created_at;
         			tweetInfo.text = tweet.text;
         			tweetInfo.user_id_str = insertUser(tweet.user);
+        			if(tweet.place != undefined) {
+        				tweetInfo.place_full_name = tweet.place.full_name;
+        			}
     				database.query('INSERT INTO tweets SET ? ON DUPLICATE KEY UPDATE id_str=id_str',tweetInfo);
         			database.query('INSERT INTO tweet_search_link (tweet_id_str,searches_query) VALUES ("'
         				+tweetInfo.id_str+'","'+encodedQ+'") ON DUPLICATE KEY UPDATE tweet_id_str=tweet_id_str');
@@ -82,13 +78,74 @@ function queryTwitter(q, since, callback) {
         				}
         			}
         		}
-        		console.log(data.statuses[0].place.bounding_box.coordinates);
-				callback(true, data.statuses);
+				callback(true);
         	} else {
         		callback(false,"Query returned no results, try changing the search options")
         	}
 		}
 	);
+}
+
+function getDataFromDatabase(q, callback) {
+	var data = [];
+	var query = database.query('SELECT * FROM tweet_search_link JOIN tweets ON tweet_id_str=id_str WHERE `searches_query`="'+encodeURIComponent(q)+'"',
+		function(err, results) {
+			if(err) throw err;
+			for(var i=0; i<results.length;i++) {
+				(function(i) {
+				var row = results[results.length-i-1];
+				data.push({});
+				var tweet = data[i];
+				tweet.id_str = row.id_str;
+				tweet.created_at = row.created_at;
+				tweet.text = row.text;
+				tweet.place = {full_name:row.place_full_name};
+				getUser(row.user_id_str, function(user) {
+					tweet.user = user;
+					if(row.retweeted_user_id_str!=null) {
+						getUser(row.retweeted_user_id_str,function(rt_user){
+							tweet.rt_user = rt_user
+						})
+					}
+					getMedia(row.id_str, function(media) {
+						tweet.media = media
+						if(i===results.length-1) {
+							callback(data);
+						}
+					});
+				});
+			})(i);
+			}
+		});
+}
+
+function getUser(id, callback) {
+	var user = {};
+	var userquery = database.query('SELECT * FROM users WHERE id_str="'+id+'"')
+		.on('error', function(err) {
+			throw err;
+		})
+		.on('result', function(userRow) {
+			user.id_str = userRow.id_str;
+			user.name = userRow.name;
+			user.screen_name = userRow.screen_name;
+			user.profile_image_url_https = userRow.profile_image_url_https;
+		})
+		.on('end',function() {
+			callback(user);
+		});
+}
+
+function getMedia(id, callback) {
+	var media = [];
+	database.query('SELECT * FROM media WHERE tweet_id_str="'+id+'"')
+		.on('error',function(err) {throw err;})
+		.on('result', function(mediaRow) {
+			media.push({media_url_https: mediaRow.media_url_https, type: mediaRow.type});
+		})
+		.on('end',function() {
+			callback(media);
+		});
 }
 
 function insertUser(user) {
@@ -106,7 +163,9 @@ function queryDatabase(q, callback) {
 			if(results.length==0) {
 				callback(false,results);
 			} else {
-				callback(true,results);
+				getDataFromDatabase(q, function(data) {
+					callback(true,data);
+				});
 			}
 		}
 	});

@@ -22,7 +22,6 @@ function analysisReset() {
 //Returns an object for a given a tweet containing each unique word and it's number of occurences within the text
 function countWords(text,queryTerms){
 
-	console.log(text);
 	var	wordCount = {};
 	//insert into this list the hashtag query and stuff like RT
 	var stopList = ["rt","v","the","to","and","for","of","have","your","at"];
@@ -154,13 +153,11 @@ function returnTopUsers(){
 		topUsers[i][2] = sortWordCount(topUsers[i][2]);
 	}
 
-	console.log(topUsers);
 	return topUsers;
 }
 
 //Returns the sorted word dictionary
 function returnTopWords(){
 	var tWords = sortWordCount(totalCount);
-	console.log(tWords);
 	return sortWordCount(totalCount);
 }
