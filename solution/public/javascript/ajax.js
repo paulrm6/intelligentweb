@@ -2,8 +2,6 @@ function emoji() {
 	twemoji.size = '16x16';
 	twemoji.parse(document.body);
 }
-
-
 var firstTime = true;
 $(document).on("click", ".button", function () {
 	var valid = $('#form')[0].checkValidity();
