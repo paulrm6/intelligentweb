@@ -122,7 +122,7 @@ function getDataFromDatabase(q, callback) {
 								+'LEFT JOIN users AS retweeted_user ON tweets.retweeted_user_id_str = retweeted_user.id_str '
 								+'WHERE tweet_search_link.searches_query="'+encodeURIComponent(q)+'" '
 								+'GROUP BY tweets.id_str '
-								+'ORDER BY tweet_search_link.id DESC '
+								+'ORDER BY tweets.date DESC '
 								+'LIMIT 300'
 								, function(err, results) {
 									if(err) throw err;
