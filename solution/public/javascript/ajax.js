@@ -118,7 +118,7 @@ function populateData(data) {
 
 function addToAnalysis(tweet) {
 	var text = tweet.text;
-	var user = tweet.user.screen_name;
+	var user = tweet.screen_name;
 	var queryTerms = [];
 	//pass query terms as a parameter to filter out the teamname for example and others if we wish
 	var wordCount = countWords(text,queryTerms);
@@ -129,44 +129,48 @@ function addToAnalysis(tweet) {
 function addTweet(i, tweet) {
 	var HTML = "";
 	HTML+="<div id='"+i+"' class='tweet'>";
-	if(tweet.rt_user != undefined) {
+	if(tweet.rt_name != null) {
 		HTML+="<div class='retweet'><div class='pictures'>"
 			+"<a target='_blank' href='https://twitter.com/"
-			+tweet.rt_user.screen_name
+			+tweet.rt_screen_name
 			+"'>"
 			+"<i class='fa fa-retweet'></i></div><div class='text'>Retweeted by "
-			+"<span class='underline'>"+tweet.rt_user.name+"</span>"
+			+"<span class='underline'>"+tweet.rt_name+"</span>"
 			+" @"
-			+tweet.rt_user.screen_name
+			+tweet.rt_screen_name
 			+"</div></a></div>";
 	}
 	HTML+="<div class='pictures'><img class='profile' src='"
-		+tweet.user.profile_image_url_https
+		+tweet.profile_image
 		+"'/></div><div class='text'><div class='user'>"
 		+"<a target='_blank' href='https://twitter.com/"
-		+tweet.user.screen_name
+		+tweet.screen_name
 		+"'><span class='underline'>"
-		+tweet.user.name
+		+tweet.name
 		+"</span> <span class='handle'>@"
-		+tweet.user.screen_name
+		+tweet.screen_name
 		+"</span></a></div>"
 		+"<div class='tweetContent'>"
 		+tweet.text
 		+"</div>";
-	if(tweet.entities.media.lenght != 0) {
-		$.each(tweet.entities.media, function(j, media) {
-			if(media.type == "photo") {
+	if(tweet.media != null) {
+		if(tweet.media.indexOf(',') > -1) {
+			var urls = tweet.media.split(',')
+			console.log(urls);
+		} else {
+			var urls = [tweet.media];
+		}
+		$.each(urls, function(j, media) {
 				HTML+="<img class='media' src='"
-					+media.media_url_https
+					+media
 					+"'/>";
-			}
 		});
 	}
 	var date = (tweet.created_at).split(' ');
 	HTML+="</div><a target='_blank' class='link' href='https://twitter.com/"
-		+tweet.user.screen_name
+		+tweet.screen_name
 		+"/status/"
-		+tweet.id_str
+		+tweet.tweet_id
 		+"'><i class='fa fa-twitter'></i> Link to tweet</a>"
 		+"<div class='time'>Published on "
 		+day(date[0])+" the "+date[2]+" of "+month(date[1])+" "+date[5]+" at "+date[3]

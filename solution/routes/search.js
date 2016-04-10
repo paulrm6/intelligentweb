@@ -63,6 +63,10 @@ function queryTwitter(q, since, callback) {
         				tweetInfo.retweeted_user_id_str = insertUser(tweet.user);
         				tweet = tweet.retweeted_status;
         			}
+        			var time = tweet.created_at.split(' ')
+        			var datetime = time[5]+"-"+month(time[1])+"-"+time[2]+" "+time[3];
+        			console.log(datetime);
+        			tweetInfo.date = datetime;
         			tweetInfo.created_at = tweet.created_at;
         			tweetInfo.text = tweet.text;
         			tweetInfo.user_id_str = insertUser(tweet.user);
@@ -81,7 +85,6 @@ function queryTwitter(q, since, callback) {
         				}
         			}
         		}
-        		console.log("here");
 				callback(true,"none");
         	} else {
         		callback(false,"Query returned no results, try changing the search options")
@@ -90,38 +93,72 @@ function queryTwitter(q, since, callback) {
 	);
 }
 
+function month(month) {
+	console.log(month);
+	var months = ["null","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+	for(var i=1; i<13; i++) {
+		if (month == months[i]) {
+			return i;
+		}
+	}
+}
+
 function getDataFromDatabase(q, callback) {
-	var data = [];
-	var query = database.query('SELECT * FROM tweet_search_link JOIN tweets ON tweet_id_str=id_str WHERE `searches_query`="'+encodeURIComponent(q)+'"',
+	var query = database.query('SELECT	tweets.id_str AS tweet_id,'
+										+'tweets.created_at AS created_at,'
+										+'tweets.text AS text,'
+										+'tweets.place_full_name AS place,'
+										+'author.`name` AS `name`,'
+										+'author.screen_name AS screen_name,'
+										+'author.profile_image_url_https AS profile_image,'
+										+'retweeted_user.`name` AS rt_name,'
+										+'retweeted_user.screen_name AS rt_screen_name,'
+										+'retweeted_user.profile_image_url_https AS rt_profile_image,'
+										+'GROUP_CONCAT(DISTINCT media.media_url_https) AS media '
+								+'FROM 	tweet_search_link '
+								+'INNER JOIN tweets ON tweet_search_link.tweet_id_str=tweets.id_str '
+								+'INNER JOIN users AS author ON tweets.user_id_str = author.id_str '
+								+'LEFT JOIN media ON media.tweet_id_str = tweets.id_str '
+								+'LEFT JOIN users AS retweeted_user ON tweets.retweeted_user_id_str = retweeted_user.id_str '
+								+'WHERE tweet_search_link.searches_query="'+encodeURIComponent(q)+'" '
+								+'GROUP BY tweets.id_str '
+								+'ORDER BY tweet_search_link.id DESC '
+								+'LIMIT 300'
+								, function(err, results) {
+									if(err) throw err;
+									callback(results);
+								});
+	/*var query = database.query('SELECT * FROM tweet_search_link JOIN tweets ON tweet_id_str=tweets.id_str JOIN users ON tweets.user_id_str=users.id_str WHERE `searches_query`="'+encodeURIComponent(q)+'" ORDER BY id DESC LIMIT 300',
 		function(err, results) {
 			if(err) throw err;
 			for(var i=0; i<results.length;i++) {
 				(function(i) {
 				var row = results[results.length-i-1];
+				console.log(row);
 				data.push({});
 				var tweet = data[i];
-				tweet.id_str = row.id_str;
+				tweet.id_str = row.tweet_id_str;
 				tweet.created_at = row.created_at;
 				tweet.text = row.text;
 				tweet.place = {full_name:row.place_full_name};
-				getUser(row.user_id_str, function(user) {
-					tweet.user = user;
-					if(row.retweeted_user_id_str!=null) {
-						getUser(row.retweeted_user_id_str,function(rt_user){
-							tweet.rt_user = rt_user
-						})
-					}
-					getMedia(row.id_str, function(media) {
+				tweet.user = {id_str: row.user_id_str, name: row.name, screen_name: row.screen_name, profile_image_url_https: row.profile_image_url_https};
+				if(row.retweeted_user_id_str != null) {
+					database.query('SELECT * FROM users WHERE id_str="'+row.retweeted_user_id_str+'"', function(err,results,fields) {
+						if(err) throw err;
+						tweet.retweeted_status = {user: results};
+					});
+				}
+				getMedia(row.tweet_id_str, function(media) {
 						tweet.entities = {media: media}
-        		console.log("here2");
 						if(i===results.length-1) {
 							callback(data);
 						}
-					});
-				});
+					}
+				);
 			})(i);
 			}
 		});
+		*/
 }
 
 function getUser(id, callback) {
