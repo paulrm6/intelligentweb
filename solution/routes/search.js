@@ -29,8 +29,11 @@ function databaseOnly(q, res) {
 
 function databaseAndTwitter(q, res) {
 	queryTwitter(q,null,function(status, data) {
+        		console.log("here3");
 		if(status) {
+        		console.log("here4");
 			getDataFromDatabase(q, function(data) {
+        		console.log("here5");
 				res.send(data);
 			});
 		} else {
@@ -78,7 +81,8 @@ function queryTwitter(q, since, callback) {
         				}
         			}
         		}
-				callback(true);
+        		console.log("here");
+				callback(true,"none");
         	} else {
         		callback(false,"Query returned no results, try changing the search options")
         	}
@@ -108,7 +112,8 @@ function getDataFromDatabase(q, callback) {
 						})
 					}
 					getMedia(row.id_str, function(media) {
-						tweet.media = media
+						tweet.entities = {media: media}
+        		console.log("here2");
 						if(i===results.length-1) {
 							callback(data);
 						}

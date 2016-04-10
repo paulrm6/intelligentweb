@@ -153,8 +153,8 @@ function addTweet(i, tweet) {
 		+"<div class='tweetContent'>"
 		+tweet.text
 		+"</div>";
-	if(tweet.media.lenght != 0) {
-		$.each(tweet.media, function(j, media) {
+	if(tweet.entities.media.lenght != 0) {
+		$.each(tweet.entities.media, function(j, media) {
 			if(media.type == "photo") {
 				HTML+="<img class='media' src='"
 					+media.media_url_https
