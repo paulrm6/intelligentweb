@@ -107,9 +107,7 @@ function populateData(data) {
 function addToAnalysis(tweet) {
 	var text = tweet.text;
 	var user = tweet.user.screen_name;
-	var queryTerms = [];
-	//pass query terms as a parameter to filter out the teamname for example and others if we wish
-	var wordCount = countWords(text,queryTerms);
+	var wordCount = countWords(text);
 	userWordCount(wordCount, user);
 	addWordCountToTotalCount(wordCount, totalCount);
 }
