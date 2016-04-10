@@ -17,7 +17,7 @@ router.get('/', function(req, res, next){
  * @param: res response
  */
 function getTeams(res) {
-	database.query('SELECT * FROM teams;', function(err, results, fields) {
+	database.query('SELECT * FROM teams ORDER BY name ASC;', function(err, results, fields) {
 		if(err) {
 			res.status(400).send("Database is unreachable");
 		} else {
