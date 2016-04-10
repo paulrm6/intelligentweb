@@ -202,6 +202,7 @@ function fillAnalysis() {
 	$('#analysis').append(topUsersHTML+"</div>");	
 
 	//HTML for trending hashtags, not sure how we want to display it
+	/**
 	topHashtagsHTML = "<div id='topHashtags'><h2>Trending Hashtags</h2>";
 	for (var topHashtag = 0; topHashtag<topHashtags.length; topHashtag++){
 
@@ -210,6 +211,7 @@ function fillAnalysis() {
 		+ "</p>";
 
 	}
+	**/
 
 	$('#analysis').append(topHashtagsHTML+"</div>");	
 	
