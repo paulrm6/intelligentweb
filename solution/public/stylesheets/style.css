@@ -236,6 +236,10 @@ section#results #tabs .notSelected:hover {
 #tweets .tweet .link:hover {
     color: #323333;
 }
+img.emoji {
+    margin: 0px !important;
+    display: inline !important;
+}
 /* ANALYSIS */
 
 #analysis #keywords {} #analysis h2 {
@@ -288,14 +292,7 @@ section#results #tabs .notSelected:hover {
 #analysis #topUsers .userBox .keywords .keyword:not(:last-child)::after {
     content: ",";
 }
-/* MAP */
-
 #map {
     width: 500px;
     height: 400px;
-}
-img.emoji {
-    // Override any img styles to ensure Emojis are displayed inline
-    margin: 0px !important;
-    display: inline !important;
 }
