@@ -34,8 +34,6 @@ Returns:
 */
 function countWords(text){
 
-	//console.log(text);
-
 	var	wordCount = {};
 	//Common not descriptive words that we want to filter out
 	var stopList = ["rt","the","to","and","for","of","have","your","at","in","on"];

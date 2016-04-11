@@ -106,7 +106,7 @@ function insertData(q, data, meta_data) {
 						id_str: tweet.tweet_id,
 						created_at: tweet.created_at,
 						text: tweet.text,
-						place_full_name: tweet.place,
+						place_full_name: tweet.place_full_name,
 						user_id_str: tweet.user_id,
 						retweeted_user_id_str: tweet.rt_id,
 						date: datetime
@@ -253,7 +253,8 @@ function queryTwitter(q, since_id, max_id, callback) {
 							rt_screen_name: null,
 							rt_profile_image: null,
 							media: null,
-							created_at_original: tweet.created_at
+							created_at_original: tweet.created_at,
+							place_full_name:null
 						}
 						//If tweet is retweets
 						if(tweet.retweeted_status != undefined) {
@@ -272,6 +273,9 @@ function queryTwitter(q, since_id, max_id, callback) {
 						newData[i].profile_image = tweet.user.profile_image_url_https;
 						newData[i].text = tweet.text;
 						newData[i].created_at = tweet.created_at;
+						if(tweet.place!=undefined) {
+							newData[i].place_full_name = tweet.place.full_name;
+						}
 						//Check if there is any media in the tweet
 						if(tweet.entities.media != undefined) {
 							var tempList = []

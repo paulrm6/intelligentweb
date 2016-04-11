@@ -185,6 +185,8 @@ function populateData(data) {
 	fillAnalysis();
 	//Change any emojis into emojis on the page
 	emoji();
+	//Add markers to the map
+	addMapMarkers(data);
 	//Fade out the loading cover
 	$('#cover').fadeOut(500);
 }
@@ -286,6 +288,8 @@ function fillAnalysis() {
 	var keywords = returnTopWords();
 	var topUsers = returnTopUsers();
 	var topHashtags = returnTopHashtags();
+	//HTML for map
+	var mapHTML = "<div id='map'></div>";
 	//Create a HTML string for keywords
 	var keywordsHTML = "<div id='keywords'><h2>Top 20 Keywords</h2>";
 	$.each(keywords, function(i, keyword) {
@@ -330,7 +334,6 @@ function fillAnalysis() {
 	});
 	topHashtagsHTML = "<div id='topHashtags'><h2>Trending Hashtags</h2>";
 	$.each(topHashtags, function(i, topHashtag) {
-		console.log(topHashtag);
 		topHashtagsHTML+= "<div class='keywordBox'>"
 			+"<div class='keyword'>"
 			+topHashtag[0]
@@ -338,11 +341,42 @@ function fillAnalysis() {
 			+topHashtag[1]
 			+"</span> times</div></div>"
 		if(i==topHashtags.length-1) {
-			$('#analysis').append(topHashtagsHTML+"</div>");
+			$('#analysis').append(topHashtagsHTML+"</div>"+mapHTML);
 		}
 	});	
+	initMap();
 }
 
+
+//function initiates map
+function initMap() {
+	geocoder = new google.maps.Geocoder();
+	var mapDiv = document.getElementById('map');
+	map = new google.maps.Map(mapDiv, {
+		center: {lat: 52.776186, lng: -1.713867},
+		zoom: 5
+	});
+	google.maps.event.trigger(map, 'resize');
+}
+
+//For each tweet containing location information add a marker to the map
+function addMapMarkers(data){
+	$.each(data, function(i, tweet) {
+		if (tweet.place_full_name != null){
+			//Retrieve location based on place name & add marker to map
+			geocoder.geocode( { 'address': tweet.place_full_name}, function(results, status) {
+     				if (status == google.maps.GeocoderStatus.OK) {
+					map.setCenter(results[0].geometry.location);
+					var marker = new google.maps.Marker({
+						map: map,
+						position: results[0].geometry.location,
+						title: tweet.text
+					});
+				}
+			});
+		}
+	});
+}
 /**
  * A function to change any emoji's in the text into actual emoji's
  */
