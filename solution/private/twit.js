@@ -1,4 +1,6 @@
 var Twit = require('twit');
+
+//Create twitter connection with access keys
 var client = new Twit({
 	consumer_key: '1R5gIb6Nq3Q0CSEaz37bRt2F9',
 	consumer_secret: 'xZf90oSYBEBWvdxxzPcs3GBrh6r4XhuvaLF5s9xvTuLE0IW4pf',

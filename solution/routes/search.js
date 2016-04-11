@@ -125,9 +125,9 @@ function insertData(q, data, meta_data) {
 
 function initialQuery(q, callback) {
 	queryTwitter(q, null, null, function(status,data1,meta_data1) {
-		if(status) {
+		if(status && data1.length==100) {
 			queryTwitter(q, null, meta_data1.next_results.split("&")[0].split("=")[1], function(status,data2,meta_data2) {
-				if(status) {
+				if(status && data2.length==100) {
 					queryTwitter(q, null, meta_data2.next_results.split("&")[0].split("=")[1], function(status,data3,meta_data3) {
 						if(status) {
 							var data = data1.concat(data2.concat(data3))
@@ -140,8 +140,10 @@ function initialQuery(q, callback) {
 					callback(true,data1,meta_data1)
 				}
 			});
-		} else {
+		} else if (status) {
 			callback(false,data1)
+		} else {
+			callback(true,data1)
 		}
 	});
 }

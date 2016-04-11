@@ -1,5 +1,6 @@
 var mysql = require('mysql')
 
+//Create pooled connection for multiple access
 var pool = mysql.createPool({
 	host		: 'stusql.dcs.shef.ac.uk',
 	port		: '3306',
