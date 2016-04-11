@@ -201,9 +201,8 @@ function addToAnalysis(tweet) {
 	if(tweet.rt_screen_name!=null) {
 		var user = tweet.rt_screen_name;
 	}
-	var queryTerms = [];
-	//Pass queryTerms as a parameter to filter out any words inside of it from the analysis
-	var wordCount = countWords(text,queryTerms);
+	//Count the words in the text
+	var wordCount = countWords(text);
 	//Add the word counts to the analysis for user and total count
 	userWordCount(wordCount, user);
 	addWordCountToTotalCount(wordCount, totalCount);
@@ -286,6 +285,7 @@ function fillAnalysis() {
 	//Get the keywords and top users from the analysis
 	var keywords = returnTopWords();
 	var topUsers = returnTopUsers();
+	var topHashtags = returnTopHashtags();
 	//Create a HTML string for keywords
 	var keywordsHTML = "<div id='keywords'><h2>Top 20 Keywords</h2>";
 	$.each(keywords, function(i, keyword) {
@@ -323,11 +323,24 @@ function fillAnalysis() {
 			}
 		}
 		topUsersHTML += "</div></div>";	
-		//If alll the top users have been processed then append the html to the analysis div
+		//If all the top users have been processed then append the html to the analysis div
 		if(i==topUsers.length-1) {
 			$('#analysis').append(topUsersHTML+"</div>");
 		}
 	});
+	topHashtagsHTML = "<div id='topHashtags'><h2>Trending Hashtags</h2>";
+	$.each(topHashtags, function(i, topHashtag) {
+		console.log(topHashtag);
+		topHashtagsHTML+= "<div class='keywordBox'>"
+			+"<div class='keyword'>"
+			+topHashtag[0]
+			+"</div><div class='quantity'>mentioned <span>"
+			+topHashtag[1]
+			+"</span> times</div></div>"
+		if(i==topHashtags.length-1) {
+			$('#analysis').append(topHashtagsHTML+"</div>");
+		}
+	});	
 }
 
 /**
