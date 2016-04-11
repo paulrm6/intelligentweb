@@ -348,7 +348,9 @@ function fillAnalysis() {
 }
 
 
-//function initiates map
+/*
+* A function to initiate the map show in analysis
+*/
 function initMap() {
 	geocoder = new google.maps.Geocoder();
 	var mapDiv = document.getElementById('map');
@@ -359,7 +361,10 @@ function initMap() {
 	google.maps.event.trigger(map, 'resize');
 }
 
-//For each tweet containing location information add a marker to the map
+/*
+* A function to add markers to the map shown in analysis
+* @param data json containing tweets returned by query
+*/
 function addMapMarkers(data){
 	$.each(data, function(i, tweet) {
 		if (tweet.place_full_name != null){
