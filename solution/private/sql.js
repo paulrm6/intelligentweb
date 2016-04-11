@@ -8,7 +8,8 @@ var pool = mysql.createPool({
 	password	: 'fd2f8cef',
 	database	: 'aca13prm',
     connectionLimit: 25,
-    queueLimit: 5000
+    queueLimit: 5000,
+    charset		: 'utf8mb4'
 });
 
 module.exports = pool;
