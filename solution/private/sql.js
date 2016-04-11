@@ -1,5 +1,9 @@
 var mysql = require('mysql')
 
+/*
+ * @author Paul MacDonald
+ */
+
 //Create pooled connection for multiple access
 var pool = mysql.createPool({
 	host		: 'stusql.dcs.shef.ac.uk',

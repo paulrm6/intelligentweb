@@ -1,3 +1,7 @@
+/*
+ * @author Paul MacDonald
+ */
+
 /**
  * Adds a listener for a click to everything with id addBtn 
  */

@@ -1,3 +1,7 @@
+/*
+ * @author Paul MacDonald
+ */
+
 /**
  * Adds a listener to the Analysis tab button 
  */
