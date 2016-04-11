@@ -26,13 +26,17 @@ function databaseOnly(q, res) {
 	queryDatabase(q, function(status, data) {
 		if(status==true) {
 			//If query is in database get the most recent 300 tweets
-			getDataFromDatabase(q,300,function(data) {
-				//Send the data
-				res.send(data);
+			getDataFromDatabase(q,300,function(status,data) {
+				if(status) {
+					//Send the data
+					res.send(data);
+				} else {
+					res.status(400).send(data);
+				}
 			});
 		} else {
 			//Query is not in databse, return an error and the reason for the browser to display
-			res.status(400).send("Query not in database, try changing the search options");
+			res.status(400).send(data);
 		}
 	});
 }
@@ -49,13 +53,19 @@ function databaseAndTwitter(q, res) {
 			//Query twitter with the max id in the database (so as not to retrieve duplicates)
 			queryTwitter(q,meta_data[0].max_id_str,null,function(status, twitterData) {
 				//Get the most recent 200 tweets in the database
-				getDataFromDatabase(q,200,function(databaseData) {
-					if(status) {
-						//If all okay with twitter query, send the data concatenated
+				getDataFromDatabase(q,200,function(dbStatus,databaseData) {
+					if(status&&dbStatus) {
+						//If all okay with twitter query and db query, send the data concatenated
 						res.send(twitterData.concat(databaseData));
-					} else {
+					} else if(status) {
+						//Else send just the twitter data
+						res.send(twitterData);
+					} else if(dbStatus) {
 						//Else send just the database data
 						res.send(databaseData);
+					} else {
+						//Else give an error
+						res.status(400).send(twitterData+" "+databaseData)
 					}
 				});
 			});
@@ -89,88 +99,90 @@ function insertData(q, data, meta_data) {
 	pool.query('INSERT INTO searches SET ? ON DUPLICATE KEY UPDATE max_id_str=GREATEST(max_id_str, VALUES(max_id_str)),next_results=VALUES(next_results),refresh_url=VALUES(refresh_url)',searchesData,
 		function(err,res1) {
 			//If there is an error, throw it
-			if(err) throw err;
-			//Iterate through the data
-			for(var j = 0;j<data.length;j++) {
-				(function(i) {
-				var tweet = data[i];
-				//Get a connection to the database from the pool
-				pool.getConnection(function(err,database) {
-					//If there is an error, throw it
-					if(err) throw err;
-					//Get the datetime in a format YYYY-MM-DD HH:mm:SS to insert into the database
-					var time = tweet.created_at_original.split(' ');
-					var datetime = time[5]+"-"+month(time[1])+"-"+time[2]+" "+time[3];
-					//Create an object for the tweet data to insert
-					var tweetData = {
-						id_str: tweet.tweet_id,
-						created_at: tweet.created_at,
-						text: tweet.text,
-						place_full_name: tweet.place_full_name,
-						user_id_str: tweet.user_id,
-						retweeted_user_id_str: tweet.rt_id,
-						date: datetime
-					}
-					//Create a array for the userdata (as there could be two per tweet)
-					var userData = []
-					//Add the data for the normal user
-					userData.push([
-						tweet.user_id,
-						tweet.name,
-						tweet.screen_name,
-						tweet.profile_image
-					]);
-					//If the tweet was retweeted, add the retweeted users info
-					if(tweet.rt_id) {
-						userData.push([
-							tweet.rt_id,
-							tweet.rt_name,
-							tweet.rt_screen_name,
-							tweet.rt_profile_image
-						]);
-					}
-					//Create a array for the media (as there could be multiple per tweet)					
-					var media = []
-					//If there is media
-					if(tweet.media != null) {
-						//Split the media (comma seperated)
-						tempList = tweet.media.split(",");
-						//For the list of media, iterate through it
-						for(var k=0;k<tempList.length;k++) {
-							//Push an object to the media array
-							media.push([tempList[k],"photo",tweet.tweet_id]);
-						}
-					}
-					//Create an object for the data to be inserted into tweet_search_link
-					var tweetLinkData = {
-						tweet_id_str: tweet.tweet_id,
-						searches_query: q
-					}
-					//Insert all the data one after the other (as foreign keys are in operation)
-					database.query('INSERT INTO users (id_str,name,screen_name,profile_image_url_https) VALUES ? '
-						+'ON DUPLICATE KEY UPDATE name=VALUES(name),screen_name=VALUES(screen_name),profile_image_url_https=VALUES(profile_image_url_https)',[userData],
-						function(err, res2) {
-							if(err) throw err;
-							database.query('INSERT INTO tweets SET ? ON DUPLICATE KEY UPDATE id_str=id_str',tweetData,
-								function(err, res3) {
-									if(err) throw err;
-									database.query('INSERT INTO tweet_search_link SET ? ON DUPLICATE KEY UPDATE tweet_id_str=tweet_id_str', tweetLinkData,
-										function(err,res4) {
-											//release this database connection as it may not be needed for media
-											database.release();
-											if(media.length != 0) {
-												//use a new database connection for the media
-												pool.query('INSERT INTO media (media_url_https,type,tweet_id_str) VALUES ? '
-													+'ON DUPLICATE KEY UPDATE tweet_id_str=tweet_id_str',[media],
-													function(err,res5) {
-														if(err) throw err;
-													}
-												);
-											}
-										});
+			if(!err) {
+				//Iterate through the data
+				for(var j = 0;j<data.length;j++) {
+					(function(i) {
+					var tweet = data[i];
+					//Get a connection to the database from the pool
+					pool.getConnection(function(err,database) {
+						//If there is an error, throw it
+						if(!err) {
+							//Get the datetime in a format YYYY-MM-DD HH:mm:SS to insert into the database
+							var time = tweet.created_at_original.split(' ');
+							var datetime = time[5]+"-"+month(time[1])+"-"+time[2]+" "+time[3];
+							//Create an object for the tweet data to insert
+							var tweetData = {
+								id_str: tweet.tweet_id,
+								created_at: tweet.created_at,
+								text: tweet.text,
+								place_full_name: tweet.place_full_name,
+								user_id_str: tweet.user_id,
+								retweeted_user_id_str: tweet.rt_id,
+								date: datetime
+							}
+							//Create a array for the userdata (as there could be two per tweet)
+							var userData = []
+							//Add the data for the normal user
+							userData.push([
+								tweet.user_id,
+								tweet.name,
+								tweet.screen_name,
+								tweet.profile_image
+							]);
+							//If the tweet was retweeted, add the retweeted users info
+							if(tweet.rt_id) {
+								userData.push([
+									tweet.rt_id,
+									tweet.rt_name,
+									tweet.rt_screen_name,
+									tweet.rt_profile_image
+								]);
+							}
+							//Create a array for the media (as there could be multiple per tweet)					
+							var media = []
+							//If there is media
+							if(tweet.media != null) {
+								//Split the media (comma seperated)
+								tempList = tweet.media.split(",");
+								//For the list of media, iterate through it
+								for(var k=0;k<tempList.length;k++) {
+									//Push an object to the media array
+									media.push([tempList[k],"photo",tweet.tweet_id]);
+								}
+							}
+							//Create an object for the data to be inserted into tweet_search_link
+							var tweetLinkData = {
+								tweet_id_str: tweet.tweet_id,
+								searches_query: q
+							}
+							//Insert all the data one after the other (as foreign keys are in operation)
+							database.query('INSERT INTO users (id_str,name,screen_name,profile_image_url_https) VALUES ? '
+								+'ON DUPLICATE KEY UPDATE name=VALUES(name),screen_name=VALUES(screen_name),profile_image_url_https=VALUES(profile_image_url_https)',[userData],
+								function(err, res2) {
+									if(!err) {
+										database.query('INSERT INTO tweets SET ? ON DUPLICATE KEY UPDATE id_str=id_str',tweetData,
+											function(err, res3) {
+												if(!err) {
+													database.query('INSERT INTO tweet_search_link SET ? ON DUPLICATE KEY UPDATE tweet_id_str=tweet_id_str', tweetLinkData,
+														function(err,res4) {
+															//release this database connection as it may not be needed for media
+															database.release();
+															if(!err) {
+																if(media.length != 0) {
+																	//use a new database connection for the media
+																	pool.query('INSERT INTO media (media_url_https,type,tweet_id_str) VALUES ? '
+																		+'ON DUPLICATE KEY UPDATE tweet_id_str=tweet_id_str',[media]);
+																}
+															}
+														});
+												}
+											});
+									}
 								});
-						});
-				});})(j);
+						}
+					});})(j);
+				}
 			}
 		}
 	);
@@ -344,10 +356,13 @@ function getDataFromDatabase(q, count, callback) {
 				+'ORDER BY tweets.date DESC '
 				+'LIMIT '+count
 				, function(err, results) {
-					//If there is an error, throw it
-					if(err) throw err;
-					//Callback the results of the database query
-					callback(results);
+					//If there is an error
+					if(err) {
+						callback(false,results)
+					} else {
+						//Callback the results of the database query
+						callback(true,results);
+					}
 				});
 }
 
