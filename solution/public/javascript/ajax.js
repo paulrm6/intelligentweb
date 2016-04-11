@@ -209,6 +209,7 @@ function fillAnalysis() {
 	initMap();
 }
 
+//function initiates map
 function initMap() {
 	geocoder = new google.maps.Geocoder();
 	var mapDiv = document.getElementById('map');
@@ -219,9 +220,11 @@ function initMap() {
 	google.maps.event.trigger(map, 'resize');
 }
 
+//For each tweet containing location information add a marker to the map
 function addMapMarkers(data){
 	$.each(data, function(i, tweet) {
 		if (tweet.place != null){
+			//Retrieve location based on place name & add marker to map
 			geocoder.geocode( { 'address': tweet.place.full_name}, function(results, status) {
      				if (status == google.maps.GeocoderStatus.OK) {
 					map.setCenter(results[0].geometry.location);
