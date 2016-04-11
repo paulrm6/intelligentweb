@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var database = require('../private/sql');
+var pool = require('../private/sql');
 
 router.get('/', function(req, res, next){
 	var type = req.query.type;
@@ -17,7 +17,7 @@ router.get('/', function(req, res, next){
  * @param: res response
  */
 function getTeams(res) {
-	database.query('SELECT * FROM teams ORDER BY name ASC;', function(err, results, fields) {
+	pool.query('SELECT * FROM teams ORDER BY name ASC;', function(err, results, fields) {
 		if(err) {
 			res.status(400).send("Database is unreachable");
 		} else {

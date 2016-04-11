@@ -27,7 +27,7 @@ function getVariables(type) {
 		if(teamname=="other") {
 			teamname = $("#teamInput").val();
 		}
-		team = '(from:@'+teamname;
+		team = '(from:'+teamname;
 		if ($('#mentions').is(':checked')) {
 			team += ' OR "@'+teamname+'"';
 		}
@@ -41,11 +41,11 @@ function getVariables(type) {
 		}
 		players = "(";
 		$.each(orderedList, function(i,value) {
-			players += '(from:"@'+value+'"';
+			players += '(from:'+value;
 			if($("#players").find("input").filter(function() {
 				return this.value == value;
 			}).closest(".searchInput").find("#playerMentions").is(":checked")) {
-				players += " OR '@"+value+"'";
+				players += ' OR "@'+value+'"';
 			};
 			players += ") "+andorPlayers+" ";
 		});
@@ -60,7 +60,7 @@ function getVariables(type) {
 		}
 		hashtag = '(';
 		$.each(orderedList, function(i,value) {
-			hashtag += "#"+value+" "+andorHashtag+" ";
+			hashtag += '"#'+value+'" '+andorHashtag+" ";
 		});
 		hashtag = hashtag.substring(0,hashtag.length - andorHashtag.length-2);
 		hashtag += ')'+andor;
