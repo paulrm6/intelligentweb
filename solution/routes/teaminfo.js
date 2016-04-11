@@ -8,7 +8,7 @@ router.get('/', function(req, res, next){
 		getTeams(res);
 	} else {
 		var team = req.query.team;
-		//return all players from a team
+		//Code to return players (not yet implemented)
 	}
 });
 
