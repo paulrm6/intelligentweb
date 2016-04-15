@@ -3,6 +3,10 @@ var router = express.Router();
 var twitter = require('../private/twit');
 var pool = require('../private/sql');
 
+/*
+ * @author Paul MacDonald
+ */
+
 //Gets the query sent to it
 router.get('/', function(req, res, next){
 	var q = req.query.q;
