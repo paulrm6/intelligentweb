@@ -119,10 +119,11 @@ function getVariables(type) {
 		});
 		//Remove the extra andor on the end of the string	
 		keyword = keyword.substring(0,keyword.length - andorKeyword.length-2);
-		keyword += ')'
+		keyword += ')'+andor;
 	}
 	//Combine each section string together
 	query = team+players+hashtag+keyword;
+	query = query.substring(0,query.length - andor.length);
 	//Search for the query with the given type
 	callSearch(type, query);
 }
@@ -176,7 +177,7 @@ function populateData(data) {
 	//Reset the analysis variables so old searches don't affect it
 	analysisReset();
 	//For each tweet
-	$.each(data, function(i, tweet) {
+	$.each(data.statuses, function(i, tweet) {
 		//Add it to the analysis and to the tweets div
 		addToAnalysis(tweet);
 		addTweet(i,tweet);
@@ -186,7 +187,7 @@ function populateData(data) {
 	//Change any emojis into emojis on the page
 	emoji();
 	//Add markers to the map
-	addMapMarkers(data);
+	//addMapMarkers(data.statuses);
 	//Fade out the loading cover
 	$('#cover').fadeOut(500);
 }
@@ -344,7 +345,7 @@ function fillAnalysis() {
 			$('#analysis').append(topHashtagsHTML+"</div>"+mapHTML);
 		}
 	});	
-	initMap();
+	//initMap();
 }
 
 
