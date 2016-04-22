@@ -190,6 +190,9 @@ function populateData(data) {
 	//addMapMarkers(data.statuses);
 	//Fade out the loading cover
 	$('#cover').fadeOut(500);
+	$('#tooltip').text("Database: "+data.metadata.database_results+", Twitter: "+data.metadata.twitter_results);
+	$('#tooltip').fadeIn();
+	$('#tooltip').delay(5000).fadeOut();
 }
 
 /**
@@ -345,7 +348,7 @@ function fillAnalysis() {
 			$('#analysis').append(topHashtagsHTML+"</div>"+mapHTML);
 		}
 	});	
-	//initMap();
+	initMap();
 }
 
 

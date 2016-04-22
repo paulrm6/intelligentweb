@@ -13,10 +13,22 @@ router.get('/', function(req, res, next){
 	//Checks the type of query
 	if(req.query.type=="databaseQuery") {
 		//If query is only for database
-		databaseOnly(q, res);
+		databaseOnly(q, function(err,data) {
+			if(err) {
+				res.status(400).send(err);
+			} else {
+				res.send(data);
+			}
+		});
 	} else {
 		//If query is for twitter
-		databaseAndTwitter(q, res);
+		databaseAndTwitter(q, function(err,data) {
+			if(err) {
+				res.status(400).send(err);
+			} else {
+				res.send(data);
+			}
+		});
 	}
 });
 
@@ -25,9 +37,8 @@ router.get('/', function(req, res, next){
  * @param q the query for the database
  * @param res the response to the HTTP request
  */
-function databaseOnly(q, res) {
+function databaseOnly(q, callback) {
 	//Check if query is in database
-	console.log(q);
 	queryDatabase(q, function(status, data) {
 		if(status==true) {
 			//If query is in database get the most recent 300 tweets
@@ -37,17 +48,18 @@ function databaseOnly(q, res) {
 					var results = {
 						statuses: data,
 						metadata: {
-							database_results:data.length
+							database_results:data.length,
+							twitter_results:0
 						}
 					}
-					res.send(results);
+					callback(undefined,results);
 				} else {
-					res.status(400).send(data);
+					callback(data,undefined);
 				}
 			});
 		} else {
 			//Query is not in databse, return an error and the reason for the browser to display
-			res.status(400).send(data);
+			callback(data,undefined);
 		}
 	});
 }
@@ -57,12 +69,12 @@ function databaseOnly(q, res) {
  * @param q the query for the database
  * @param res the response to the HTTP request
  */
-function databaseAndTwitter(q, res) {
+function databaseAndTwitter(q, callback) {
 	//Checks if the query is in the database
 	queryDatabase(q,function(status,meta_data) {
 		if(status) { //If it is
 			//Query twitter with the max id in the database (so as not to retrieve duplicates)
-			recursiveTwitterQuery(q,meta_data[0].max_id_str, null, 0,[], function(twitStatus, twitterData) {
+			recursiveTwitterQuery(q,meta_data[0].max_id_str, null, 300,[], function(twitStatus, twitterData) {
 				//Get the most recent 200 tweets in the database
 				getDataFromDatabase(q,0,function(dbStatus,databaseData) {
 					if(twitStatus&&dbStatus) {
@@ -74,7 +86,7 @@ function databaseAndTwitter(q, res) {
 								twitter_results:twitterData.length
 							}
 						}
-						res.send(results);
+						callback(undefined,results);
 	        			insertData(q,twitterData);
 					} else if(twitStatus) {
 						//Else send just the twitter data
@@ -85,7 +97,7 @@ function databaseAndTwitter(q, res) {
 								twitter_results:twitterData.length
 							}
 						}
-						res.send(results);
+						callback(undefined,results);
 	        			insertData(q,twitterData);
 					} else if(dbStatus) {
 						//Else send just the database data
@@ -96,10 +108,10 @@ function databaseAndTwitter(q, res) {
 								twitter_results:0
 							}
 						}
-						res.send(results);
+						callback(undefined,results);
 					} else {
 						//Else give an error
-						res.status(400).send(twitterData+" "+databaseData)
+						callback(twitterData+" "+databaseData,undefined);
 					}
 				});
 			});
@@ -114,10 +126,10 @@ function databaseAndTwitter(q, res) {
 							database_results:0
 						}
 					}
-					res.send(results);
+					callback(undefined,results);
 	        		insertData(q,tweets);
 				} else {
-					res.status(400).send(tweets);
+					callback(tweets,undefined);
 				}
 			});
 		}
