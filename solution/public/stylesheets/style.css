@@ -96,7 +96,7 @@ input[type="text"] {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }
-section#search form #team #otherInput {
+section#search form #team #otherInput, #playerSelect {
     display: none;
 }
 /* RESULTS */

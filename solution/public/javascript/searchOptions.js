@@ -75,21 +75,64 @@ function updateAndOr(object) {
  * Adds a listener for a change to everything with id teamSelect so as to check if other is selected
  */
 $(document).on("change", "#teamSelect", function() {
+	$('#playerSelect').find('.variable').remove();
 	//If the selected value is othedr
 	if($(this).find(":selected").val() == "other") {
 		//Show the other input box
 		$("#otherInput").show("slide",{direction:"up"},100);
+		$("#playerSelect").hide("slide",{direction:"up"},100);
 	} else {
+		//Get the team name
+		var slug = $(this).find(":selected").attr('id');
 		//Hide the other input box
-		$("#otherInput").hide("slide",{direction:"up"},100);		
+		$("#otherInput").hide("slide",{direction:"up"},100);
+		$.get('http://www.airstadium.com/api/v1/athletes?has_profile=true&team_id='+slug)
+			.done(function(data) {
+				$.each(data.athletes, function(i, player) {
+					//Add an option of that team before the other option
+					$('#playerSelect').append("<option class='variable' value='"
+						+player.twitter_username
+						+"'>"
+						+player.name
+						+"</option>");
+				});
+				$("#playerSelect").show();
+			})
+			.fail(function(err) {
+
+			});		
 	}
+});
+/**
+ * Adds a listener for a change to everything with id playerSelect so as to check if other is selected
+ */
+$(document).on("change", "#playerSelect", function() {
+	var selection = $(this).find(":selected");
+	$(this).find("#initial").prop('selected', true);
+	var container = $(this).closest(".searchSection").find(".searchContainer");
+	//Checks to see if the search section is currently enabled
+	if($(this).closest(".searchSection").find(".searchInput").first().find("input").val().trim().length == 0) {
+		$(this).closest(".searchSection").find(".searchInput").first().find("input").val(selection.val())	
+	} else {
+		//If it is then it copies the search box to the bottom of the search container
+		$(this).closest(".searchSection").find('.searchInput').first().clone().appendTo(container);
+		//It replaces the button on the new search box to a delete, rather than an add
+		$(this).closest(".searchSection").find(".searchContainer").find(".searchInput:last").find("i").replaceWith("<i class='fa fa-minus fa-lg' id='dltBtn'></i>");
+		//It adds an indicator to wether the search is and/or
+		$(this).closest(".searchSection").find(".searchContainer").find(".searchInput:last").prepend("<select name='andor' class='andor'><option value='AND'>AND</option><option value='OR'>OR</option></select><br/>");
+		//It clears any values already in the new search box
+		$(this).closest(".searchSection").find(".searchContainer").find(".searchInput:last").find("input").val(selection.val());
+		//It then calls updateAndOr
+		updateAndOr($(this).closest(".searchSection").find(".searchContainer").find("select:first"));
+	}
+	//selection.remove();
 });
 /**
  * A function to retrieve team names from the database on page load
  */
 $(document).ready(function() {
 	//Get all teams from the database
-	$.get('/teaminfo',{ type: "team" })
+	/*$.get('/teaminfo',{ type: "team" })
 	.done(function(data){
 		//For each team returned
 		$.each(data, function(i, team) {
@@ -105,4 +148,21 @@ $(document).ready(function() {
 		//Alert if cannot connect to the database
 		alert(err.responseText);
 	});
+	*/
+	$.get('http://www.airstadium.com/api/v1/teams?competition_id=premier-league&has_profile=true')
+		.done(function(data) {
+			$.each(data.teams, function(i, team) {
+				//Add an option of that team before the other option
+				$('#teamSelect').find('option[name=other]').before("<option value='"
+					+team.twitter_username
+					+"' id='"
+					+team.slug
+					+"'>"
+					+team.name
+					+"</option>");
+			});
+		})
+		.fail(function(err) {
+
+		});
 });
