@@ -88,7 +88,8 @@ $(document).on("change", "#teamSelect", function() {
 		$("#otherInput").hide("slide",{direction:"up"},100);
 		$.get('http://www.airstadium.com/api/v1/athletes?has_profile=true&team_id='+slug)
 			.done(function(data) {
-				$.each(data.athletes, function(i, player) {
+				var sorted = data.athletes.sort(sortName);
+				$.each(sorted, function(i, player) {
 					//Add an option of that team before the other option
 					$('#playerSelect').append("<option class='variable' value='"
 						+player.twitter_username
@@ -133,7 +134,8 @@ $(document).on("change", "#playerSelect", function() {
 $(document).ready(function() {
 	$.get('http://www.airstadium.com/api/v1/teams?competition_id=premier-league&has_profile=true')
 		.done(function(data) {
-			$.each(data.teams, function(i, team) {
+			var sorted = data.teams.sort(sortName);
+			$.each(sorted, function(i, team) {
 				//Add an option of that team before the other option
 				$('#teamSelect').find('option[name=other]').before("<option value='"
 					+team.twitter_username
@@ -149,3 +151,9 @@ $(document).ready(function() {
 			$("#otherInput").show();
 		});
 });
+
+function sortName(a,b) {
+	return b.name < a.name ?  1 
+	 : b.name > a.name ? -1
+	 : 0; 
+}

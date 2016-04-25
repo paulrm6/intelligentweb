@@ -8,7 +8,6 @@ var bodyParser = require('body-parser');
 //Set up the routes
 var index = require('./routes/index');
 var search = require('./routes/search');
-var teaminfo = require('./routes/teaminfo');
 
 var app = express();
 
@@ -23,7 +22,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Set up calls to routes
 app.use('/search', search);
-app.use('/teaminfo', teaminfo);
 app.use('/*', index);
 
 module.exports = app;
