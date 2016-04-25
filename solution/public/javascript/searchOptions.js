@@ -80,7 +80,7 @@ $(document).on("change", "#teamSelect", function() {
 	if($(this).find(":selected").val() == "other") {
 		//Show the other input box
 		$("#otherInput").show("slide",{direction:"up"},100);
-		$("#playerSelect").hide("slide",{direction:"up"},100);
+		$("#playerSelect").hide();
 	} else {
 		//Get the team name
 		var slug = $(this).find(":selected").attr('id');
@@ -99,7 +99,7 @@ $(document).on("change", "#teamSelect", function() {
 				$("#playerSelect").show();
 			})
 			.fail(function(err) {
-
+				//do nothing
 			});		
 	}
 });
@@ -131,24 +131,6 @@ $(document).on("change", "#playerSelect", function() {
  * A function to retrieve team names from the database on page load
  */
 $(document).ready(function() {
-	//Get all teams from the database
-	/*$.get('/teaminfo',{ type: "team" })
-	.done(function(data){
-		//For each team returned
-		$.each(data, function(i, team) {
-			//Add an option of that team before the other option
-			$('#teamSelect').find('option[name=other]').before("<option value='"
-				+team.handle
-				+"'>"
-				+team.name
-				+"</option>");
-		});
-	})
-	.fail(function(err) {
-		//Alert if cannot connect to the database
-		alert(err.responseText);
-	});
-	*/
 	$.get('http://www.airstadium.com/api/v1/teams?competition_id=premier-league&has_profile=true')
 		.done(function(data) {
 			$.each(data.teams, function(i, team) {
@@ -163,6 +145,7 @@ $(document).ready(function() {
 			});
 		})
 		.fail(function(err) {
-
+			$('#teamSelect').hide();
+			$("#otherInput").show();
 		});
 });
