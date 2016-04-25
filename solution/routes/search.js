@@ -394,7 +394,7 @@ function getDataFromDatabase(q, count, callback) {
 	pool.query('SELECT	tweets.id_str AS tweet_id,'
 				+'tweets.created_at AS created_at,'
 				+'tweets.text AS text,'
-				+'tweets.place_full_name AS place,'
+				+'tweets.place_full_name AS place_full_name,'
 				+'author.`name` AS `name`,'
 				+'author.screen_name AS screen_name,'
 				+'author.profile_image_url_https AS profile_image,'

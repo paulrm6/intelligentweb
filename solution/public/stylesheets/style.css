@@ -13,7 +13,7 @@ body {
 }
 /* SEARCH */
 
-section#search {
+section#search,section#hiddensearch {
     background-color: #0084b4;
     width: 100%;
     padding: 10px 0;
@@ -131,12 +131,17 @@ section#results #tweets {
     width: 500px;
     background-color: #f8f8ff;
     position: absolute;
+    height: calc( 100% - 37px );
+    overflow-y: scroll;
+
 }
 section#results #analysis {
     width: 500px;
     background-color: #f8f8ff;
     position: absolute;
     display: none;
+    height: calc( 100% - 37px );
+    overflow-y: scroll;
 }
 .error {
     text-align: center;
@@ -310,4 +315,18 @@ img.emoji {
     color:gray;
     padding: 2px;
     border: 1px gray solid;
+}
+
+#hideshow {
+    z-index: 1;
+    right:10px;
+    top:10px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    float: right;
+    color:white;
+    position: fixed;
+}
+#hideshow:hover {
+    color:#1DCAFF;
 }

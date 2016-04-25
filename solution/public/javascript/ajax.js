@@ -11,6 +11,7 @@ $(document).on("click", ".button", function () {
 	//When a button on the form is clicked to submit, check the validity of the form
 	var valid = $('#form')[0].checkValidity();
 	if(valid) {
+		hideSearch();
 		//If it's valid, fade in the loading cover
 		$('#cover').fadeIn(500);
 		//Initiate the collection of variables
@@ -187,7 +188,7 @@ function populateData(data) {
 	//Change any emojis into emojis on the page
 	emoji();
 	//Add markers to the map
-	//addMapMarkers(data.statuses);
+	addMapMarkers(data.statuses);
 	//Fade out the loading cover
 	$('#cover').fadeOut(500);
 	$('#tooltip').text("Database: "+data.metadata.database_results+", Twitter: "+data.metadata.twitter_results);
@@ -359,8 +360,7 @@ function initMap() {
 	geocoder = new google.maps.Geocoder();
 	var mapDiv = document.getElementById('map');
 	map = new google.maps.Map(mapDiv, {
-		center: {lat: 52.776186, lng: -1.713867},
-		zoom: 5
+		zoom: 4
 	});
 	google.maps.event.trigger(map, 'resize');
 }

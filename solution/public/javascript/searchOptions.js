@@ -157,3 +157,16 @@ function sortName(a,b) {
 	 : b.name > a.name ? -1
 	 : 0; 
 }
+
+
+$(document).on("click", "#hideshow", hideSearch);
+
+function hideSearch() {
+	if($('#search').is(":visible")) {
+		$('#hideshow').html("<i class='fa fa-plus fa-lg'></i> show the search bar");
+		$('#search').toggle(300);
+	} else {
+		$('#hideshow').html("<i class='fa fa-minus fa-lg'></i> hide the search bar");
+		$('#search').toggle(300);
+	}
+}
