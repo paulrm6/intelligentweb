@@ -149,7 +149,7 @@ function getListAndOrder(name) {
  */
 function callSearch(type, query) {
 	//Get the data from the search and either call error if there is an error, or populate the data
-	$.get('/search',{ q: query, type: type })
+	$.get('/search/'+type,{ q: query })
 		.done(populateData)
 		.fail(error);
 }

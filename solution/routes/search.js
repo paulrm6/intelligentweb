@@ -7,29 +7,28 @@ var pool = require('../private/sql');
  * @author Paul MacDonald
  */
 
-//Gets the query sent to it
-router.get('/', function(req, res, next){
+//If the request is to query twitter
+router.get('/twitter', function(req,res,next){
 	var q = req.query.q;
-	//Checks the type of query
-	if(req.query.type=="databaseQuery") {
-		//If query is only for database
-		databaseOnly(q, function(err,data) {
-			if(err) {
-				res.status(400).send(err);
-			} else {
-				res.send(data);
-			}
-		});
-	} else {
-		//If query is for twitter
-		databaseAndTwitter(q, function(err,data) {
-			if(err) {
-				res.status(400).send(err);
-			} else {
-				res.send(data);
-			}
-		});
-	}
+	databaseAndTwitter(q, function(err,data) {
+		if(err) {
+			res.status(400).send(err);
+		} else {
+			res.send(data);
+		}
+	});
+});
+
+//If the request is to query the database
+router.get('/database', function(req, res, next){
+	var q = req.query.q;
+	databaseOnly(q, function(err,data) {
+		if(err) {
+			res.status(400).send(err);
+		} else {
+			res.send(data);
+		}
+	});
 });
 
 /**
