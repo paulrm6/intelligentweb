@@ -122,15 +122,19 @@ function databaseOnly(q, callback) {
 	//Check if query is in database
 	getDataFromDatabase(q,0,function(status,data) {
 		if(status) {
-			//Send the data
-			var results = {
-				statuses: data,
-				metadata: {
-					database_results:data.length,
-					twitter_results:0
+			if(data.length==0) {
+				callback("No tweets were found in the database",undefined);
+			} else {
+				//Send the data
+				var results = {
+					statuses: data,
+					metadata: {
+						database_results:data.length,
+						twitter_results:0
+					}
 				}
+				callback(undefined,results);
 			}
-			callback(undefined,results);
 		} else {
 			callback(data,undefined);
 		}
@@ -144,8 +148,8 @@ function databaseOnly(q, callback) {
  */
 function databaseAndTwitter(sqlQ,twitQ, callback) {
 	getDataFromDatabase(sqlQ,0,function(dbStatus,databaseData) {
-		if(databaseData==undefined) {
-			recursiveTwitterQuery(q,"0",null,300,[],function(status,tweets) {
+		if(databaseData==0) {
+			recursiveTwitterQuery(twitQ,"0",null,300,[],function(status,tweets) {
 				if(status) {
 					var results = {
 						statuses: tweets,
@@ -489,25 +493,6 @@ function getDataFromDatabase(q, count, callback) {
 						callback(true,results);
 					}
 				});
-}
-
-/**
- * A function that checks to see if a query has been stored in the database before
- */
-function queryDatabase(q, callback) {
-	//Query the searches table in the database for any results with the right query
-	pool.query('SELECT * FROM searches WHERE `query` = "'+encodeURIComponent(q)+'"', function(err,result,fields) {
-		if(err) {
-			//If error, callback error
-			callback(false,"Error accessing the database");
-		} else if(result.length==0) {
-			//If no results then query is not in database
-			callback(false,"Query not in database, try changing the search options");
-		} else {
-			//Query is in database - return the metadata
-			callback(true,result);
-		}
-	});
 }
 
 module.exports = router;
