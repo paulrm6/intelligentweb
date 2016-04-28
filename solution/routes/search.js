@@ -8,26 +8,16 @@ var pool = require('../private/sql');
  */
 
 //If the request is to query twitter
-router.get('/twitter', function(req,res,next){
-	var q = req.query.q;
-	databaseAndTwitter(q, function(err,data) {
-		if(err) {
-			res.status(400).send(err);
-		} else {
-			res.send(data);
-		}
-	});
-});
-
-//If the request is to query the database
-router.get('/database', function(req, res, next){
-	var q = req.query.q;
-	databaseOnly(q, function(err,data) {
-		if(err) {
-			res.status(400).send(err);
-		} else {
-			res.send(data);
-		}
+router.post('/twitter', function(req,res){
+	var q = req.body;
+	queryParser(q, function(sqlQ, twitQ) {
+		databaseAndTwitter(sqlQ,twitQ, function(err,data) {
+			if(err) {
+				res.status(400).send(err);
+			} else {
+				res.send(data);
+			}
+		});
 	});
 });
 
@@ -152,14 +142,27 @@ function databaseOnly(q, callback) {
  * @param q the query for the database
  * @param res the response to the HTTP request
  */
-function databaseAndTwitter(q, callback) {
-	//Checks if the query is in the database
-	queryDatabase(q,function(status,meta_data) {
-		if(status) { //If it is
-			//Query twitter with the max id in the database (so as not to retrieve duplicates)
-			recursiveTwitterQuery(q,meta_data[0].max_id_str, null, 300,[], function(twitStatus, twitterData) {
-				//Get the most recent 200 tweets in the database
-				getDataFromDatabase(q,0,function(dbStatus,databaseData) {
+function databaseAndTwitter(sqlQ,twitQ, callback) {
+	getDataFromDatabase(sqlQ,0,function(dbStatus,databaseData) {
+		if(databaseData==undefined) {
+			recursiveTwitterQuery(q,"0",null,300,[],function(status,tweets) {
+				if(status) {
+					var results = {
+						statuses: tweets,
+						metadata: {
+							twitter_results:tweets.length,
+							database_results:0
+						}
+					}
+					callback(undefined,results);
+	        		insertData(twitQ,tweets);
+				} else {
+					callback(tweets,undefined);
+				}
+			});
+		} else {
+			getMaxID(databaseData, function(max_id) {
+				recursiveTwitterQuery(twitQ,max_id, null, 300,[], function(twitStatus, twitterData) {
 					if(twitStatus&&dbStatus) {
 						//If all okay with twitter query and db query, send the data concatenated
 						var results = {
@@ -170,7 +173,7 @@ function databaseAndTwitter(q, callback) {
 							}
 						}
 						callback(undefined,results);
-	        			insertData(q,twitterData);
+						insertData(twitQ,twitterData);
 					} else if(twitStatus) {
 						//Else send just the twitter data
 						var results = {
@@ -181,7 +184,7 @@ function databaseAndTwitter(q, callback) {
 							}
 						}
 						callback(undefined,results);
-	        			insertData(q,twitterData);
+						insertData(twitQ,twitterData);
 					} else if(dbStatus) {
 						//Else send just the database data
 						var results = {
@@ -198,23 +201,7 @@ function databaseAndTwitter(q, callback) {
 					}
 				});
 			});
-		} else { // If it isn't
-			//Start an initial query from twitter
-			recursiveTwitterQuery(q,"0",null,300,[],function(status,tweets) {
-				if(status) {
-					var results = {
-						statuses: tweets,
-						metadata: {
-							twitter_results:tweets.length,
-							database_results:0
-						}
-					}
-					callback(undefined,results);
-	        		insertData(q,tweets);
-				} else {
-					callback(tweets,undefined);
-				}
-			});
+			
 		}
 	});
 }
