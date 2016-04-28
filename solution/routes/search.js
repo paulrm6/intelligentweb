@@ -31,6 +31,92 @@ router.get('/database', function(req, res, next){
 	});
 });
 
+//If the request is to query the database
+router.post('/database', function(req, res){
+	var query = req.body;
+	queryParser(query, function(sqlQ, twitQ) {
+		console.log(sqlQ);
+		getDataFromDatabase2(sqlQ,100,function(status,data) {
+			var results = {
+						statuses: data,
+						metadata: {
+							database_results:data.length,
+							twitter_results:0
+						}
+					}
+					res.send(results);
+		})
+	});
+});
+
+function queryParser(q, callback) {
+	var sqlQ = "";
+	var twitQ = "";
+	if(q.team) {
+		sqlQ += '(author.screen_name LIKE "'+q.team.value+'"';
+		twitQ += "(from:"+q.team.value;
+		if(q.team.mentions == 'true') {
+			sqlQ += ' OR tweets.text LIKE "%@'+q.team.value+'%"';
+			twitQ += ' OR "@'+q.team.value+'"';
+		}
+		sqlQ += ") "+q.andor+" "
+		twitQ += ") "+q.andor+" "
+	}
+	if(q.players) {
+		sqlQ += "("
+		twitQ += "("
+		for(var int in q.players) {
+			var player = q.players[int];
+			sqlQ += "(author.screen_name LIKE `"+player.value+"`";
+			twitQ += "(from:"+player.value;
+			if(player.mentions == true) {
+				sqlQ += " OR tweets.text LIKE `%@"+player.value+"%`";
+				twitQ += ' OR "@'+player.value+'"';
+			}
+			sqlQ += ") "+q.playersandor+" "
+			twitQ += ") "+q.playersandor+" "
+		}
+		sqlQ = sqlQ.substring(0,sqlQ.length - q.playersandor.length-2);
+		twitQ = twitQ.substring(0,twitQ.length - q.playersandor.length-2);
+		sqlQ += ") "+q.andor+" "
+		twitQ += ") "+q.andor+" "
+	}
+	if(q.hashtags) {
+		sqlQ += "("
+		twitQ += "("
+		for(var int in q.hashtags) {
+			var hashtag = q.hashtags[int];
+			sqlQ += "tweets.text LIKE `%#"+hashtag.value+"%`";
+			twitQ += "#"+hashtag.value;
+			sqlQ += " "+q.hashtagsandor+" "
+			twitQ += " "+q.hashtagsandor+" "
+		}
+		sqlQ = sqlQ.substring(0,sqlQ.length - q.hashtagsandor.length-2);
+		twitQ = twitQ.substring(0,twitQ.length - q.hashtagsandor.length-2);
+		sqlQ += ") "+q.andor+" "
+		twitQ += ") "+q.andor+" "
+	}
+	if(q.keywords) {
+		sqlQ += "("
+		twitQ += "("
+		for(var int in q.keywords) {
+			var keyword = q.keywords[int];
+			sqlQ += "tweets.text LIKE `%"+keyword.value+"%`";
+			twitQ += ""+keyword.value;
+			sqlQ += " "+q.keywordsandor+" "
+			twitQ += " "+q.keywordsandor+" "
+		}
+		sqlQ = sqlQ.substring(0,sqlQ.length - q.keywordsandor.length-2);
+		twitQ = twitQ.substring(0,twitQ.length - q.keywordsandor.length-2);
+		sqlQ += ") "+q.andor+" "
+		twitQ += ") "+q.andor+" "
+	}
+	//console.log(q['players[]']);
+	sqlQ = sqlQ.substring(0,sqlQ.length - q.andor.length-2);
+	twitQ = twitQ.substring(0,twitQ.length - q.andor.length-2);
+	callback(sqlQ,twitQ);
+}
+
 /**
  * A function that provides database results only
  * @param q the query for the database
@@ -380,6 +466,46 @@ function month(month) {
 			return i+1;
 		}
 	}
+}
+
+/**
+ * A function that gets the data from the database
+ * @param q the twitter query
+ * @param count the number of tweets to return
+ */
+function getDataFromDatabase2(sqlQ, count, callback) {
+	//Query the database returning only relevant info for each tweet
+	var q = 'SELECT	tweets.id_str AS tweet_id,'
+				+'tweets.created_at AS created_at,'
+				+'tweets.text AS text,'
+				+'tweets.place_full_name AS place_full_name,'
+				+'author.`name` AS `name`,'
+				+'author.screen_name AS screen_name,'
+				+'author.profile_image_url_https AS profile_image,'
+				+'retweeted_user.`name` AS rt_name,'
+				+'retweeted_user.screen_name AS rt_screen_name,'
+				+'retweeted_user.profile_image_url_https AS rt_profile_image,'
+				+'GROUP_CONCAT(DISTINCT media.media_url_https) AS media '
+				+'FROM 	tweet_search_link '
+				+'INNER JOIN tweets ON tweet_search_link.tweet_id_str=tweets.id_str '
+				+'INNER JOIN users AS author ON tweets.user_id_str = author.id_str '
+				+'LEFT JOIN media ON media.tweet_id_str = tweets.id_str '
+				+'LEFT JOIN users AS retweeted_user ON tweets.retweeted_user_id_str = retweeted_user.id_str '
+				+'WHERE '+sqlQ
+				+'GROUP BY tweets.id_str '
+				+'ORDER BY tweets.date DESC '
+				+((count!=0) ? 'LIMIT '+count : '')
+	console.log(q);
+	pool.query(q
+				, function(err, results) {
+					//If there is an error
+					if(err) {
+						callback(false,results)
+					} else {
+						//Callback the results of the database query
+						callback(true,results);
+					}
+				});
 }
 
 /**

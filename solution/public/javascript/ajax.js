@@ -15,7 +15,8 @@ $(document).on("click", ".button", function () {
 		//If it's valid, fade in the loading cover
 		$('#cover').fadeIn(500);
 		//Initiate the collection of variables
-		getVariables(this.id);
+		//getVariables(this.id);
+		getVariables2(this.id);
 		//If it's the first time a search has been run
 		if(firstTime) {
 			//Slide down the results section ready for the results
@@ -26,6 +27,54 @@ $(document).on("click", ".button", function () {
 		$('<input type="submit">').hide().appendTo($('#form')).click().remove();
 	}
 });
+
+function getVariables2(type) {
+	var data = {};
+	if ($('#teamSearch').is(':checked')) {
+		data.team = {'mentions': 'false'}
+		data.team.value = $("#teamSelect").find(":selected").val();
+		if(data.team.value=="other") {
+			data.team.value = $("#teamInput").val();
+		}
+		if ($('#mentions').is(':checked')) {
+			data.team.mentions = 'true';
+		}
+	}
+	if ($('#playersSearch').is(':checked')) {
+		data.players = [];
+		$.each($("input[name=playerBox]"), function(i,value) {
+			data.players[i] = {
+				value: $(this).val()
+			}
+			if($(this).closest(".searchInput").find("#playerMentions").is(":checked")) {
+				data.players[i].mentions = true;
+			} else {
+				data.players[i].mentions = false;
+			}
+		});
+		data.playersandor = $("#players").find("select[name=andor]").find(":selected").val();
+	}
+	if ($('#hashtagSearch').is(':checked')) {
+		data.hashtags = [];
+		$.each($("input[name=hashtagBox]"), function(i,value) {
+			data.hashtags[i] = {
+				value: $(this).val()
+			}
+		});
+		data.hashtagsandor = $("#hashtag").find("select[name=andor]").find(":selected").val();
+	}
+	if ($('#keywordSearch').is(':checked')) {
+		data.keywords = [];
+		$.each($("input[name=keywordBox]"), function(i,value) {
+			data.keywords[i] = {
+				value: $(this).val()
+			}
+		});
+		data.keywordsandor = $("#keyword").find("select[name=andor]").find(":selected").val();
+	}
+	data.andor = $("#andOrToggle").val();
+	callSearch2(type,data);
+}
 
 /**
  * A function which creates the query from the inputs on the form
@@ -143,6 +192,20 @@ function getListAndOrder(name) {
 	return unordered.sort();
 }
 
+function callSearch2(type, data) {
+	$.ajax({
+		type: "POST",
+		url: '/search/'+type,
+		dataType: 'json',
+		contentType: 'application/json',
+		async: false,
+		data: JSON.stringify(data),
+		success: function(data2) {
+			populateData(data2);
+		}
+	})
+}
+
 /**
  * A function to get the data from the /search page
  * @param type the type of query, either database or twitter
@@ -173,6 +236,7 @@ function error(error) {
  * @param data the data containing tweets
  */
 function populateData(data) {
+	console.log(data);
 	//Empty the tweets and analysis divs so we don't keep old searches
 	$('#tweets,#analysis').empty();
 	//Reset the analysis variables so old searches don't affect it
