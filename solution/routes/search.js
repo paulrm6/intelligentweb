@@ -33,19 +33,15 @@ router.get('/database', function(req, res, next){
 
 //If the request is to query the database
 router.post('/database', function(req, res){
-	var query = req.body;
-	queryParser(query, function(sqlQ, twitQ) {
-		console.log(sqlQ);
-		getDataFromDatabase2(sqlQ,100,function(status,data) {
-			var results = {
-						statuses: data,
-						metadata: {
-							database_results:data.length,
-							twitter_results:0
-						}
-					}
-					res.send(results);
-		})
+	var q = req.body;
+	queryParser(q, function(sqlQ, twitQ) {
+		databaseOnly(sqlQ, function(err,data) {
+			if(err) {
+				res.status(400).send(err);
+			} else {
+				res.send(data);
+			}
+		});
 	});
 });
 
@@ -63,14 +59,17 @@ function queryParser(q, callback) {
 		twitQ += ") "+q.andor+" "
 	}
 	if(q.players) {
+		if(q.playersandor == undefined) {
+			q.playersandor = "";
+		}
 		sqlQ += "("
 		twitQ += "("
 		for(var int in q.players) {
 			var player = q.players[int];
-			sqlQ += "(author.screen_name LIKE `"+player.value+"`";
+			sqlQ += "(author.screen_name LIKE '"+player.value+"'";
 			twitQ += "(from:"+player.value;
 			if(player.mentions == true) {
-				sqlQ += " OR tweets.text LIKE `%@"+player.value+"%`";
+				sqlQ += " OR tweets.text LIKE '% @"+player.value+" %'";
 				twitQ += ' OR "@'+player.value+'"';
 			}
 			sqlQ += ") "+q.playersandor+" "
@@ -82,11 +81,14 @@ function queryParser(q, callback) {
 		twitQ += ") "+q.andor+" "
 	}
 	if(q.hashtags) {
+		if(q.hashtagsandor == undefined) {
+			q.hashtagsandor = "";
+		}
 		sqlQ += "("
 		twitQ += "("
 		for(var int in q.hashtags) {
 			var hashtag = q.hashtags[int];
-			sqlQ += "tweets.text LIKE `%#"+hashtag.value+"%`";
+			sqlQ += "tweets.text LIKE '% #"+hashtag.value+" %'";
 			twitQ += "#"+hashtag.value;
 			sqlQ += " "+q.hashtagsandor+" "
 			twitQ += " "+q.hashtagsandor+" "
@@ -97,11 +99,14 @@ function queryParser(q, callback) {
 		twitQ += ") "+q.andor+" "
 	}
 	if(q.keywords) {
+		if(q.keywordsandor == undefined) {
+			q.keywordsandor = "";
+		}
 		sqlQ += "("
 		twitQ += "("
 		for(var int in q.keywords) {
 			var keyword = q.keywords[int];
-			sqlQ += "tweets.text LIKE `%"+keyword.value+"%`";
+			sqlQ += 'tweets.text LIKE "% '+keyword.value+' %"';
 			twitQ += ""+keyword.value;
 			sqlQ += " "+q.keywordsandor+" "
 			twitQ += " "+q.keywordsandor+" "
@@ -114,6 +119,7 @@ function queryParser(q, callback) {
 	//console.log(q['players[]']);
 	sqlQ = sqlQ.substring(0,sqlQ.length - q.andor.length-2);
 	twitQ = twitQ.substring(0,twitQ.length - q.andor.length-2);
+	console.log(sqlQ);
 	callback(sqlQ,twitQ);
 }
 
@@ -124,26 +130,18 @@ function queryParser(q, callback) {
  */
 function databaseOnly(q, callback) {
 	//Check if query is in database
-	queryDatabase(q, function(status, data) {
-		if(status==true) {
-			//If query is in database get the most recent 300 tweets
-			getDataFromDatabase(q,0,function(status,data) {
-				if(status) {
-					//Send the data
-					var results = {
-						statuses: data,
-						metadata: {
-							database_results:data.length,
-							twitter_results:0
-						}
-					}
-					callback(undefined,results);
-				} else {
-					callback(data,undefined);
+	getDataFromDatabase(q,0,function(status,data) {
+		if(status) {
+			//Send the data
+			var results = {
+				statuses: data,
+				metadata: {
+					database_results:data.length,
+					twitter_results:0
 				}
-			});
+			}
+			callback(undefined,results);
 		} else {
-			//Query is not in databse, return an error and the reason for the browser to display
 			callback(data,undefined);
 		}
 	});
@@ -473,49 +471,7 @@ function month(month) {
  * @param q the twitter query
  * @param count the number of tweets to return
  */
-function getDataFromDatabase2(sqlQ, count, callback) {
-	//Query the database returning only relevant info for each tweet
-	var q = 'SELECT	tweets.id_str AS tweet_id,'
-				+'tweets.created_at AS created_at,'
-				+'tweets.text AS text,'
-				+'tweets.place_full_name AS place_full_name,'
-				+'author.`name` AS `name`,'
-				+'author.screen_name AS screen_name,'
-				+'author.profile_image_url_https AS profile_image,'
-				+'retweeted_user.`name` AS rt_name,'
-				+'retweeted_user.screen_name AS rt_screen_name,'
-				+'retweeted_user.profile_image_url_https AS rt_profile_image,'
-				+'GROUP_CONCAT(DISTINCT media.media_url_https) AS media '
-				+'FROM 	tweet_search_link '
-				+'INNER JOIN tweets ON tweet_search_link.tweet_id_str=tweets.id_str '
-				+'INNER JOIN users AS author ON tweets.user_id_str = author.id_str '
-				+'LEFT JOIN media ON media.tweet_id_str = tweets.id_str '
-				+'LEFT JOIN users AS retweeted_user ON tweets.retweeted_user_id_str = retweeted_user.id_str '
-				+'WHERE '+sqlQ
-				+'GROUP BY tweets.id_str '
-				+'ORDER BY tweets.date DESC '
-				+((count!=0) ? 'LIMIT '+count : '')
-	console.log(q);
-	pool.query(q
-				, function(err, results) {
-					//If there is an error
-					if(err) {
-						callback(false,results)
-					} else {
-						//Callback the results of the database query
-						callback(true,results);
-					}
-				});
-}
-
-/**
- * A function that gets the data from the database
- * @param q the twitter query
- * @param count the number of tweets to return
- */
 function getDataFromDatabase(q, count, callback) {
-	//Encode the query
-	q = encodeURIComponent(q);
 	//Query the database returning only relevant info for each tweet
 	pool.query('SELECT	tweets.id_str AS tweet_id,'
 				+'tweets.created_at AS created_at,'
@@ -533,7 +489,7 @@ function getDataFromDatabase(q, count, callback) {
 				+'INNER JOIN users AS author ON tweets.user_id_str = author.id_str '
 				+'LEFT JOIN media ON media.tweet_id_str = tweets.id_str '
 				+'LEFT JOIN users AS retweeted_user ON tweets.retweeted_user_id_str = retweeted_user.id_str '
-				+'WHERE tweet_search_link.searches_query="'+q+'" '
+				+'WHERE '+q
 				+'GROUP BY tweets.id_str '
 				+'ORDER BY tweets.date DESC '
 				+((count!=0) ? 'LIMIT '+count : '')

@@ -15,8 +15,7 @@ $(document).on("click", ".button", function () {
 		//If it's valid, fade in the loading cover
 		$('#cover').fadeIn(500);
 		//Initiate the collection of variables
-		//getVariables(this.id);
-		getVariables2(this.id);
+		getVariables(this.id);
 		//If it's the first time a search has been run
 		if(firstTime) {
 			//Slide down the results section ready for the results
@@ -28,7 +27,7 @@ $(document).on("click", ".button", function () {
 	}
 });
 
-function getVariables2(type) {
+function getVariables(type) {
 	var data = {};
 	if ($('#teamSearch').is(':checked')) {
 		data.team = {'mentions': 'false'}
@@ -73,109 +72,7 @@ function getVariables2(type) {
 		data.keywordsandor = $("#keyword").find("select[name=andor]").find(":selected").val();
 	}
 	data.andor = $("#andOrToggle").val();
-	callSearch2(type,data);
-}
-
-/**
- * A function which creates the query from the inputs on the form
- * @param type the type of search
- */
-function getVariables(type) {
-	//Create strings for each input section
-	var team = "";
-	var players = "";
-	var hashtag = "";
-	var keyword = "";
-	var query = "";
-	//Get the andor value for between each section
-	var andor = " "+$("#andOrToggle").val()+" ";;
-	//Get the team name (if it's enabled)
-	if ($('#teamSearch').is(':checked')) {
-		//Get the selected value for the select box
-		var teamname = $("#teamSelect").find(":selected").val();
-		//If it's other then get the value from the input box
-		if(teamname=="other") {
-			teamname = $("#teamInput").val();
-		}
-		//Add the team to the team string
-		team = '(from:'+teamname;
-		//If including mentions box is checked then include the mentions
-		if ($('#mentions').is(':checked')) {
-			team += ' OR "@'+teamname+'"';
-		}
-		team += ')'+andor;
-	}
-	//Get the players (if enabled)
-	if ($('#playersSearch').is(':checked')) {
-		//Get the andor value for between each players
-		var andorPlayers = $("#players").find("select[name=andor]").find(":selected").val();
-		//If it's undefined set it to nothing
-		if(andorPlayers == undefined) {
-			andorPlayers = "";
-		}
-		//Get the ordered list of players from the playerBox's
-		var orderedList = getListAndOrder("playerBox");
-		players = "(";
-		//For each ordered player
-		$.each(orderedList, function(i,value) {
-			//Add the player to the player string
-			players += '(from:'+value;
-			//Find the box after the input for this value and see if it's checked
-			if($("#players").find("input").filter(function() {
-				return this.value == value;
-			}).closest(".searchInput").find("#playerMentions").is(":checked")) {
-				//If so, include mentions
-				players += ' OR "@'+value+'"';
-			};
-			players += ") "+andorPlayers+" ";
-		});
-		//Remove the extra andor on the end of the string
-		players = players.substring(0,players.length - andorPlayers.length-2);
-		players += ')'+andor;
-	}
-	//Get the hashtags (if enabled)
-	if ($('#hashtagSearch').is(':checked')) {
-		//Get the andor value for between each hashtags
-		var andorHashtag = $("#hashtag").find("select[name=andor]").find(":selected").val();
-		//If it's undefined set it to nothing
-		if(andorHashtag == undefined) {
-			andorHashtag = "";
-		}
-		//Get the ordered list of hashtags from the hashtagBox's
-		var orderedList = getListAndOrder("hashtagBox");
-		hashtag = '(';
-		//For each ordered hashtag, insert the value into the hashtag string
-		$.each(orderedList, function(i,value) {
-			hashtag += '"#'+value+'" '+andorHashtag+" ";
-		});
-		//Remove the extra andor on the end of the string		
-		hashtag = hashtag.substring(0,hashtag.length - andorHashtag.length-2);
-		hashtag += ')'+andor;
-	}
-	//Get the keywords (if enabled)
-	if ($('#keywordSearch').is(':checked')) {
-		//Get the andor value for between each keywords
-		var andorKeyword = $("#keyword").find("select[name=andor]").find(":selected").val();
-		//If it's undefined set it to nothing
-		if(andorKeyword == undefined) {
-			andorKeyword = "";
-		}
-		//Get the ordered list of keywords from the keywordBox's
-		var orderedList = getListAndOrder("keywordBox");
-		keyword = '(';
-		//For each ordered keyword, insert the value into the keyword string
-		$.each(orderedList, function(i,value) {
-			keyword += '"'+value+'" '+andorKeyword+" ";
-		});
-		//Remove the extra andor on the end of the string	
-		keyword = keyword.substring(0,keyword.length - andorKeyword.length-2);
-		keyword += ')'+andor;
-	}
-	//Combine each section string together
-	query = team+players+hashtag+keyword;
-	query = query.substring(0,query.length - andor.length);
-	//Search for the query with the given type
-	callSearch(type, query);
+	callSearch(type,data);
 }
 
 /**
@@ -192,7 +89,7 @@ function getListAndOrder(name) {
 	return unordered.sort();
 }
 
-function callSearch2(type, data) {
+function callSearch(type, data) {
 	$.ajax({
 		type: "POST",
 		url: '/search/'+type,
@@ -200,22 +97,13 @@ function callSearch2(type, data) {
 		contentType: 'application/json',
 		async: false,
 		data: JSON.stringify(data),
-		success: function(data2) {
-			populateData(data2);
+		success: function(data) {
+			populateData(data);
+		},
+		error: function(data) {
+			error(data);
 		}
 	})
-}
-
-/**
- * A function to get the data from the /search page
- * @param type the type of query, either database or twitter
- * @param query the sorted query from the form
- */
-function callSearch(type, query) {
-	//Get the data from the search and either call error if there is an error, or populate the data
-	$.get('/search/'+type,{ q: query })
-		.done(populateData)
-		.fail(error);
 }
 
 /**
