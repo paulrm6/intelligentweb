@@ -149,23 +149,24 @@ Returns:
 function userWordCount(wordCount, user){
 
 	//If the user is not present in users, initialise 
-	if (!users[user]){
-		users[user] = {
+	if (!users[user.username]){
+		users[user.username] = {
 			numTweets:0,
 			wordList:{},
-			handle:user //May want to change this to the "@format"
+			handle:user.username, //May want to change this to the "@format"
+			picture:user.picture
 		};
 	}
 
-	users[user].numTweets += 1;
+	users[user.username].numTweets += 1;
 
 	Object.keys(wordCount).forEach(function(key,index) {
 
-		if (users[user].wordList[key]){
-			users[user].wordList[key] += wordCount[key];
+		if (users[user.username].wordList[key]){
+			users[user.username].wordList[key] += wordCount[key];
 		}
 		else {
-			users[user].wordList[key] = wordCount[key];
+			users[user.username].wordList[key] = wordCount[key];
 		}
 
 	});
@@ -184,23 +185,23 @@ function returnTopUsers(){
 	var topUsers = [];
 
 	for (user in users){
-		topUsers.push([users[user].handle,users[user].numTweets,users[user].wordList]);
+		topUsers.push(users[user]);
 	}
 
 	topUsers = topUsers.sort(function(a,b){
-							return b[1]-a[1];
+							return b.numTweets-a.numTweets;
 							})
 								.slice(0,10);
 
 
 	for (var i = 0; i<topUsers.length; i++){
-		topUsers[i][2] = sortWordCount(topUsers[i][2],numKeyWordsPerUser);
+		topUsers[i].wordList = sortWordCount(topUsers[i].wordList,numKeyWordsPerUser);
 	}
 
 
 	//If a user tweets only once then do not include them
 	for (var user = topUsers.length-1; user>-1;user--){
-		if (topUsers[user][1] == 1){
+		if (topUsers[user].numTweets == 1){
 			topUsers.pop();
 		}
 	}

@@ -20,6 +20,7 @@ $(document).on("click", ".button", function () {
 		if(firstTime) {
 			//Slide down the results section ready for the results
 			$("#results").show("slide",{direction:"up"},1000);
+			firstTime = false;
 		}
 	} else {
 		//Imitate a submit click on the form so the HTML5 valid checker with give errors to the user
@@ -75,27 +76,12 @@ function getVariables(type) {
 	callSearch(type,data);
 }
 
-/**
- * A function to get the input boxes with the same name and order their values alphabetically
- * @param name the name of the input boxes to find
- * @return the sorted list of values
- */
-function getListAndOrder(name) {
-	var unordered = [];
-	//For each input box with the name push the value to our list
-	$("input[name="+name+"]").each(function() {
-		unordered.push($(this).val());
-	});
-	return unordered.sort();
-}
-
 function callSearch(type, data) {
 	$.ajax({
 		type: "POST",
 		url: '/search/'+type,
 		dataType: 'json',
 		contentType: 'application/json',
-		async: false,
 		data: JSON.stringify(data),
 		success: function(data) {
 			populateData(data);
@@ -155,10 +141,16 @@ function populateData(data) {
 function addToAnalysis(tweet) {
 	//Get the tweets text and user screen name
 	var text = tweet.text;
-	var user = tweet.screen_name;
+	var username = tweet.screen_name;
+	var picture = tweet.profile_image;
 	//If it was a retweet take that information instead
 	if(tweet.rt_screen_name!=null) {
-		var user = tweet.rt_screen_name;
+		var username = tweet.rt_screen_name;
+		var picture = tweet.rt_profile_image;
+	}
+	var user = {
+		username: username,
+		picture: picture
 	}
 	//Count the words in the text
 	var wordCount = countWords(text);
@@ -266,20 +258,22 @@ function fillAnalysis() {
 	var topUsersHTML = "<div id='topUsers'><h2>Top 10 Users</h2>";
 	$.each(topUsers, function(i, topUser) {
 		//Fill the string with each top user and their info
-		topUsersHTML += "<div class='userBox'>"
+		topUsersHTML += "<div class='userBox'><img class='profile' src='"
+			+topUser.picture
+			+"'/>"
 			+"<div class='userHandle'>@"
-			+topUser[0]
+			+topUser.handle
 			+"</div><div class='noOfTweets'>tweeted <span>"
-			+topUser[1]
+			+topUser.numTweets
 			+"<span> times</div><div>Most frequent words:</div><div class='keywords'>";
 		//For each possible keyword (max 5)
 		for(var keyword=0;keyword<5;keyword++){
 			//If the keyword exists then add it to the HTML
-			if(topUser[2][keyword] != undefined) {
+			if(topUser.wordList[keyword] != undefined) {
 				topUsersHTML += "<div class='keyword'>"
-					+topUser[2][keyword][0]
+					+topUser.wordList[keyword][0]
 					+" ("
-					+topUser[2][keyword][1]
+					+topUser.wordList[keyword][1]
 					+")</div>";
 			}
 		}

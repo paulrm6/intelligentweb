@@ -148,7 +148,7 @@ function databaseOnly(q, callback) {
  */
 function databaseAndTwitter(sqlQ,twitQ, callback) {
 	getDataFromDatabase(sqlQ,0,function(dbStatus,databaseData) {
-		if(databaseData==0) {
+		if(!dbStatus || databaseData==0) {
 			recursiveTwitterQuery(twitQ,"0",null,300,[],function(status,tweets) {
 				if(status) {
 					var results = {
