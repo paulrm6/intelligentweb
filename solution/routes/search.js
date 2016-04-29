@@ -106,10 +106,8 @@ function queryParser(q, callback) {
 		sqlQ += ") "+q.andor+" "
 		twitQ += ") "+q.andor+" "
 	}
-	//console.log(q['players[]']);
 	sqlQ = sqlQ.substring(0,sqlQ.length - q.andor.length-2);
 	twitQ = twitQ.substring(0,twitQ.length - q.andor.length-2);
-	console.log(sqlQ);
 	callback(sqlQ,twitQ);
 }
 
@@ -487,7 +485,7 @@ function getDataFromDatabase(q, count, callback) {
 				, function(err, results) {
 					//If there is an error
 					if(err) {
-						callback(false,results)
+						callback(false,"There was an error connecting to the Database")
 					} else {
 						//Callback the results of the database query
 						callback(true,results);

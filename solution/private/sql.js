@@ -13,7 +13,8 @@ var pool = mysql.createPool({
 	database	: 'aca13prm',
     connectionLimit: 25,
     queueLimit: 5000,
-    charset		: 'utf8mb4'
+    charset		: 'utf8mb4',
+    acquireTimeout: 2000
 });
 
 module.exports = pool;
