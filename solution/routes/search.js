@@ -7,14 +7,18 @@ var pool = require('../private/sql');
  * @author Paul MacDonald
  */
 
-//If the request is to query twitter
+//If the request is to query twitter and the database (as a cache)
 router.post('/twitter', function(req,res){
-	var q = req.body;
-	queryParser(q, function(sqlQ, twitQ) {
+	//Parse the post data through queryParser to get sql and twitter strings
+	queryParser(req.body, function(sqlQ, twitQ) {
+		//Call databaseAndTwitter to retrieve the relevent data
 		databaseAndTwitter(sqlQ,twitQ, function(err,data) {
+			//If there is an error
 			if(err) {
+				//Give a server error status and send error text
 				res.status(400).send(err);
 			} else {
+				//Send the data
 				res.send(data);
 			}
 		});
@@ -23,12 +27,16 @@ router.post('/twitter', function(req,res){
 
 //If the request is to query the database
 router.post('/database', function(req, res){
-	var q = req.body;
-	queryParser(q, function(sqlQ, twitQ) {
+	//Parse the post data through queryParser to get sql and twitter strings
+	queryParser(req.body, function(sqlQ, twitQ) {
+		//Call databaseOnly to retrieve the relevent data
 		databaseOnly(sqlQ, function(err,data) {
+			//If there is an error
 			if(err) {
+				//Give a server error status and send error text
 				res.status(400).send(err);
 			} else {
+				//Send the data
 				res.send(data);
 			}
 		});
@@ -36,7 +44,7 @@ router.post('/database', function(req, res){
 });
 
 function queryParser(q, callback) {
-	var sqlQ = "";
+	var sqlQ = '';
 	var twitQ = "";
 	if(q.team) {
 		sqlQ += '(author.screen_name LIKE "'+q.team.value+'"';
@@ -118,8 +126,8 @@ function queryParser(q, callback) {
  */
 function databaseOnly(q, callback) {
 	//Check if query is in database
-	getDataFromDatabase(q,0,function(status,data) {
-		if(status) {
+	getDataFromDatabase(q,0,function(err,data) {
+		if(!err) {
 			if(data.length==0) {
 				callback("No tweets were found in the database",undefined);
 			} else {
@@ -134,7 +142,7 @@ function databaseOnly(q, callback) {
 				callback(undefined,results);
 			}
 		} else {
-			callback(data,undefined);
+			callback(err,undefined);
 		}
 	});
 }
@@ -145,27 +153,27 @@ function databaseOnly(q, callback) {
  * @param res the response to the HTTP request
  */
 function databaseAndTwitter(sqlQ,twitQ, callback) {
-	getDataFromDatabase(sqlQ,0,function(dbStatus,databaseData) {
-		if(!dbStatus || databaseData==0) {
-			recursiveTwitterQuery(twitQ,"0",null,300,[],function(status,tweets) {
-				if(status) {
+	getDataFromDatabase(sqlQ,0,function(dberr,databaseData) {
+		if(dberr) {
+			getDataFromTwitter(twitQ,"0",null,300,[],function(twiterr,twitterData) {
+				if(!twiterr) {
 					var results = {
-						statuses: tweets,
+						statuses: twitterData,
 						metadata: {
-							twitter_results:tweets.length,
+							twitter_results:twitterData.length,
 							database_results:0
 						}
 					}
 					callback(undefined,results);
-	        		insertData(twitQ,tweets);
+	        		insertData(twitQ,twitterData);
 				} else {
-					callback(tweets,undefined);
+					callback(twiterr+" <br /> "+dberr,undefined);
 				}
 			});
 		} else {
 			getMaxID(databaseData, function(max_id) {
-				recursiveTwitterQuery(twitQ,max_id, null, 300,[], function(twitStatus, twitterData) {
-					if(twitStatus&&dbStatus) {
+				getDataFromTwitter(twitQ,max_id, null, 300,[], function(twiterr, twitterData) {
+					if(!twiterr) {
 						//If all okay with twitter query and db query, send the data concatenated
 						var results = {
 							statuses: twitterData.concat(databaseData),
@@ -176,18 +184,7 @@ function databaseAndTwitter(sqlQ,twitQ, callback) {
 						}
 						callback(undefined,results);
 						insertData(twitQ,twitterData);
-					} else if(twitStatus) {
-						//Else send just the twitter data
-						var results = {
-							statuses: twitterData,
-							metadata: {
-								database_results:0,
-								twitter_results:twitterData.length
-							}
-						}
-						callback(undefined,results);
-						insertData(twitQ,twitterData);
-					} else if(dbStatus) {
+					} else {
 						//Else send just the database data
 						var results = {
 							statuses: databaseData,
@@ -197,9 +194,6 @@ function databaseAndTwitter(sqlQ,twitQ, callback) {
 							}
 						}
 						callback(undefined,results);
-					} else {
-						//Else give an error
-						callback(twitterData+" "+databaseData,undefined);
 					}
 				});
 			});
@@ -316,7 +310,7 @@ function insertData(q, data) {
 }
 
 
-function recursiveTwitterQuery(q, since_id, max_id, max_no, data, callback) {
+function getDataFromTwitter(q, since_id, max_id, max_no, data, callback) {
 	if(max_no==0 || data.length < max_no) {
 		//Set up parameters for the twitter query
 		var params = {
@@ -334,24 +328,22 @@ function recursiveTwitterQuery(q, since_id, max_id, max_no, data, callback) {
 	        function(err, twitterData, response) {
 	        	if(err) {
 	        		//If there is an error then callback that there was an error
-	        		console.log(err);
-	        		callback(false,"There was an error with the Twitter query");
+	        		callback("There was an error with the Twitter query",undefined);
 	        	} else {
 	        		//If there is one or more tweets returned
 	        		if(twitterData.statuses.length==0 || (twitterData.statuses.length==1 && twitterData.statuses[0].id_str==max_id)) {
 	        			if(data.length>0) {
 	        				//Data has been returned, but not this time
 	        				convertTwitterData(data,function(newData) {
-	        					callback(true,newData);
+	        					callback(undefined,newData);
 	        				});
 	        			} else {
-	        				callback(false,"No tweets were found");
+	        				callback("No tweets were found",undefined);
 	        			}
 	        		} else {
 	        			getSinceID(twitterData.statuses, function(newMaxID) {
 	        				newData = data.concat(twitterData.statuses);
-	        				recursiveTwitterQuery(q,since_id,newMaxID,max_no,newData,callback);
-
+	        				getDataFromTwitter(q,since_id,newMaxID,max_no,newData,callback);
 	        			});
 	        		}
 	        	}
@@ -359,7 +351,7 @@ function recursiveTwitterQuery(q, since_id, max_id, max_no, data, callback) {
 		);
 	} else {
 		convertTwitterData(data.slice(0,max_no),function(newData) {
-			callback(true,newData);
+			callback(undefined,newData);
 		});
 	}
 }
@@ -478,17 +470,19 @@ function getDataFromDatabase(q, count, callback) {
 				+'INNER JOIN users AS author ON tweets.user_id_str = author.id_str '
 				+'LEFT JOIN media ON media.tweet_id_str = tweets.id_str '
 				+'LEFT JOIN users AS retweeted_user ON tweets.retweeted_user_id_str = retweeted_user.id_str '
-				+'WHERE '+q
+				+((q.length > 0) ? 'WHERE '+q : 'WHERE "true"="false"')
 				+'GROUP BY tweets.id_str '
 				+'ORDER BY tweets.date DESC '
 				+((count!=0) ? 'LIMIT '+count : '')
 				, function(err, results) {
 					//If there is an error
 					if(err) {
-						callback(false,"There was an error connecting to the Database")
-					} else {
+						callback("There was an error connecting to the Database",undefined)
+					} else if(results!=0) {
 						//Callback the results of the database query
-						callback(true,results);
+						callback(undefined,results);
+					} else {
+						callback("No tweets were found in the database",undefined);
 					}
 				});
 }
