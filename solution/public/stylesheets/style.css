@@ -330,3 +330,7 @@ img.emoji {
 #hideshow:hover {
     color:#1DCAFF;
 }
+.MarkerPopUp {
+    height: 300px !important;
+    width: 300px !important;
+}

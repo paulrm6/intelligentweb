@@ -52,7 +52,7 @@ function getVariables(type) {
 				data.players[i].mentions = false;
 			}
 		});
-		data.playersandor = $("#players").find("select[name=andor]").find(":selected").val();
+		data.playersandor = $("#players").find("select[name=andor]").find(":selected").val() || "null";
 	}
 	if ($('#hashtagSearch').is(':checked')) {
 		data.hashtags = [];
@@ -61,7 +61,7 @@ function getVariables(type) {
 				value: $(this).val()
 			}
 		});
-		data.hashtagsandor = $("#hashtag").find("select[name=andor]").find(":selected").val();
+		data.hashtagsandor = $("#hashtag").find("select[name=andor]").find(":selected").val() || "null";
 	}
 	if ($('#keywordSearch').is(':checked')) {
 		data.keywords = [];
@@ -70,7 +70,7 @@ function getVariables(type) {
 				value: $(this).val()
 			}
 		});
-		data.keywordsandor = $("#keyword").find("select[name=andor]").find(":selected").val();
+		data.keywordsandor = $("#keyword").find("select[name=andor]").find(":selected").val() || "null";
 	}
 	data.andor = $("#andOrToggle").val();
 	callSearch(type,data);
@@ -110,7 +110,6 @@ function error(error) {
  * @param data the data containing tweets
  */
 function populateData(data) {
-	console.log(data);
 	//Empty the tweets and analysis divs so we don't keep old searches
 	$('#tweets,#analysis').empty();
 	//Reset the analysis variables so old searches don't affect it
@@ -141,13 +140,9 @@ function populateData(data) {
 function addToAnalysis(tweet) {
 	//Get the tweets text and user screen name
 	var text = tweet.text;
-	var username = tweet.screen_name;
-	var picture = tweet.profile_image;
+	var username = tweet.rt_screen_name || tweet.screen_name;
+	var picture = tweet.rt_profile_image || tweet.profile_image;
 	//If it was a retweet take that information instead
-	if(tweet.rt_screen_name!=null) {
-		var username = tweet.rt_screen_name;
-		var picture = tweet.rt_profile_image;
-	}
 	var user = {
 		username: username,
 		picture: picture
@@ -327,6 +322,16 @@ function addMapMarkers(data){
 						position: results[0].geometry.location,
 						title: tweet.text
 					});
+	                var infoWindow = new google.maps.InfoWindow({
+	                    content: "<div style=\"width: 350px; height:70px\">"
+	                    +"<img src='"+tweet.profile_image+"'/>"
+	                    +"@"+tweet.screen_name+" - "+tweet.text+"</div>",
+	                    maxWidth: 500,
+	                    minHeight: 300
+	                });
+	                marker.addListener('click',function() {
+	                    infoWindow.open(map,marker);
+	                });
 				}
 			});
 		}

@@ -22,6 +22,7 @@ var totalHashtags = {}
 function analysisReset() {
 	totalCount = {};
 	users = {};
+	totalHashtags = {}
 }
 
 /*

@@ -5,6 +5,7 @@ var express = require('express');
 var router = express.Router();
 var twitter = require('../private/twit');
 var pool = require('../private/sql');
+var bigInt = require("big-integer");
 //If the request is to query twitter and the database (as a cache)
 router.post('/twitter', function(req, res) {
 	//Parse the post data through queryParser to get sql and twitter strings
@@ -67,68 +68,77 @@ function queryParser(q, callback) {
 	}
 	//If there is a player(s) specified
 	if (q.players) {
-		
-		if (q.playersandor === undefined) {
-			q.playersandor = "";
-		}
+		//Open players statement
 		sqlQ += "(";
 		twitQ += "(";
+		//For every player
 		for (var int in q.players) {
 			var player = q.players[int];
+			//Add the player handle to each query as author
 			sqlQ += "(author.screen_name LIKE ' " + player.value + " '";
 			twitQ += "(from:" + player.value;
+			//If we're searching for mentions to
 			if (player.mentions === true) {
+				//Add the player handle to each query as mentions
 				sqlQ += " OR tweets.text LIKE '% @" + player.value + " %'";
 				twitQ += ' OR "@' + player.value + '"';
 			}
 			sqlQ += ") " + q.playersandor + " ";
 			twitQ += ") " + q.playersandor + " ";
 		}
+		//Remove the last and/or from each string
 		sqlQ = sqlQ.substring(0, sqlQ.length - q.playersandor.length - 2);
 		twitQ = twitQ.substring(0, twitQ.length - q.playersandor.length - 2);
+		//Close the players statement
 		sqlQ += ") " + q.andor + " ";
 		twitQ += ") " + q.andor + " ";
 	}
 	//If there is a hastag(s) specified
 	if (q.hashtags) {
-		if (q.hashtagsandor === undefined) {
-			q.hashtagsandor = "";
-		}
+		//Open the hashtags statement
 		sqlQ += "(";
 		twitQ += "(";
+		//For every hashtag
 		for (var int in q.hashtags) {
 			var hashtag = q.hashtags[int];
-			sqlQ += "tweets.text LIKE '% #" + hashtag.value + " %'";
+			//Add the hashtag to each query
+			sqlQ += "tweets.text LIKE '%#" + hashtag.value + "%'";
 			twitQ += "\"#" + hashtag.value + "\"";
 			sqlQ += " " + q.hashtagsandor + " "
 			twitQ += " " + q.hashtagsandor + " "
 		}
+		//Remove the last and/or from each string
 		sqlQ = sqlQ.substring(0, sqlQ.length - q.hashtagsandor.length - 2);
 		twitQ = twitQ.substring(0, twitQ.length - q.hashtagsandor.length - 2);
+		//Close the hashtags statement
 		sqlQ += ") " + q.andor + " ";
 		twitQ += ") " + q.andor + " ";
 	}
 	//If there is a keyword(s) specified
 	if (q.keywords) {
-		if (q.keywordsandor === undefined) {
-			q.keywordsandor = "";
-		}
+		//Open the keywords statement
 		sqlQ += "(";
 		twitQ += "(";
+		//For each keyword
 		for (var int in q.keywords) {
 			var keyword = q.keywords[int];
-			sqlQ += 'tweets.text LIKE "% ' + keyword.value + ' %"';
+			//Add the keyword to each query
+			sqlQ += 'tweets.text LIKE "%' + keyword.value + '%"';
 			twitQ += "\"" + keyword.value + "\"";
 			sqlQ += " " + q.keywordsandor + " "
 			twitQ += " " + q.keywordsandor + " "
 		}
+		//Remove the last and/or from each string
 		sqlQ = sqlQ.substring(0, sqlQ.length - q.keywordsandor.length - 2);
 		twitQ = twitQ.substring(0, twitQ.length - q.keywordsandor.length - 2);
+		//Close they keywords statement
 		sqlQ += ") " + q.andor + " "
 		twitQ += ") " + q.andor + " "
 	}
+	//Remove the last and/or from each string
 	sqlQ = sqlQ.substring(0, sqlQ.length - q.andor.length - 2);
 	twitQ = twitQ.substring(0, twitQ.length - q.andor.length - 2);
+	//Callback with each string
 	callback(sqlQ, twitQ);
 }
 /**
@@ -137,46 +147,57 @@ function queryParser(q, callback) {
  * @param {string} mysql WHERE string
  * @param {string} twitter query string
  */
+
 /**
  * A function that provides database results only
- * @param q the query for the database
- * @param res the response to the HTTP request
+ * @param {string} sqlQ the WHERE string for the database
+ * @param {err-data} callback the callback function
  */
-
-function databaseOnly(q, callback) {
+function databaseOnly(sqlQ, callback) {
 	//Check if query is in database
-	getDataFromDatabase(q, 0, function(err, data) {
+	getDataFromDatabase(sqlQ, 0, function(err, data) {
+		//If there was no error
 		if (!err) {
-			if (data.length == 0) {
-				callback("No tweets were found in the database", undefined);
-			} else {
-				//Send the data
-				var results = {
-					statuses: data,
-					metadata: {
-						database_results: data.length,
-						twitter_results: 0
-					}
+			//Send the data
+			var results = {
+				statuses: data,
+				metadata: {
+					database_results: data.length,
+					twitter_results: 0
 				}
-				callback(undefined, results);
 			}
+			callback(undefined, results);
 		} else {
+			//Send the error
 			callback(err, undefined);
 		}
 	});
 }
 /**
+ * This global callback provides an error/data response
+ * @callback err-data
+ * @param {string} an error message or undefined if no error
+ * @param {object|string} data of successful function
+ */
+
+/**
  * A function that provides twitter and, if available, database results
- * @param q the query for the database
- * @param res the response to the HTTP request
+ * @param {string} sqlQ the WHERE string for the database
+ * @param {string} twitQ the twitter query
+ * @param {err-data} callback the callback function
  */
 
 function databaseAndTwitter(sqlQ, twitQ, callback) {
+	//Get the data from the database
 	getDataFromDatabase(sqlQ, 0, function(dberr, databaseData) {
+		//If there was a database error
 		if (dberr) {
+			//Create an initial query from twitter (max 300)
 			getDataFromTwitter(twitQ, "0", null, 300, [], function(twiterr,
 				twitterData) {
+				//If there is no error
 				if (!twiterr) {
+					//Send the data
 					var results = {
 						statuses: twitterData,
 						metadata: {
@@ -185,17 +206,22 @@ function databaseAndTwitter(sqlQ, twitQ, callback) {
 						}
 					}
 					callback(undefined, results);
-					insertData(twitQ, twitterData);
+					//Insert the data into the database
+					insertData(twitterData);
 				} else {
+					//Send both errors
 					callback(twiterr + " <br /> " + dberr, undefined);
 				}
 			});
 		} else {
+			//Get the maximum twitter id in the tweets from the database
 			getMaxID(databaseData, function(max_id) {
+				//Get the most recent tweets (since the ones in the db) from twitter (max 300)
 				getDataFromTwitter(twitQ, max_id, null, 300, [], function(twiterr,
 					twitterData) {
+					//If there is no error
 					if (!twiterr) {
-						//If all okay with twitter query and db query, send the data concatenated
+						//Send the database and twitter data concatenated
 						var results = {
 							statuses: twitterData.concat(databaseData),
 							metadata: {
@@ -204,9 +230,10 @@ function databaseAndTwitter(sqlQ, twitQ, callback) {
 							}
 						}
 						callback(undefined, results);
-						insertData(twitQ, twitterData);
+						//Insert the new data into the database
+						insertData(twitterData);
 					} else {
-						//Else send just the database data
+						//Send just the database data
 						var results = {
 							statuses: databaseData,
 							metadata: {
@@ -223,128 +250,97 @@ function databaseAndTwitter(sqlQ, twitQ, callback) {
 }
 /**
  * A function to insert data into the database
- * @param q the query used to query twitter
- * @param the data returned by twitter (in  reduced format)
- * @param the meta_data returned from the twitter query
+ * @param the data returned by twitter
  */
 
-function insertData(q, data) {
-	//Encode the query
-	q = encodeURIComponent(q);
-	//Create an object of the data to insert into the searches table
-	getMaxID(data, function(max_id) {
-		var searchesData = {
-			query: q,
-			max_id_str: max_id
-		};
-		//Insert the searches data into the searches table, on duplicate keys update the information
-		pool.query(
-			'INSERT INTO searches SET ? ON DUPLICATE KEY UPDATE max_id_str=VALUES(max_id_str)',
-			searchesData,
-			function(err, res1) {
+function insertData(data) {
+	//Iterate through the data
+	for (var j = 0; j < data.length; j++) {
+		(function(i) {
+			var tweet = data[i];
+			//Get a connection to the database from the pool
+			pool.getConnection(function(err, database) {
 				//If there is an error, throw it
 				if (!err) {
-					//Iterate through the data
-					for (var j = 0; j < data.length; j++) {
-						(function(i) {
-							var tweet = data[i];
-							//Get a connection to the database from the pool
-							pool.getConnection(function(err, database) {
-								//If there is an error, throw it
-								if (!err) {
-									//Get the datetime in a format YYYY-MM-DD HH:mm:SS to insert into the database
-									var time = tweet.created_at_original.split(' ');
-									var datetime = time[5] + "-" + month(time[1]) + "-" + time[2] +
-										" " + time[3];
-									//Create an object for the tweet data to insert
-									var tweetData = {
-											id_str: tweet.tweet_id,
-											created_at: tweet.created_at,
-											text: tweet.text,
-											place_full_name: tweet.place_full_name,
-											user_id_str: tweet.user_id,
-											retweeted_user_id_str: tweet.rt_id,
-											date: datetime
-										}
-										//Create a array for the userdata (as there could be two per tweet)
-									var userData = []
-										//Add the data for the normal user
-									userData.push([
-										tweet.user_id,
-										tweet.name,
-										tweet.screen_name,
-										tweet.profile_image
-									]);
-									//If the tweet was retweeted, add the retweeted users info
-									if (tweet.rt_id) {
-										userData.push([
-											tweet.rt_id,
-											tweet.rt_name,
-											tweet.rt_screen_name,
-											tweet.rt_profile_image
-										]);
-									}
-									//Create a array for the media (as there could be multiple per tweet)					
-									var media = []
-										//If there is media
-									if (tweet.media != null) {
-										//Split the media (comma seperated)
-										tempList = tweet.media.split(",");
-										//For the list of media, iterate through it
-										for (var k = 0; k < tempList.length; k++) {
-											//Push an object to the media array
-											media.push([tempList[k], "photo", tweet.tweet_id]);
-										}
-									}
-									//Create an object for the data to be inserted into tweet_search_link
-									var tweetLinkData = {
-											tweet_id_str: tweet.tweet_id,
-											searches_query: q
-										}
-										//Insert all the data one after the other (as foreign keys are in operation)
-									database.query(
-										'INSERT INTO users (id_str,name,screen_name,profile_image_url_https) VALUES ? ' +
-										'ON DUPLICATE KEY UPDATE name=VALUES(name),screen_name=VALUES(screen_name),profile_image_url_https=VALUES(profile_image_url_https)', [
-											userData
-										],
-										function(err, res2) {
-											if (!err) {
-												database.query(
-													'INSERT INTO tweets SET ? ON DUPLICATE KEY UPDATE id_str=id_str',
-													tweetData,
-													function(err, res3) {
-														if (!err) {
-															database.query(
-																'INSERT INTO tweet_search_link SET ? ON DUPLICATE KEY UPDATE tweet_id_str=tweet_id_str',
-																tweetLinkData,
-																function(err, res4) {
-																	//release this database connection as it may not be needed for media
-																	database.release();
-																	if (!err) {
-																		if (media.length != 0) {
-																			//use a new database connection for the media
-																			pool.query(
-																				'INSERT INTO media (media_url_https,type,tweet_id_str) VALUES ? ' +
-																				'ON DUPLICATE KEY UPDATE tweet_id_str=tweet_id_str', [
-																					media
-																				]);
-																		}
-																	}
-																});
-														}
-													});
-											}
-										});
-								}
-							});
-						})(j);
+					//Get the datetime in a format YYYY-MM-DD HH:mm:SS to insert into the database
+					var time = tweet.created_at_original.split(' ');
+					var datetime = time[5] + "-" + month(time[1]) + "-" + time[2] +
+						" " + time[3];
+					//Create an object for the tweet data to insert
+					var tweetData = {
+							id_str: tweet.tweet_id,
+							created_at: tweet.created_at,
+							text: tweet.text,
+							place_full_name: tweet.place_full_name,
+							user_id_str: tweet.user_id,
+							retweeted_user_id_str: tweet.rt_id,
+							date: datetime
+						}
+						//Create a array for the userdata (as there could be two per tweet)
+					var userData = []
+						//Add the data for the normal user
+					userData.push([
+						tweet.user_id,
+						tweet.name,
+						tweet.screen_name,
+						tweet.profile_image
+					]);
+					//If the tweet was retweeted, add the retweeted users info
+					if (tweet.rt_id) {
+						userData.push([
+							tweet.rt_id,
+							tweet.rt_name,
+							tweet.rt_screen_name,
+							tweet.rt_profile_image
+						]);
 					}
+					//Create a array for the media (as there could be multiple per tweet)					
+					var media = []
+						//If there is media
+					if (tweet.media != null) {
+						//Split the media (comma seperated)
+						tempList = tweet.media.split(",");
+						//For the list of media, iterate through it
+						for (var k = 0; k < tempList.length; k++) {
+							//Push an object to the media array
+							media.push([tempList[k], "photo", tweet.tweet_id]);
+						}
+					}
+						//Insert all the data one after the other (as foreign keys are in operation)
+					database.query(
+						'INSERT INTO users (id_str,name,screen_name,profile_image_url_https) VALUES ? ' +
+						'ON DUPLICATE KEY UPDATE name=VALUES(name),screen_name=VALUES(screen_name),profile_image_url_https=VALUES(profile_image_url_https)', [
+							userData
+						],
+						function(err, res2) {
+							if (!err) {
+								database.query(
+									'INSERT INTO tweets SET ? ON DUPLICATE KEY UPDATE id_str=id_str',
+									tweetData,
+									function(err, res3) {
+										if (!err) {
+											//release this database connection as it may not be needed for media
+											database.release();
+											if (media.length != 0) {
+												//use a new database connection for the media
+												pool.query(
+													'INSERT INTO media (media_url_https,type,tweet_id_str) VALUES ? ' +
+													'ON DUPLICATE KEY UPDATE tweet_id_str=tweet_id_str', [media]);
+											}
+										}
+									}
+								);
+							}
+						}
+					);
 				}
 			});
-	});
+		})(j);
+	}
 }
 
 function getDataFromTwitter(q, since_id, max_id, max_no, data, callback) {
+	console.log(since_id);
 	if (max_no == 0 || data.length < max_no) {
 		//Set up parameters for the twitter query
 		var params = {
@@ -376,6 +372,7 @@ function getDataFromTwitter(q, since_id, max_id, max_no, data, callback) {
 					}
 				} else {
 					getSinceID(twitterData.statuses, function(newMaxID) {
+						newMaxID = bigInt(newMaxID).add(-1).toString();
 						newData = data.concat(twitterData.statuses);
 						getDataFromTwitter(q, since_id, newMaxID, max_no, newData, callback);
 					});
@@ -497,8 +494,7 @@ function getDataFromDatabase(q, count, callback) {
 		'retweeted_user.screen_name AS rt_screen_name,' +
 		'retweeted_user.profile_image_url_https AS rt_profile_image,' +
 		'GROUP_CONCAT(DISTINCT media.media_url_https) AS media ' +
-		'FROM 	tweet_search_link ' +
-		'INNER JOIN tweets ON tweet_search_link.tweet_id_str=tweets.id_str ' +
+		'FROM 	tweets ' +
 		'INNER JOIN users AS author ON tweets.user_id_str = author.id_str ' +
 		'LEFT JOIN media ON media.tweet_id_str = tweets.id_str ' +
 		'LEFT JOIN users AS retweeted_user ON tweets.retweeted_user_id_str = retweeted_user.id_str ' +
@@ -508,6 +504,7 @@ function getDataFromDatabase(q, count, callback) {
 		function(err, results) {
 			//If there is an error
 			if (err) {
+				console.log(err)
 				callback("There was an error connecting to the Database", undefined)
 			} else if (results != 0) {
 				//Callback the results of the database query
