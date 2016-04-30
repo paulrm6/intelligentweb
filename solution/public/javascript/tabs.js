@@ -29,3 +29,18 @@ $(document).on("click", "#tweetsTabSelector", function () {
 	google.maps.event.trigger(map, 'resize');
 	map.setCenter(new google.maps.LatLng(53.381, -1.470))
 });
+
+$(document).on("click", "#twitterBtn", function () {
+	$('#menu').fadeOut(100);
+	$('#searchTwitter').delay(100).fadeIn(100);
+});
+
+$(document).on("click", "#reportBtn", function () {
+	$('#menu').fadeOut(100);
+	$('#report').delay(100).fadeIn(100);
+});
+
+$(document).on("click", "#menuBtn", function () {
+	$('#searchTwitter, #report').fadeOut(100);
+	$('#menu').delay(100).fadeIn(100);
+});

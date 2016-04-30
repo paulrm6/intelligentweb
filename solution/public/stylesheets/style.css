@@ -316,6 +316,16 @@ img.emoji {
     padding: 2px;
     border: 1px gray solid;
 }
+#menuBtn {
+    font-size: 80%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: white;
+    color:gray;
+    padding: 2px;
+    border: 1px gray solid;
+}
 
 #hideshow {
     z-index: 1;
@@ -329,4 +339,36 @@ img.emoji {
 }
 #hideshow:hover {
     color:#1DCAFF;
+}
+#searchTwitter, #report {
+    display:none;
+}
+#menu {
+    margin: 0 auto;
+    width:1000px;
+}
+#menu h1 {
+    font-size: 400%;
+    text-align: center;
+    padding:10px;
+}
+#menu h2 {
+    font-size: 160%;
+    text-align: center;
+    padding:10px;
+}
+#menu #buttons {
+    display: flex;
+    padding:10px;
+}
+#menu #buttons .menuBtn {
+    text-align: center;
+    flex:1;
+    font-size: 150%;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+#menu #buttons .menuBtn:hover {
+    color:#1DCAFF;
+    font-size: 160%
 }
