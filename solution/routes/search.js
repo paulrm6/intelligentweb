@@ -48,7 +48,7 @@ router.post('/database', function(req, res) {
 /**
  * A function to convert the post data into two strings, a where SQL statement and a twitter query
  * @param {object} q The query data from the post form
- * @param {queryParserCallback} the callback function
+ * @param {queryParserCallback} callback the callback function
  */
 function queryParser(q, callback) {
 		//Initialise the variables
@@ -147,8 +147,8 @@ function queryParser(q, callback) {
 	/**
 	 * This global callback is for the funcion queryParser
 	 * @callback queryParserCallback
-	 * @param {string} mysql WHERE string
-	 * @param {string} twitter query string
+	 * @param {string} mysqlQ mysql WHERE string
+	 * @param {string} twitQ twitter query string
 	 */
 
 /**
@@ -179,8 +179,8 @@ function databaseOnly(sqlQ, callback) {
 	/**
 	 * This global callback provides an error/data response
 	 * @callback err-data
-	 * @param {string} an error message or undefined if no error
-	 * @param {object|string} data of successful function
+	 * @param {string} error an error message or undefined if no error
+	 * @param {object|string} data data of successful function
 	 */
 
 /**
@@ -430,7 +430,7 @@ function getSinceID(data, callback) {
 	/**
 	 * This global callback is for the funcion getSinceID
 	 * @callback low-id
-	 * @param {string} the lowest ID in the set of tweets
+	 * @param {string} lowest_id the lowest ID in the set of tweets
 	 */
 
 /**
@@ -457,7 +457,7 @@ function getMaxID(data, callback) {
 	/**
 	 * This global callback is for the funcion getMaxID
 	 * @callback high-id
-	 * @param {string} the highest ID in the set of tweets
+	 * @param {string} highest_id the highest ID in the set of tweets
 	 */
 
 /**
@@ -517,13 +517,13 @@ function convertTwitterData(tweets, callback) {
 	/**
 	 * This global callback is for the funcion convertTwitterData
 	 * @callback database-tweets
-	 * @param {object[]} the new set of tweets which have been converted
+	 * @param {object[]} tweets the new set of tweets which have been converted
 	 */
 
 /**
  * A function which when given a month returns it's number
- * @param month The short month
- * @return the month number
+ * @param {string} month The short month
+ * @returns {int} the month number
  */
 function month(month) {
 		var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
