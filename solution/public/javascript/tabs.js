@@ -30,22 +30,8 @@ $(document).on("click", "#tweetsTabSelector", function () {
 	map.setCenter(new google.maps.LatLng(53.381, -1.470))
 });
 
-$(document).on("click", "#twitterBtn", function () {
-	$('#menu').fadeOut(150);
-	$('#twitter').delay(150).fadeIn(150);
-    window.location.hash = "twitter";
-});
-
-$(document).on("click", "#reportBtn", function () {
-	$('#menu').fadeOut(150);
-	$('#report').delay(150).fadeIn(150);
-    window.location.hash = "report";
-});
-
-$(document).on("click", "#menuBtn", function () {
-	$('#twitter, #report').fadeOut(150);
-	$('#menu').delay(150).fadeIn(150);
-    window.location.hash = "";
+$(document).on("click", ".menuBtn, #menuBtn", function () {
+    window.location.hash = this.id.substring(0,this.id.length-3);
 });
 
 $(document).ready(function() {
@@ -54,3 +40,13 @@ $(document).ready(function() {
 		$('#menu').hide();
 	}
 })
+
+$(window).on("hashchange", function() {
+	if(window.location.hash == "#twitter" || window.location.hash == "#report") {
+		$(window.location.hash).delay(150).fadeIn(150);
+		$('#menu').fadeOut(150);
+	} else {
+		$('#twitter, #report').fadeOut(150);
+		$('#menu').delay(150).fadeIn(150);
+	}
+});
