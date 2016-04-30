@@ -341,7 +341,7 @@ img.emoji {
 #hideshow:hover, #menuBtn:hover {
     color:#1DCAFF !important;
 }
-#twitter, #report {
+#query, #report {
     display:none;
 }
 #menu {
