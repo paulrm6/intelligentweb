@@ -31,16 +31,26 @@ $(document).on("click", "#tweetsTabSelector", function () {
 });
 
 $(document).on("click", "#twitterBtn", function () {
-	$('#menu').fadeOut(100);
-	$('#searchTwitter').delay(100).fadeIn(100);
+	$('#menu').fadeOut(150);
+	$('#twitter').delay(150).fadeIn(150);
+    window.location.hash = "twitter";
 });
 
 $(document).on("click", "#reportBtn", function () {
-	$('#menu').fadeOut(100);
-	$('#report').delay(100).fadeIn(100);
+	$('#menu').fadeOut(150);
+	$('#report').delay(150).fadeIn(150);
+    window.location.hash = "report";
 });
 
 $(document).on("click", "#menuBtn", function () {
-	$('#searchTwitter, #report').fadeOut(100);
-	$('#menu').delay(100).fadeIn(100);
+	$('#twitter, #report').fadeOut(150);
+	$('#menu').delay(150).fadeIn(150);
+    window.location.hash = "";
 });
+
+$(document).ready(function() {
+	if(window.location.hash == "#twitter" || window.location.hash == "#report") {
+		$(window.location.hash).show();
+		$('#menu').hide();
+	}
+})
