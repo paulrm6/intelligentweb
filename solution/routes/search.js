@@ -333,9 +333,6 @@ function insertData(data) {
 										});
 								}
 							});
-					} else {
-						//There was an error - but it's not important to the running of the app, so just log it
-						console.log(err);
 					}
 				});
 			})(j);
