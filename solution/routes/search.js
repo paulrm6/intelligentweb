@@ -498,7 +498,7 @@ function convertTwitterData(tweets, callback) {
 			newTweet.profile_image = tweet.user.profile_image_url_https;
 			newTweet.text = tweet.text;
 			newTweet.created_at = tweet.created_at;
-			if (tweet.place !== undefined) {
+			if (tweet.place != undefined) {
 				newTweet.place_full_name = tweet.place.full_name;
 			}
 			//Check if there is any media in the tweet
@@ -565,7 +565,7 @@ function getDataFromDatabase(q, count, callback) {
 				//Log and return the error
 				console.log(err);
 				callback("There was an error connecting to the Database", undefined);
-			} else if (results !== 0) {
+			} else if (results.length !== 0) {
 				//Callback the results of the database query
 				callback(undefined, results);
 			} else {

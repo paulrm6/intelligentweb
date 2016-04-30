@@ -2,7 +2,10 @@
  * @author Paul MacDonald <prmacdonald1@sheffield.ac.uk>
  * @module ajax
  */
-var firstTime = true;
+
+//Initiate some variables for functions
+var firstTime = true,
+	lastOpened = false;
 
 /**
  * A function that listens to clicks of buttons
@@ -350,23 +353,24 @@ function fillAnalysis() {
 			if (i == topHashtags.length - 1) {
 				$('#analysis')
 					.append(topHashtagsHTML + "</div>" + mapHTML);
+					//initialise the map
+					initMap();
 			}
 		});
-		//initialise the map
-		initMap();
 	}
 
 /*
  * A function to initiate the map to show in analysis
  */
 function initMap() {
-		var geocoder = new google.maps.Geocoder();
+		geocoder = new google.maps.Geocoder();
 		var mapDiv = document.getElementById('map');
 		//Create a map
 		map = new google.maps.Map(mapDiv, {
 			zoom: 4
 		});
 		google.maps.event.trigger(map, 'resize');
+		map.setCenter(new google.maps.LatLng(53.381, -1.470))
 	}
 
 /**
@@ -377,7 +381,7 @@ function addMapMarkers(data) {
 		//For each tweet
 		$.each(data, function(i, tweet) {
 			//If the tweet has a location
-			if (tweet.place_full_name !== null) {
+			if (tweet.place_full_name != null) {
 				//Retrieve location based on place name & add marker to map
 				geocoder.geocode({
 					'address': tweet.place_full_name
@@ -392,13 +396,21 @@ function addMapMarkers(data) {
 						});
 						//Create an info window for the marker containing tweet info
 						var infoWindow = new google.maps.InfoWindow({
-							content: "<div style=\"width: 350px; height:70px\">" +
+							content: "<div style=\"width: 350px; height:100px\">" +
 								"<img src='" + tweet.profile_image + "'/>" + "@" + tweet.screen_name +
 								" - " + tweet.text + "</div>"
 						});
 						//Create a listener for when the marker is clicked to show the info window
 						marker.addListener('click', function() {
+							//Close any open info windows
+							if(lastOpened)lastOpened.close();
+							//Open the new info window
 							infoWindow.open(map, marker);
+							//Zoom in and set center to new marker
+    						map.setZoom(8);
+    						map.panTo(marker.getPosition());
+    						//Set new last opened
+    						lastOpened = infoWindow
 						});
 					}
 				});

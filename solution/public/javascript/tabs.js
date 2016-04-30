@@ -13,6 +13,7 @@ $(document).on("click", "#analysisTabSelector", function () {
 	$("#tweets").hide("slide",{direction:"left"},500);
 	$("#analysis").show("slide",{direction:"right"},500);
 	google.maps.event.trigger(map, 'resize');
+	map.setCenter(new google.maps.LatLng(53.381, -1.470))
 });
 
 /**
@@ -26,4 +27,5 @@ $(document).on("click", "#tweetsTabSelector", function () {
 	$("#tweets").show("slide",{direction:"left"},500);
 	$("#analysis").hide("slide",{direction:"right"},500);
 	google.maps.event.trigger(map, 'resize');
+	map.setCenter(new google.maps.LatLng(53.381, -1.470))
 });
