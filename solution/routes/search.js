@@ -1,5 +1,6 @@
 /**
  * @author Paul MacDonald <prmacdonald1@sheffield.ac.uk>
+ * @module search
  */
 var express = require('express');
 var router = express.Router();
