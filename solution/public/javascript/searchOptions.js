@@ -39,12 +39,12 @@ $(document).on("change", ".enabler", function() {
 	//If it's now checked
 	if ($(this).is(':checked')) {
 		//Set disabled to false on all inputs and selects
-		$(this).parent().parent().find('input,select').prop('disabled',false);
+		$(this).parent().parent().parent().find('input,select').prop('disabled',false);
 		//Change the colour of text back to normal
 		$("#"+parent).css("color","inherit")
 	} else { //If it's not checked
 		//Disable all inputs and selects
-		$(this).parent().parent().find('input,select').prop('disabled','disabled');
+		$(this).parent().parent().parent().find('input,select').prop('disabled','disabled');
 		//Remove the disabled attribute on this button
 		$(this).removeAttr("disabled");
 		//Set the colour of text to grey
