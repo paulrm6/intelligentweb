@@ -154,7 +154,7 @@ function userWordCount(wordCount, user){
 		users[user.username] = {
 			numTweets:0,
 			wordList:{},
-			handle:user.username, //May want to change this to the "@format"
+			handle:user.username,
 			picture:user.picture
 		};
 	}
