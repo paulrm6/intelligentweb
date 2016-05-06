@@ -142,8 +142,12 @@ function queryParser(q, callback) {
 		//Remove the last and/or from each string
 		sqlQ = sqlQ.substring(0, sqlQ.length - q.andor.length - 2);
 		twitQ = twitQ.substring(0, twitQ.length - q.andor.length - 2);
+		if(q.rt === 'exclude') {
+			sqlQ = "("+sqlQ+" AND retweeted_user.name IS NULL) ";
+			twitQ += " exclude:retweets";
+		}
 		//Callback with each string
-		callback(sqlQ, twitQ);
+		callback(sqlQ , twitQ);
 	}
 	/**
 	 * This global callback is for the funcion queryParser
@@ -366,6 +370,7 @@ function getDataFromTwitter(q, since_id, max_id, max_no, data, callback) {
 			twitter.get('search/tweets', params, function(err, twitterData, response) {
 				if (err) {
 					//If there is an error then callback that there was an error
+					console.log(err)
 					callback("There was an error with the Twitter query", undefined);
 				} else {
 					//If there are no new tweets returned
@@ -378,6 +383,7 @@ function getDataFromTwitter(q, since_id, max_id, max_no, data, callback) {
 							});
 						} else {
 							//No tweets were ever returned
+							console.log(twitterData)
 							callback("No tweets were found", undefined);
 						}
 					} else {

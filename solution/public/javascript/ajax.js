@@ -47,7 +47,7 @@ $(document)
  */
 function getVariables(type) {
 		//Create the data variable
-		var data = {};
+		var data = {rt:'include'};
 		//If the team search section is enabled
 		if ($('#teamSearch')
 			.is(':checked')) {
@@ -140,6 +140,7 @@ function getVariables(type) {
 		//Set the and/or for the whole search
 		data.andor = $("#andOrToggle")
 			.val();
+		if (!$('#includeRT').is(':checked')) {data.rt = 'exclude';}
 		//Initiate the search
 		callSearch(type, data);
 	}
