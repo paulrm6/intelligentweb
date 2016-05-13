@@ -190,7 +190,7 @@ section#results #column #map {
 }
 #tweets a, #topUsers a {
     text-decoration: none;
-    color: #444242;
+    color: inherit;
 }
 #tweets a:hover .underline,#topUsers a:hover {
     text-decoration: underline;
@@ -204,13 +204,17 @@ section#results #column #map {
 #tweets .italic {
     font-style: italic;
 }
-#tweets .user,#topUsers .userHandle {
+#tweets .user,#topUsers .userHandle, .keyword {
     font-size: 130%;
     padding-bottom: 5px;
 }
 #topUsers .userHandle .noOfTweets {
     padding-left: 5px;
     font-size: 75%;
+}
+#topKeywords .quantity, #topHashtags .quantity {
+    padding-left: 10px;
+    font-size: 80%;
 }
 #tweets .text, #topUsers .text {
     width: calc( 100% - 58px);
@@ -254,29 +258,6 @@ img.emoji {
 }
 /* ANALYSIS */
 
-#analysis #keywords {} #analysis h2 {
-    font-size: 130%;
-    padding: 5px;
-}
-#analysis .keywordBox {
-    padding-left: 10px;
-    padding-bottom: 5px;
-}
-#analysis .keywordBox .keyword {
-    display: inline-block;
-    font-weight: bold;
-    font-size: 115%;
-    color: #0084b4;
-}
-#analysis .keywordBox .quantity {
-    display: inline-block;
-    font-style: italic;
-    padding-left: 3px;
-}
-#analysis .keywordBox .quantity span {
-    color: #0084b4;
-    font-weight: bold;
-}
 #tooltip {
     font-size: 80%;
     position: fixed;

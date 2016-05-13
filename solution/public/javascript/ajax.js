@@ -334,9 +334,9 @@ function fillAnalysis() {
 		//For each top keyword
 		$.each(keywords, function(i, keyword) {
 			//Fill the string with each keyword
-			keywordsHTML += "<div class='keywordBox resultBox'>" + "<div class='keyword'>" +
-				keyword[0] + "</div><div class='quantity'>mentioned <span>" + keyword[1] +
-				"</span> times</div></div>";
+			keywordsHTML += "<div class='resultBox'>" + "<div class='keyword'>" +
+				keyword[0] + "</div><div class='quantity'>mentioned <strong>" + keyword[1] +
+				"</strong> times</div></div>";
 		});
 		$('#topKeywords').empty().append(keywordsHTML);
 		$('#topUsers').empty().append(topUsersHTML);
@@ -345,9 +345,9 @@ function fillAnalysis() {
 		//For each top hashtag
 		$.each(topHashtags, function(i, topHashtag) {
 			//Fill the string with each top hashtag and it's info
-			topHashtagsHTML += "<div class='keywordBox resultBox'>" + "<div class='keyword'>" +
-				topHashtag[0] + "</div><div class='quantity'>mentioned <span>" +
-				topHashtag[1] + "</span> times</div></div>";
+			topHashtagsHTML += "<div class='resultBox'>" + "<div class='keyword'>" +
+				topHashtag[0] + "</div><div class='quantity'>mentioned <strong>" +
+				topHashtag[1] + "</strong> times</div></div>";
 				//If all the top hashtags have been processed then append the html to the analysis div
 			if (i == topHashtags.length - 1) {
 				$('#topHashtags').empty().append(topHashtagsHTML);
