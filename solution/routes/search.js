@@ -148,7 +148,6 @@ function queryParser(q, callback) {
 			sqlQ = "("+sqlQ+") AND retweeted_user.name IS NULL ";
 			twitQ += " exclude:retweets";
 		}
-		console.log(sqlQ)
 		//Callback with each string
 		callback(sqlQ , twitQ);
 	}
