@@ -14,8 +14,6 @@ $(document)
 		//When a button on the form is clicked to submit, check the validity of the form
 		var valid = $('#form')[0].checkValidity();
 		if (valid) {
-			//Hides the search bar
-			hideSearch();
 			//If it's valid, fade in the loading cover
 			$('#cover')
 				.fadeIn(500);
@@ -175,8 +173,9 @@ function callSearch(type, data) {
  */
 function error(error) {
 		//Clear the tweets and analysis divs so we don't keep old searches
-		$('#tweets')
+		$('#tweets, #topUsers, #topKeywords, #topHashtags')
 			.empty();
+		initMap();
 		//Append the error message to both the tweets and analysis divs
 		$('#tweets')
 			.append("<div class='error'>" + error.responseText + "</div>");
@@ -190,6 +189,8 @@ function error(error) {
  * @param {object} data the data containing tweets
  */
 function populateData(data) {
+		//Hides the search bar
+		hideSearch();
 		//Empty the tweets and analysis divs so we don't keep old searches
 		$('#tweets')
 			.empty().append("<h2 class='resultBox'>Tweets</h2>");
@@ -326,7 +327,7 @@ function fillAnalysis() {
 				}
 			}
 			topUsersHTML += "</div></div>"
-				+"<div author='"+topUser.handle+"' class='link'>See the Tweets</div>"
+				+"<div author='"+topUser.handle+"' class='link'><i class='fa fa-filter' aria-hidden='true'></i> See the Tweets</div>"
 				+"</div>";
 		});
 		//Create a HTML string for keywords
@@ -338,8 +339,6 @@ function fillAnalysis() {
 				keyword[0] + "</div><div class='quantity'>mentioned <strong>" + keyword[1] +
 				"</strong> times</div></div>";
 		});
-		$('#topKeywords').empty().append(keywordsHTML);
-		$('#topUsers').empty().append(topUsersHTML);
 		//Create a HTML string for the top hashtags
 		topHashtagsHTML = "<h2 class='resultBox'>Trending Hashtags</h2>";
 		//For each top hashtag
@@ -350,9 +349,11 @@ function fillAnalysis() {
 				topHashtag[1] + "</strong> times</div></div>";
 				//If all the top hashtags have been processed then append the html to the analysis div
 			if (i == topHashtags.length - 1) {
-				$('#topHashtags').empty().append(topHashtagsHTML);
 			}
 		});
+		$('#topHashtags').empty().append(topHashtagsHTML);
+		$('#topKeywords').empty().append(keywordsHTML);
+		$('#topUsers').empty().append(topUsersHTML);
 	}
 
 $(document).on('click','#topUsers .link',function() {
@@ -361,7 +362,7 @@ $(document).on('click','#topUsers .link',function() {
 })
 
 function filterTweets(userHandle, id) {
-	$('#tweets h2').html("Tweets <span>(Filtered - click to reset)");
+	$('#tweets h2').html("Tweets <span>(<i class='fa fa-filter' aria-hidden='true'></i> Filtered - click to reset)");
 	$('#tweets div.resultBox').hide();
 	if(userHandle) {
 		$('#tweets div.resultBox[author='+userHandle+']').show();
