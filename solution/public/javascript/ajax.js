@@ -4,8 +4,7 @@
  */
 
 //Initiate some variables for functions
-var firstTime = true,
-	lastOpened = false;
+var firstTime = true
 
 /**
  * A function that listens to clicks of buttons
@@ -15,8 +14,6 @@ $(document)
 		//When a button on the form is clicked to submit, check the validity of the form
 		var valid = $('#form')[0].checkValidity();
 		if (valid) {
-			//Hides the search bar
-			hideSearch();
 			//If it's valid, fade in the loading cover
 			$('#cover')
 				.fadeIn(500);
@@ -176,10 +173,11 @@ function callSearch(type, data) {
  */
 function error(error) {
 		//Clear the tweets and analysis divs so we don't keep old searches
-		$('#tweets,#analysis')
+		$('#tweets, #topUsers, #topKeywords, #topHashtags')
 			.empty();
+		initMap();
 		//Append the error message to both the tweets and analysis divs
-		$('#tweets,#analysis')
+		$('#tweets')
 			.append("<div class='error'>" + error.responseText + "</div>");
 		//Fade out the loading cover
 		$('#cover')
@@ -191,23 +189,26 @@ function error(error) {
  * @param {object} data the data containing tweets
  */
 function populateData(data) {
+		//Hides the search bar
+		hideSearch();
 		//Empty the tweets and analysis divs so we don't keep old searches
-		$('#tweets,#analysis')
-			.empty();
+		$('#tweets')
+			.empty().append("<h2 class='resultBox'>Tweets</h2>");
 		//Reset the analysis variables so old searches don't affect it
 		analysisReset();
 		//For each tweet
+		initMap();
 		$.each(data.statuses, function(i, tweet) {
 			//Add it to the analysis and to the tweets div
 			addToAnalysis(tweet);
 			addTweet(i, tweet);
+			addMapMarkers(i, tweet);
 		});
 		//Fill the analysis div
 		fillAnalysis();
 		//Change any emojis into emojis on the page
 		emoji();
 		//Add markers to the map
-		addMapMarkers(data.statuses);
 		//Fade out the loading cover
 		$('#cover')
 			.fadeOut(500);
@@ -227,8 +228,8 @@ function populateData(data) {
 function addToAnalysis(tweet) {
 		//Get the user info
 		var user = {
-				username: tweet.rt_screen_name || tweet.screen_name,
-				picture: tweet.rt_profile_image || tweet.profile_image
+				username: tweet.screen_name,
+				picture: tweet.profile_image
 			};
 			//Count the words in the text
 		var wordCount = countWords(tweet.text);
@@ -243,9 +244,10 @@ function addToAnalysis(tweet) {
  * @tweet {object} tweet the tweet to be added
  */
 function addTweet(i, tweet) {
+		var author= tweet.screen_name; 
 		//Create a html string for the full tweet
 		var HTML = "";
-		HTML += "<div id='" + i + "' class='tweet'>";
+		HTML += "<div id='" + i + "' class='resultBox' author='"+author+"'>";
 		//Check if the tweet is a retweet or not
 		if (tweet.rt_name !== null) {
 			//If so include the retweeted authors info
@@ -302,63 +304,72 @@ function fillAnalysis() {
 		var keywords = returnTopWords();
 		var topUsers = returnTopUsers();
 		var topHashtags = returnTopHashtags();
-		//HTML for map
-		var mapHTML = "<div id='map'></div>";
-		//Create a HTML string for keywords
-		var keywordsHTML = "<div id='keywords'><h2>Top 20 Keywords</h2>";
-		//For each top keyword
-		$.each(keywords, function(i, keyword) {
-			//Fill the string with each keyword
-			keywordsHTML += "<div class='keywordBox'>" + "<div class='keyword'>" +
-				keyword[0] + "</div><div class='quantity'>mentioned <span>" + keyword[1] +
-				"</span> times</div></div>";
-			//If all keywords have been processed then append the html to the analysis div
-			if (i == keywords.length - 1) {
-				$("#analysis")
-					.append(keywordsHTML + "</div>");
-			}
-		});
 		//Create a HTML string for the top users
-		var topUsersHTML = "<div id='topUsers'><h2>Top 10 Users</h2>";
+		var topUsersHTML = "<h2 class='resultBox'>Top 10 Users</h2>";
 		//For each top user
 		$.each(topUsers, function(i, topUser) {
 			//Fill the string with each top user and their info
-			topUsersHTML += "<div class='userBox'><img class='profile' src='" +
-				topUser.picture + "'/>" + "<div class='userHandle'>@" + topUser.handle +
-				"</div><div class='noOfTweets'>tweeted <span>" + topUser.numTweets +
-				"<span> times</div><div>Most frequent words:</div><div class='keywords'>";
+			topUsersHTML += "<div class='resultBox'>"
+				+"<div class='pictures'><img src='"
+					+topUser.picture
+				+ "'/></div>"
+				+"<div class='text'>"
+					+"<div class='userHandle'><a target='_blank' href='https://twitter.com/"+topUser.handle+"'>@" + topUser.handle + "</a>"
+					+"<span class='noOfTweets'>tweeted <strong>" + topUser.numTweets +"</strong> times</span></div>"
+					+"<div>Most frequent words:</div>"
+					+"<div class='topUserKeywords'>";
 			//For each possible keyword (max 5)
 			for (var keyword = 0; keyword < 5; keyword++) {
 				//If the keyword exists then add it to the HTML
 				if (topUser.wordList[keyword] !== undefined) {
-					topUsersHTML += "<div class='keyword'>" + topUser.wordList[keyword][0] +
+					topUsersHTML += "<div class='topUserkeyword'>" + topUser.wordList[keyword][0] +
 						" (" + topUser.wordList[keyword][1] + ")</div>";
 				}
 			}
-			topUsersHTML += "</div></div>";
-			//If all the top users have been processed then append the html to the analysis div
-			if (i == topUsers.length - 1) {
-				$('#analysis')
-					.append(topUsersHTML + "</div>");
-			}
+			topUsersHTML += "</div></div>"
+				+"<div author='"+topUser.handle+"' class='link'><i class='fa fa-filter' aria-hidden='true'></i> See the Tweets</div>"
+				+"</div>";
+		});
+		//Create a HTML string for keywords
+		var keywordsHTML = "<h2 class='resultBox'>Top 20 Keywords</h2>";
+		//For each top keyword
+		$.each(keywords, function(i, keyword) {
+			//Fill the string with each keyword
+			keywordsHTML += "<div class='resultBox'>" + "<div class='keyword'>" +
+				keyword[0] + "</div><div class='quantity'>mentioned <strong>" + keyword[1] +
+				"</strong> times</div></div>";
 		});
 		//Create a HTML string for the top hashtags
-		topHashtagsHTML = "<div id='topHashtags'><h2>Trending Hashtags</h2>";
+		topHashtagsHTML = "<h2 class='resultBox'>Trending Hashtags</h2>";
 		//For each top hashtag
 		$.each(topHashtags, function(i, topHashtag) {
 			//Fill the string with each top hashtag and it's info
-			topHashtagsHTML += "<div class='keywordBox'>" + "<div class='keyword'>" +
-				topHashtag[0] + "</div><div class='quantity'>mentioned <span>" +
-				topHashtag[1] + "</span> times</div></div>";
+			topHashtagsHTML += "<div class='resultBox'>" + "<div class='keyword'>" +
+				topHashtag[0] + "</div><div class='quantity'>mentioned <strong>" +
+				topHashtag[1] + "</strong> times</div></div>";
 				//If all the top hashtags have been processed then append the html to the analysis div
 			if (i == topHashtags.length - 1) {
-				$('#analysis')
-					.append(topHashtagsHTML + "</div>" + mapHTML);
-					//initialise the map
-					initMap();
 			}
 		});
+		$('#topHashtags').empty().append(topHashtagsHTML);
+		$('#topKeywords').empty().append(keywordsHTML);
+		$('#topUsers').empty().append(topUsersHTML);
 	}
+
+$(document).on('click','#topUsers .link',function() {
+	var author = $(this).attr('author');
+	filterTweets(author);
+})
+
+function filterTweets(userHandle, id) {
+	$('#tweets h2').html("Tweets <span>(<i class='fa fa-filter' aria-hidden='true'></i> Filtered - click to reset)");
+	$('#tweets div.resultBox').hide();
+	if(userHandle) {
+		$('#tweets div.resultBox[author='+userHandle+']').show();
+	} else {
+		$('#tweets div.resultBox#'+id).show();
+	}
+}
 
 /*
  * A function to initiate the map to show in analysis
@@ -378,46 +389,33 @@ function initMap() {
  * A function to add markers to the map shown in analysis
  * @param {object} data the tweets to add to the map
  */
-function addMapMarkers(data) {
-		//For each tweet
-		$.each(data, function(i, tweet) {
-			//If the tweet has a location
-			if (tweet.place_full_name != null) {
-				//Retrieve location based on place name & add marker to map
-				geocoder.geocode({
-					'address': tweet.place_full_name
-				}, function(results, status) {
-					//If that got the address
-					if (status == google.maps.GeocoderStatus.OK) {
-						//Add the marker to the map
-						var marker = new google.maps.Marker({
-							map: map,
-							position: results[0].geometry.location,
-							title: tweet.place_full_name
-						});
-						//Create an info window for the marker containing tweet info
-						var infoWindow = new google.maps.InfoWindow({
-							content: "<div style=\"width: 350px; height:100px\">" +
-								"<img src='" + tweet.profile_image + "'/>" + "@" + tweet.screen_name +
-								" - " + tweet.text + "</div>"
-						});
-						//Create a listener for when the marker is clicked to show the info window
-						marker.addListener('click', function() {
-							//Close any open info windows
-							if(lastOpened)lastOpened.close();
-							//Open the new info window
-							infoWindow.open(map, marker);
-							//Zoom in and set center to new marker
-    						map.setZoom(8);
-    						map.panTo(marker.getPosition());
-    						//Set new last opened
-    						lastOpened = infoWindow
-						});
-					}
+function addMapMarkers(i, tweet) {
+	//If the tweet has a location
+	if (tweet.place_full_name != null) {
+		//Retrieve location based on place name & add marker to map
+		geocoder.geocode({
+			'address': tweet.place_full_name
+		}, function(results, status) {
+			//If that got the address
+			if (status == google.maps.GeocoderStatus.OK) {
+				//Add the marker to the map
+				var marker = new google.maps.Marker({
+					map: map,
+					position: results[0].geometry.location,
+					title: tweet.place_full_name
+				});
+				//Create a listener for when the marker is clicked to filter the tweets
+				marker.addListener('click', function() {
+					filterTweets(undefined,i);
 				});
 			}
 		});
 	}
+}
+$(document).on('click','h2 span',function() {
+	$(this).remove();
+	$('#tweets div.resultBox').show();
+})
 
 /**
  * A function to change any emoji's in the text into actual emoji's

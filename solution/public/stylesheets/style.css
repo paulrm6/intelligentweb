@@ -12,17 +12,18 @@ body {
     overflow-y: scroll;
 }
 /* SEARCH */
-
-section#search,section#hiddensearch {
+section#search {
     background-color: #0084b4;
     width: 100%;
     padding: 10px 0;
-    min-width: 1000px;
+    min-width: 1200px;
     color: #f8f8ff;
-    text-align: center
+    text-align: center;
+    min-height:10px;
 }
 section#search h1 {
     font-size: 200%;
+    z-index:2;
 }
 select option {
     color: #000000;
@@ -101,11 +102,6 @@ section#search form #team #otherInput, #playerSelect, #tooltip {
 }
 /* RESULTS */
 
-#wrapper {
-    width: 1000px;
-    margin: 0 auto;
-    height: 100%;
-}
 #cover {
     background: url("/images/ajax-loader.gif") no-repeat scroll center center #FFF;
     position: absolute;
@@ -116,32 +112,62 @@ section#search form #team #otherInput, #playerSelect, #tooltip {
     z-index: 5;
 }
 section#results {
-    width: 500px;
-    margin: 0 auto;
-    background-color: #f8f8ff;
-    height: 100%;
-    display: none;
-}
-section#results #tabs {
     width: 100%;
+    background-color: #f8f8ff;
+    height: calc(100vh - 30px);
+}
+section#results h2 {
+    font-size: 140%;
+    color: #0084B4;
     text-align: center;
+}
+section#results h2 span {
+    font-size: 60%;
+    color: black;
+    cursor: pointer;
+}
+.row {
     display: flex;
 }
-section#results #tweets {
-    width: 500px;
-    background-color: #f8f8ff;
-    position: absolute;
-    height: calc( 100% - 37px );
-    overflow-y: scroll;
-
+.resultBox {
+    border-bottom: solid 1px #e1e8ed;
+    border-top: solid 1px #e1e8ed;
+    padding:5px;
+    width: calc( 100% - 10px);
 }
-section#results #analysis {
-    width: 500px;
-    background-color: #f8f8ff;
-    position: absolute;
-    display: none;
-    height: calc( 100% - 37px );
-    overflow-y: scroll;
+section#results #tweets {
+    overflow-y: auto;    
+    flex:1;
+    min-width: 400px;
+    min-height: 600px;
+    border-right: solid 4px #e1e8ed;
+}
+section#results #column {
+    flex:1;
+    min-width: 450px;
+    min-height: 600px;
+}
+section#results #topUsers {
+    flex:1;
+    overflow-y: auto; 
+    min-width: 350px; 
+    min-height: 600px;
+    border-right: solid 4px #e1e8ed;
+}
+section#results #column #topKeywords,section#results #column #topHashtags {
+    overflow-y: auto;
+    height: calc(60vh - 30px);
+    flex:1;
+    min-height: 360px;
+    border-right: solid 4px #e1e8ed;
+}
+section#results #column #topHashtags {
+    border-right: none;
+}
+section#results #column #map {
+    height: 40vh;
+    width:100%;
+    min-height: 240px;
 }
 .error {
     text-align: center;
@@ -151,38 +177,10 @@ section#results #analysis {
     border-top: solid 1px #e1e8ed;
     border-bottom: solid 1px #e1e8ed;
 }
-/* TABS */
-
-section#results #tabs .tab {
-    padding: 10px 0;
-    flex: 1;
-    transition: all 1s ease;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: white;
-}
-section#results #tabs .tab:first-child {
-    width: calc( 50% - 1px);
-    border-right: 1px solid gray;
-}
-section#results #tabs .notSelected {
-    border-bottom-color: gray !important;
-    background-color: #eaeaea;
-}
-section#results #tabs .notSelected:hover {
-    background-color: #f4f4f4;
-    cursor: pointer;
-}
 /* TWEETS */
 
-#tweets .tweet {
-    width: calc( 100% - 10px);
-    padding: 5px;
-    border-top: solid 1px #e1e8ed;
-    border-bottom: solid 1px #e1e8ed;
-}
-#tweets .pictures {
-    width: 10%;
+#tweets .pictures, #topUsers .pictures {
+    width: 50px;
     text-align: right;
     display: inline-block;
     vertical-align: top;
@@ -190,15 +188,11 @@ section#results #tabs .notSelected:hover {
 #tweets .retweet i {
     color: #19CF86;
 }
-#tweets .retweet a {
-    color: #444242;
+#tweets a, #topUsers a {
     text-decoration: none;
+    color: inherit;
 }
-#tweets .text .user a {
-    text-decoration: none;
-    color: #444242;
-}
-#tweets a:hover .underline {
+#tweets a:hover .underline,#topUsers a:hover {
     text-decoration: underline;
 }
 #tweets .retweet {
@@ -210,15 +204,24 @@ section#results #tabs .notSelected:hover {
 #tweets .italic {
     font-style: italic;
 }
-#tweets .tweet .user {
+#tweets .user,#topUsers .userHandle, .keyword {
     font-size: 130%;
+    padding-bottom: 5px;
 }
-#tweets .tweet .text {
-    width: calc( 90% - 8px);
+#topUsers .userHandle .noOfTweets {
+    padding-left: 5px;
+    font-size: 75%;
+}
+#topKeywords .quantity, #topHashtags .quantity {
+    padding-left: 10px;
+    font-size: 80%;
+}
+#tweets .text, #topUsers .text {
+    width: calc( 100% - 58px);
     margin-left: 4px;
     display: inline-block;
 }
-#tweets .tweet img.media {
+#tweets img.media {
     width: 80%;
     margin: 0 auto;
 }
@@ -230,82 +233,34 @@ section#results #tabs .notSelected:hover {
     clear: both;
     width: 100%;
 }
-#tweets .tweet .time {
+#tweets .time {
     display: inline-block;
-    width: 50%;
+    width: 70%;
     text-align: right;
     color: #686868;
+    font-size: 80%;
 }
-#tweets .tweet .link {
+#tweets .link, #topUsers .link {
     display: inline-block;
-    width: 50%;
+    width: 30%;
     text-align: left;
     text-decoration: none;
     color: #1DA1F2;
+    cursor: pointer;
+    font-size: 90%;
 }
-#tweets .tweet .link:hover {
+#tweets .link:hover, #topUsers .link:hover {
     color: #323333;
 }
 img.emoji {
     margin: 0px !important;
     display: inline !important;
 }
+.topUserKeywords {
+    padding-left: 10px;
+}
 /* ANALYSIS */
 
-#analysis #keywords {} #analysis h2 {
-    font-size: 130%;
-    padding: 5px;
-}
-#analysis .keywordBox {
-    padding-left: 10px;
-    padding-bottom: 5px;
-}
-#analysis .keywordBox .keyword {
-    display: inline-block;
-    font-weight: bold;
-    font-size: 115%;
-    color: #0084b4;
-}
-#analysis .keywordBox .quantity {
-    display: inline-block;
-    font-style: italic;
-    padding-left: 3px;
-}
-#analysis .keywordBox .quantity span {
-    color: #0084b4;
-    font-weight: bold;
-}
-#analysis #topUsers {} #analysis #topUsers .userBox {
-    padding-left: 10px;
-    padding-bottom: 5px;
-}
-#analysis #topUsers .userBox .userHandle {
-    display: inline-block;
-    font-weight: bold;
-    font-size: 115%;
-    color: #0084b4;
-}
-#analysis #topUsers .userBox .noOfTweets {
-    display: inline-block;
-    font-style: italic;
-    padding-left: 3px;
-    clear: right;
-}
-#analysis #topUsers .userBox .noOfTweets span {
-    color: #0084b4;
-    font-weight: bold;
-}
-#analysis #topUsers .userBox .keywords {} #analysis #topUsers .userBox .keywords .keyword {
-    display: inline-block;
-    padding-left: 5px;
-}
-#analysis #topUsers .userBox .keywords .keyword:not(:last-child)::after {
-    content: ",";
-}
-#map {
-	width: 100%;
-	height: 400px;
-}
 #tooltip {
     font-size: 80%;
     position: fixed;
@@ -330,9 +285,10 @@ img.emoji {
 
 #hideshow {
     z-index: 1;
-    right:5px;
-    top:5px;
+    right:0;
+    top:0;
     cursor: pointer;
+    padding:5px;
     transition: all 0.5s ease;
     float: right;
     color:white;
@@ -372,4 +328,7 @@ img.emoji {
 #menu #buttons .menuBtn:hover {
     color:#1DCAFF;
     font-size: 160%
+}
+strong{
+    font-weight: bold;
 }
