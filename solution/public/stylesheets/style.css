@@ -117,12 +117,12 @@ section#results {
     height: calc(100vh - 30px);
 }
 section#results h2 {
-    font-size: 120%;
+    font-size: 140%;
     color: #1BC6FB;
     text-align: center;
 }
 section#results h2 span {
-    font-size: 80%;
+    font-size: 60%;
     color: black;
     cursor: pointer;
 }
