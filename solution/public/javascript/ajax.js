@@ -227,8 +227,8 @@ function populateData(data) {
 function addToAnalysis(tweet) {
 		//Get the user info
 		var user = {
-				username: tweet.rt_screen_name || tweet.screen_name,
-				picture: tweet.rt_profile_image || tweet.profile_image
+				username: tweet.screen_name,
+				picture: tweet.profile_image
 			};
 			//Count the words in the text
 		var wordCount = countWords(tweet.text);
@@ -243,7 +243,7 @@ function addToAnalysis(tweet) {
  * @tweet {object} tweet the tweet to be added
  */
 function addTweet(i, tweet) {
-		var author= tweet.rt_screen_name || tweet.screen_name; 
+		var author= tweet.screen_name; 
 		//Create a html string for the full tweet
 		var HTML = "";
 		HTML += "<div id='" + i + "' class='resultBox' author='"+author+"'>";
