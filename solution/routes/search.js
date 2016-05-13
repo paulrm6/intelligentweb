@@ -58,7 +58,8 @@ function queryParser(q, callback) {
 		//If there is a team specified
 		if (q.team) {
 			//Add the team handle to each query as author
-			sqlQ += '(author.screen_name LIKE "' + q.team.value + '"';
+			sqlQ += '((author.screen_name LIKE "' + q.team.value + '"'
+				+' OR retweeted_user.screen_name LIKE "' + q.team.value + '")';
 			twitQ += "(from:" + q.team.value;
 			//If we're searching for mentions to
 			if (q.team.mentions == 'true') {
@@ -79,12 +80,13 @@ function queryParser(q, callback) {
 			for (var int in q.players) {
 				var player = q.players[int];
 				//Add the player handle to each query as author
-				sqlQ += "(author.screen_name LIKE ' " + player.value + " '";
+				sqlQ += '((author.screen_name LIKE "'+player.value+'"'
+					+' OR retweeted_user.screen_name LIKE "' + player.value + '")';
 				twitQ += "(from:" + player.value;
 				//If we're searching for mentions to
 				if (player.mentions === true) {
 					//Add the player handle to each query as mentions
-					sqlQ += " OR tweets.text LIKE '% @" + player.value + " %'";
+					sqlQ += ' OR tweets.text LIKE "%@' + player.value + '%"';
 					twitQ += ' OR "@' + player.value + '"';
 				}
 				sqlQ += ") " + q.playersandor + " ";
@@ -146,6 +148,7 @@ function queryParser(q, callback) {
 			sqlQ = "("+sqlQ+") AND retweeted_user.name IS NULL ";
 			twitQ += " exclude:retweets";
 		}
+		console.log(sqlQ)
 		//Callback with each string
 		callback(sqlQ , twitQ);
 	}
