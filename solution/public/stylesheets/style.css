@@ -134,6 +134,7 @@ section#results h2 span {
     border-top: solid 1px #e1e8ed;
     padding:5px;
     width: calc( 100% - 10px);
+    background-color: white;
 }
 section#results #tweets {
     overflow-y: auto;    
@@ -194,6 +195,7 @@ section#results #column #map {
 }
 #tweets a:hover .underline,#topUsers a:hover {
     text-decoration: underline;
+    color: #1DCAFF;
 }
 #tweets .retweet {
     margin-bottom: 4px;
