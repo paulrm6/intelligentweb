@@ -256,6 +256,9 @@ img.emoji {
     margin: 0px !important;
     display: inline !important;
 }
+.topUserKeywords {
+    padding-left: 10px;
+}
 /* ANALYSIS */
 
 #tooltip {
