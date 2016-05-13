@@ -136,10 +136,11 @@ section#results h2 span {
     width: calc( 100% - 10px);
 }
 section#results #tweets {
-    overflow-y: scroll;    
+    overflow-y: auto;    
     flex:1;
     min-width: 400px;
     min-height: 600px;
+    border-right: solid 2px #e1e8ed;
 }
 section#results #column {
     flex:1;
@@ -148,15 +149,20 @@ section#results #column {
 }
 section#results #topUsers {
     flex:1;
-    overflow-y: scroll; 
+    overflow-y: auto; 
     min-width: 350px; 
     min-height: 600px;
+    border-right: solid 2px #e1e8ed;
 }
 section#results #column #topKeywords,section#results #column #topHashtags {
-    overflow-y: scroll;
+    overflow-y: auto;
     height: calc(60vh - 30px);
     flex:1;
     min-height: 360px;
+    border-right: solid 2px #e1e8ed;
+}
+section#results #column #topHashtags {
+    border-right: none;
 }
 section#results #column #map {
     height: 40vh;
