@@ -8,9 +8,6 @@ body {
     font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
     height: 100%;
 }
-body {
-    overflow-y: scroll;
-}
 /* SEARCH */
 section#search {
     background-color: #0084b4;
