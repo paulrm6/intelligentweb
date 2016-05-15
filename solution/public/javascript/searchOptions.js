@@ -162,13 +162,11 @@ function sortName(a,b) {
 $(document).on("click", "#hideshow", hideSearch);
 
 function hideSearch() {
-	if($('#search').is(":visible")) {
+	if($('#searchFields').is(":visible")) {
 		$('#hideshow').html("<i class='fa fa-plus fa-lg'></i> show the search bar");
-		$('#hideshow, #menuBtn').css("color","black")
-		$('#search').toggle(300);
+		$('#searchFields').toggle(300);
 	} else {
 		$('#hideshow').html("<i class='fa fa-minus fa-lg'></i> hide the search bar");
-		$('#hideshow, #menuBtn').css("color","white")
-		$('#search').toggle(300);
+		$('#searchFields').toggle(300);
 	}
 }
