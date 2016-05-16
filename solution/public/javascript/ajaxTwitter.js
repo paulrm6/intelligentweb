@@ -240,7 +240,7 @@ function populateTwitterData(data, flickr_data) {
 	}
 
 function addPhoto(photo) {
-	$('#flickr').append("<img src='"+photo.thumbnail+"'>");
+	$('#flickr').append("<img largesrc='"+photo.large+"' src='"+photo.thumbnail+"'>");
 }
 
 /**

@@ -34,7 +34,7 @@ strong{
 
 /* ***********DIPLAY NONES*********** */
 #twitter, #report, article#searchFields form #team #otherInput, 
-    #playerSelect, #tooltip, #cover  {
+    #playerSelect, #tooltip, #cover, #gallery{
     display:none;
 }
 
@@ -70,7 +70,7 @@ section#menu #buttons .menuBtn:hover {
 }
 
 /* ***********BUTTONS*********** */
-#menuBtn,#hideSearchBtn {
+#menuBtn,#hideSearchBtn,#hideGallery {
     font-size: 80%;
     position: fixed;
     top: 0;
@@ -81,11 +81,11 @@ section#menu #buttons .menuBtn:hover {
     transition: all 0.5s ease;
     cursor: pointer;
 }
-#hideSearchBtn {
+#hideSearchBtn,#hideGallery {
     right:0;
     left:auto;
 }
-#hideSearchBtn:hover, #menuBtn:hover {
+#hideSearchBtn:hover, #menuBtn:hover,#hideGallery:hover {
     color:#1DCAFF !important;
 }
 
@@ -242,6 +242,7 @@ section#menu #buttons .menuBtn:hover {
 }
 #twitter #flickr img {
     width: 100%;
+    cursor: pointer;
 }
 #twitter #results .columnRight {
     flex:2;
@@ -270,6 +271,31 @@ section#menu #buttons .menuBtn:hover {
     padding: 5px;
     border-top: solid 1px #e1e8ed;
     border-bottom: solid 1px #e1e8ed;
+}
+
+#twitter #gallery {
+    width:100%;
+    height:100%;
+    background-color: rgba(0,0,0,0.8);
+    position: fixed;
+    top:0;
+    left:0;
+    background: url("/images/gears.gif") no-repeat scroll center center rgba(0,0,0,0.8);
+}
+
+#twitter #innerGallery {
+    float:left;
+    position: relative;
+    left:50%;
+    margin-top: 10vh;
+}
+
+#twitter #gallery #innerGallery img {
+    display: block;
+    position: relative;
+    left:-50%;
+    height:80vh;
+    border: 5px solid white;
 }
 
 /* -----------TWEETS + ANALYSIS----------- */
