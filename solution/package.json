@@ -15,6 +15,8 @@
     "serve-favicon": "~2.3.0",
     "twit": "~2.2.3",
     "mysql": "~2.10.2",
-    "big-integer": "~1.6.15"
+    "big-integer": "~1.6.15",
+    "flickrapi": "~0.4.2",
+    "node-flickr": "~1.0.0"
   }
 }
