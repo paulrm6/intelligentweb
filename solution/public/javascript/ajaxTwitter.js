@@ -57,12 +57,12 @@ function getTwitterVariables(type) {
 			data.team.value = $("#twitterForm #teamSelect")
 				.find(":selected")
 				.val();
-			flickr_data.push(data.team.value);
 			if (data.team.value == "other") { //If the other box is enabled
 				//Set the name of the team from the input box
 				data.team.value = $("#twitterForm #teamInput")
 					.val();
 			}
+			flickr_data.push(data.team.value);
 			//If mentions are to be included
 			if ($('#twitterForm #mentions')
 				.is(':checked')) {
@@ -173,10 +173,13 @@ function callTwitterSearch(type, data, flickr_tags) {
 	}
 
 function callFlickrSearch(flickr_tags, twitter_data) {
-	flickr_tags = flickr_tags.join(",");
+	flickr_tags = flickr_tags.slice(0,20).join(",");
 	$.get('/flickr', {tags: flickr_tags})
 		.done(function(flickr_data) {
-			populateTwitterData(twitter_data, flickr_data)
+			populateTwitterData(twitter_data, flickr_data.photos.photo)
+		})
+		.fail(function() {
+			populateTwitterData(twitter_data, [])
 		});
 }
 
@@ -186,7 +189,7 @@ function callFlickrSearch(flickr_tags, twitter_data) {
  */
 function twitterError(error) {
 		//Clear the tweets and analysis divs so we don't keep old searches
-		$('#tweets, #topUsers, #topKeywords, #topHashtags')
+		$('#tweets, #topUsers, #topKeywords, #topHashtags, #flickr')
 			.empty();
 		initMap();
 		//Append the error message to both the tweets and analysis divs
@@ -202,7 +205,6 @@ function twitterError(error) {
  * @param {object} data the data containing tweets
  */
 function populateTwitterData(data, flickr_data) {
-		console.log(flickr_data);
 		//Hides the search bar
 		hideSearch();
 		//Empty the tweets and analysis divs so we don't keep old searches
@@ -219,9 +221,11 @@ function populateTwitterData(data, flickr_data) {
 			addMapMarkers(i, tweet);
 		});
 		$('#flickr').empty();
-		$.each(flickr_data.photos.photo, function(i, photo) {
-			addPhoto(photo);
-		});
+		if(flickr_data.length === 0) {
+			$('#flickr').hide();
+		} else {
+			$('#flickr').show();
+		}
 		//Fill the analysis div
 		fillTwitterAnalysis();
 		//Change any emojis into emojis on the page
@@ -230,6 +234,10 @@ function populateTwitterData(data, flickr_data) {
 		//Fade out the loading cover
 		$('#cover')
 			.fadeOut(500);
+
+		$.each(flickr_data, function(i, photo) {
+			addPhoto(photo);
+		});
 		//Fade in and out a tooltip giving meta-data
 		$('#tooltip')
 			.text("Database: " + data.metadata.database_results + ", Twitter: " + data.metadata

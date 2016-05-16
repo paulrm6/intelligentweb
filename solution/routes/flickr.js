@@ -8,6 +8,9 @@ router.get('/', function(req,res) {
 		tags:tags,
 		per_page: 30
 	}, function(err, data) {
+		if(err) {
+			res.send(400);
+		}
 		for(var i=0; i<data.photos.photo.length; i++) {
 			var photo = data.photos.photo[i];
 			var link = 'https://farm'+photo.farm
