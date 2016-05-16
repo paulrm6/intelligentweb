@@ -13,7 +13,7 @@ $(document).on("click", "#addBtn", function () {
 		//It replaces the button on the new search box to a delete, rather than an add
 		$(this).closest(".searchContainer").find(".searchInput:last").find("i").replaceWith("<i class='fa fa-minus fa-lg' id='dltBtn'></i>");
 		//It adds an indicator to wether the search is and/or
-		$(this).closest(".searchContainer").find(".searchInput:last").prepend("<select name='andor' class='andor'><option value='AND'>AND</option><option value='OR'>OR</option></select><br/>");
+		$(this).closest(".searchContainer").find(".searchInput:last").prepend("<select class='andor'><option value='AND'>AND</option><option value='OR'>OR</option></select><br/>");
 		//It clears any values already in the new search box
 		$(this).closest(".searchContainer").find(".searchInput:last").find("input").val("");
 		//It then calls updateAndOr
@@ -40,11 +40,13 @@ $(document).on("change", ".enabler", function() {
 	if ($(this).is(':checked')) {
 		//Set disabled to false on all inputs and selects
 		$(this).parents('.searchSection').find('input,select').prop('disabled',false);
+		$(this).parents('.searchSection').find('.beforeInput').css("backgroundColor","#FFFFFF");
 		//Change the colour of text back to normal
 		$("#"+parent).css("color","inherit")
 	} else { //If it's not checked
 		//Disable all inputs and selects
 		$(this).parents('.searchSection').find('input,select').prop('disabled','disabled');
+		$(this).parents('.searchSection').find('.beforeInput').css("backgroundColor","#EBEBE4");
 		//Remove the disabled attribute on this button
 		$(this).removeAttr("disabled");
 		//Set the colour of text to grey
@@ -66,7 +68,7 @@ function updateAndOr(object) {
 	//Gets the value of the object
 	var option = $(object).find(":selected").val();
 	//Finds the search container and finds all selects with name and or inside of it, for each
-	$(object).closest(".searchContainer").find("select[name=andor]").each(function() {
+	$(object).closest(".searchContainer").find("select.andor").each(function() {
 		//It changes the value to the new option
 		$(this).val(option);
 	});
@@ -120,7 +122,7 @@ $(document).on("change", "#playerSelect", function() {
 		//It replaces the button on the new search box to a delete, rather than an add
 		$(this).closest(".searchSection").find(".searchContainer").find(".searchInput:last").find("i").replaceWith("<i class='fa fa-minus fa-lg' id='dltBtn'></i>");
 		//It adds an indicator to wether the search is and/or
-		$(this).closest(".searchSection").find(".searchContainer").find(".searchInput:last").prepend("<select name='andor' class='andor'><option value='AND'>AND</option><option value='OR'>OR</option></select><br/>");
+		$(this).closest(".searchSection").find(".searchContainer").find(".searchInput:last").prepend("<select class='andor'><option value='AND'>AND</option><option value='OR'>OR</option></select><br/>");
 		//It clears any values already in the new search box
 		$(this).closest(".searchSection").find(".searchContainer").find(".searchInput:last").find("input").val(selection.val());
 		//It then calls updateAndOr
@@ -159,14 +161,14 @@ function sortName(a,b) {
 }
 
 
-$(document).on("click", "#hideshow", hideSearch);
+$(document).on("click", "#hideSearchBtn", hideSearch);
 
 function hideSearch() {
-	if($('#searchFields').is(":visible")) {
-		$('#hideshow').html("<i class='fa fa-plus fa-lg'></i> show the search bar");
-		$('#searchFields').toggle(300);
+	if($('#searchFields').children().first().is(":visible")) {
+		$('#hideSearchBtn').html("<i class='fa fa-plus fa-lg'></i> show the search bar");
+		$('#searchFields').children().hide(300);
 	} else {
-		$('#hideshow').html("<i class='fa fa-minus fa-lg'></i> hide the search bar");
-		$('#searchFields').toggle(300);
+		$('#hideSearchBtn').html("<i class='fa fa-minus fa-lg'></i> hide the search bar");
+		$('#searchFields').children().show(300);
 	}
 }
