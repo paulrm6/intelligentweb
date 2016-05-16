@@ -45,6 +45,7 @@ $(document)
 function getTwitterVariables(type) {
 		//Create the data variable
 		var data = {rt:'include'};
+		var flickr_data = [];
 		//If the team search section is enabled
 		if ($('#twitterForm #teamSearch')
 			.is(':checked')) {
@@ -56,6 +57,7 @@ function getTwitterVariables(type) {
 			data.team.value = $("#twitterForm #teamSelect")
 				.find(":selected")
 				.val();
+			flickr_data.push(data.team.value);
 			if (data.team.value == "other") { //If the other box is enabled
 				//Set the name of the team from the input box
 				data.team.value = $("#twitterForm #teamInput")
@@ -80,6 +82,7 @@ function getTwitterVariables(type) {
 						value: $(this)
 							.val()
 					};
+				flickr_data.push(data.players[i].value)
 					//Set wether mentions are to be included
 				if ($(this)
 					.closest(".searchInput")
@@ -108,6 +111,7 @@ function getTwitterVariables(type) {
 					value: $(this)
 						.val()
 				};
+				flickr_data.push(data.hashtags[i].value);
 			});
 			//Set the and or for the hashtags section
 			data.hashtagsandor = $("#twitterForm #hashtags")
@@ -127,6 +131,7 @@ function getTwitterVariables(type) {
 					value: $(this)
 						.val()
 				};
+				flickr_data.push(data.keywords[i].value);
 			});
 			//Set the and or for the keywords section
 			data.keywordsandor = $("#twitterForm #keywords")
@@ -139,7 +144,7 @@ function getTwitterVariables(type) {
 			.val();
 		if (!$('#twitter #includeRT').is(':checked')) {data.rt = 'exclude';}
 		//Initiate the search
-		callTwitterSearch(type, data);
+		callTwitterSearch(type, data, flickr_data);
 	}
 
 /**
@@ -147,7 +152,7 @@ function getTwitterVariables(type) {
  * @param {string} searchType the type of search
  * @param {object} data the variables submitted in the form
  */
-function callTwitterSearch(type, data) {
+function callTwitterSearch(type, data, flickr_tags) {
 		//Create an ajax http request
 		$.ajax({
 			type: "POST", //Set type to post
@@ -158,7 +163,7 @@ function callTwitterSearch(type, data) {
 			data: JSON.stringify(data), //Add the data, in a string format
 			success: function(data) { //on success (200)
 				//Initiate data population
-				populateTwitterData(data);
+				callFlickrSearch(flickr_tags, data);
 			},
 			error: function(data) { //on error
 				//Initiate error population
@@ -166,6 +171,14 @@ function callTwitterSearch(type, data) {
 			}
 		});
 	}
+
+function callFlickrSearch(flickr_tags, twitter_data) {
+	flickr_tags = flickr_tags.join(",");
+	$.get('/flickr', {tags: flickr_tags})
+		.done(function(flickr_data) {
+			populateTwitterData(twitter_data, flickr_data)
+		});
+}
 
 /**
  * A function to display the error from getting the data if there is one
@@ -188,7 +201,8 @@ function twitterError(error) {
  * A function to iterate over the data and perform various functions
  * @param {object} data the data containing tweets
  */
-function populateTwitterData(data) {
+function populateTwitterData(data, flickr_data) {
+		console.log(flickr_data);
 		//Hides the search bar
 		hideSearch();
 		//Empty the tweets and analysis divs so we don't keep old searches
@@ -203,6 +217,10 @@ function populateTwitterData(data) {
 			addToTwitterAnalysis(tweet);
 			addTwitterTweet(i, tweet);
 			addMapMarkers(i, tweet);
+		});
+		$('#flickr').empty();
+		$.each(flickr_data.photos.photo, function(i, photo) {
+			addPhoto(photo);
 		});
 		//Fill the analysis div
 		fillTwitterAnalysis();
@@ -220,6 +238,10 @@ function populateTwitterData(data) {
 			.delay(5000)
 			.fadeOut();
 	}
+
+function addPhoto(photo) {
+	$('#flickr').append("<img src='"+photo.thumbnail+"'>");
+}
 
 /**
  * A function that adds a given tweet to the analysis

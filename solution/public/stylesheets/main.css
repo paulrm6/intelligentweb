@@ -201,7 +201,7 @@ section#menu #buttons .menuBtn:hover {
     background-color: #f8f8ff;
     height: calc(100vh - 30px);
 }
-#twitter .row {
+#twitter .flex {
     display: flex;
 }
 #twitter #results h2 {
@@ -222,35 +222,43 @@ section#menu #buttons .menuBtn:hover {
     background-color: white;
 }
 #twitter #results #tweets {
-    overflow-y: auto;    
-    flex:1;
     min-width: 400px;
-    min-height: 600px;
-    border-right: solid 4px #e1e8ed;
 }
-#twitter #results #column {
-    flex:1;
+#twitter #results #topUsers {
+    min-width: 350px; 
+}
+#twitter #tweets, #twitter #topUsers {
+    min-height: 550px;
+    flex:2;
+    overflow-y: auto; 
+    border-right: solid 4px #e1e8ed;
+    height: calc(100vh - 30px);
+}
+#twitter #flickr {
+    overflow-y:scroll;
+    border-left: solid 4px #e1e8ed;
+    flex: 0 0 100px;
+    height: calc(100vh - 30px);
+}
+#twitter #flickr img {
+    width: 100%;
+}
+#twitter #results .columnRight {
+    flex:2;
     min-width: 450px;
     min-height: 600px;
 }
-#twitter #results #topUsers {
-    flex:1;
-    overflow-y: auto; 
-    min-width: 350px; 
-    min-height: 600px;
-    border-right: solid 4px #e1e8ed;
-}
-#twitter #results #column #topKeywords,#twitter #results #column #topHashtags {
+#twitter #results #topKeywords,#twitter #results #topHashtags {
     overflow-y: auto;
     height: calc(60vh - 30px);
     flex:1;
     min-height: 360px;
     border-right: solid 4px #e1e8ed;
 }
-#twitter #results #column #topHashtags {
+#twitter #results #topHashtags {
     border-right: none;
 }
-#twitter #results #column #map {
+#twitter #results #map {
     height: 40vh;
     width:100%;
     min-height: 240px;

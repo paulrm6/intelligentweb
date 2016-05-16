@@ -6,16 +6,21 @@ router.get('/', function(req,res) {
 	var tags = req.query.tags;
 	flickr.get("photos.search", {
 		tags:tags,
-		per_page: 10
+		per_page: 30
 	}, function(err, data) {
 		for(var i=0; i<data.photos.photo.length; i++) {
 			var photo = data.photos.photo[i];
-			data.photos.photo[i].https =
-				'https://farm'+photo.farm
+			var link = 'https://farm'+photo.farm
 				+'.staticflickr.com/'+photo.server
 				+'/'+photo.id
-				+'_'+photo.secret
-				+'_b.jpg';
+				+'_'+photo.secret;
+			data.photos.photo[i].thumbnail = link+'_t.jpg';
+			data.photos.photo[i].medium = link+'.jpg';
+			data.photos.photo[i].large = link+'_b.jpg';
+			data.photos.photo[i].link =
+				'https://www.flickr.com/photos/'
+				+photo.owner
+				+'/'+photo.id;
 		}
 		res.send(data);
 	})
