@@ -7,8 +7,11 @@ html, body {
     height: 100%;
 }
 #cover {
-    background: url("/images/ajax-loader.gif") no-repeat scroll center center #FFF;
-    position: absolute;
+    background: url("/images/gears.gif") no-repeat scroll center center #FFF;
+    background-size: 50px 50px;
+    position: fixed;
+    top:0;
+    left:0;
     height: 100%;
     width: 100%;
     opacity: 0.9;

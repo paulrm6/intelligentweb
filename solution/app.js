@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var search = require('./routes/search');
 var flickr = require('./routes/flickr');
+var report = require('./routes/report');
 
 var app = express();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Set up calls to routes
+app.use('/report', report);
 app.use('/flickr', flickr);
 app.use('/search', search);
 app.use('/*', index);
