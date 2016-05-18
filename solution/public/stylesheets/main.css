@@ -479,9 +479,10 @@ section#menu #buttons .menuBtn:hover {
     background-color: white;
     padding:5px;
     border: solid 1px #23282D;
-    box-shadow:  4px 4px 5px #23282D;
     line-height: 1em;
     color: black;
+    opacity: 0.6;
+    border-radius: 5px;
 }
 #report #results .team a {
     display: block;
@@ -495,6 +496,7 @@ section#menu #buttons .menuBtn:hover {
 .readMoreTrigger {
     font-size: 90%;
     margin: 5px 0;
+    opacity: 0.6;
     padding:5px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -512,7 +514,7 @@ section#menu #buttons .menuBtn:hover {
     transition: all ease 0.3s;
 }
 .readMoreTrigger:hover {
-    box-shadow:  6px 6px 5px #23282D;
+    box-shadow:  2px 2px 5px #23282D;
 }
 .readMoreState ~ .readMoreTrigger::before {
     content: 'Show more...';
