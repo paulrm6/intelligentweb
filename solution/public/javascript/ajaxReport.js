@@ -73,7 +73,23 @@ function populateReportData(data, team) {
 	var stadiumInfo = "<div class='stadiumName'>"+teamData.groundName.value+"</div>"
 		+"<img src='"+teamData.groundThumbnail.value+"'/>"
 		+"<div class='abstract'>"+teamData.groundDescription.value+"</div>";
-	$('#report #results #'+team+' .stadiumInfo').empty().append(stadiumInfo)
+	$('#report #results #'+team+' .stadiumInfo').empty().append(stadiumInfo);
+	var managerInfo = "<div class='managerName'>"+teamData.managerName.value+"</div>"
+		+"<img src='"+teamData.managerThumbnail.value+"'/>";
+	$('#report #results #'+team+' .managerInfo').empty().append(managerInfo);
+	var playerInfo = ""
+	$.each(data[team].players.results.bindings, function(i, player) {
+		playerInfo += "<div class='player'><div class='playerName'>"
+			+player.playerName.value
+			+"</div><img src='"
+			+player.playerPhoto.value
+			+"'/><div class='playerPosition'>"
+			+player.playerPosition.value
+			+"</div><div class='playerDOB'>"
+			+player.playerdob.value
+			+"</div></div>"
+	});
+	$('#report #results #'+team+' .playerInfo').empty().append(playerInfo);
 }
 
 function isDark(colour) {
