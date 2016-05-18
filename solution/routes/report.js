@@ -82,7 +82,7 @@ function genClubData(team,callback){
 	var resource = '<http://dbpedia.org/resource/'.concat(team).concat('> ');
 
 	var query = "PREFIX type: <http://dbpedia.org/class/yago/> PREFIX prop: <http://dbpedia.org/property/>"+
-					'SELECT ?team ?fullname ?manager ?abstract ?titlestyle ?groundName ?groundDescription ?groundThumbnail '+ 
+					'SELECT ?team ?fullname ?manager ?managerFName ?managerLName ?abstract ?titlestyle ?groundName ?groundDescription ?groundThumbnail '+ 
 					 	'WHERE {'+
 							 '?team '+
 							 'prop:fullname ?fullname;'+
@@ -90,6 +90,8 @@ function genClubData(team,callback){
 							 'dbo:abstract ?abstract;'+
 							 'dbo:ground ?ground .'+
 							 'OPTIONAL {?team dbp:titlestyle ?titlestyle}'+
+							 '?manager foaf:givenName ?managerFName;'+
+        					 'foaf:surname ?managerLName .'+
 							 '?ground foaf:name ?groundName;'+
 							 'dbo:thumbnail ?groundThumbnail ;'+
 							 'dbo:abstract ?groundDescription .'+
