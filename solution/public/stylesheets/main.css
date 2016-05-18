@@ -439,8 +439,9 @@ section#menu #buttons .menuBtn:hover {
     display: inline-block;
     height: calc(100vh - 110px);
     position: absolute;
-    width: calc(50% - 2px);
+    width: calc(50% - 42px);
     overflow-y: auto;
+    padding:20px;
 }
 #report #results .team h3{
     text-align: center;
@@ -474,6 +475,10 @@ section#menu #buttons .menuBtn:hover {
     -webkit-transition: ease-in .47s all .83s;
     -moz-transition: ease-in .47s all .83s;
 }
+#report #results .team .teamInfo {
+
+}
+
 #report #results .team .playerInfo {
     display: flex;
     flex-wrap: wrap;
@@ -481,10 +486,10 @@ section#menu #buttons .menuBtn:hover {
 }
 #report #results .team .playerInfo .player {
     flex:1;
-    min-width: 200px;
+    margin: 5px;
+    min-width: 150px;
     max-width: 230px;
     background-color: white;
-    margin:10px;
     padding:5px;
     text-align: center;
     border: solid 1px #23282D;
@@ -505,12 +510,34 @@ section#menu #buttons .menuBtn:hover {
 }
 
 #report #results .team .playerInfo .player img {
-    height: 150px;
-    max-width:200px;
+    max-height: 150px;
+    max-width:150px;
 }
 #report #results .team .playerInfo .player .playerPosition {
 
 }
 #report #results .team .playerInfo .player .playerDOB {
     font-size: 90%;
+}
+.readMoreState {
+    display: none;
+}
+.readMoreState ~ .readMoreTrigger::before {
+    content: 'Show more...';
+}
+.readMoreState:checked ~ .readMoreTrigger::before {
+    content: 'Show less...';
+}
+#report #results .team .teamInfo .abstract .readMore {
+    opacity: 0;
+    max-height: 0;
+    font-size: 0;
+    transition: .25s ease;
+}
+.readMoreState:checked ~ .teamInfo .abstract .readMore {
+    opacity: 1 !important;
+    font-size: inherit !important;
+    max-height: 100vh !important;
+}
+.readMoreState ~ .teamInfo .abstract {
 }

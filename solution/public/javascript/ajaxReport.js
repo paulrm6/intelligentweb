@@ -67,8 +67,13 @@ function setColour(data, team) {
 function populateReportData(data, team) {
 	var teamData = data[team].club.results.bindings[0];
 	setColour(teamData,team);
+	var abstract = teamData.abstract.value.split(".")
 	$('#report #results #'+team+' h3').text(teamData.fullname.value)
-	var teamInfo = "<div class='abstract'>"+teamData.abstract.value+"</div>";
+	var teamInfo = "<div class='abstract'>"
+		+abstract.slice(0,2).join(".")
+		+".<span class='readMore'>"
+		+abstract.slice(2,abstract.length).join(".")
+		+"</div>";
 	$('#report #results #'+team+' .teamInfo').empty().append(teamInfo)
 	var stadiumInfo = "<div class='stadiumName'>"+teamData.groundName.value+"</div>"
 		+"<img src='"+teamData.groundThumbnail.value+"'/>"
