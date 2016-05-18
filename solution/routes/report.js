@@ -89,7 +89,7 @@ function genClubData(team,callback){
 							 'dbp:titlestyle ?titlestyle;'+
 							 'dbo:abstract ?abstract;'+
 							 'dbo:ground ?ground .'+
-							 '?ground dbp:stadiumName ?groundName;'+
+							 '?ground foaf:name ?groundName;'+
 							 'dbo:thumbnail ?groundThumbnail ;'+
 							 'dbo:abstract ?groundDescription .'+
 									 'FILTER ( langMatches(lang(?abstract), "EN")) .'+
