@@ -35,6 +35,20 @@ img.emoji {
 strong{
     font-weight: bold;
 }
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: inherit;
+}
+
+::-webkit-scrollbar-thumb {
+    background: -webkit-linear-gradient(left, #FFFFFF, #C3C3C3);
+    border: 1px solid #333;
+    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+}
 
 /* ***********DIPLAY NONES*********** */
 #twitter, #report, article#searchFields form #team #otherInput, 
@@ -460,17 +474,43 @@ section#menu #buttons .menuBtn:hover {
     -webkit-transition: ease-in .47s all .83s;
     -moz-transition: ease-in .47s all .83s;
 }
-::-webkit-scrollbar {
-    width: 10px;
+#report #results .team .playerInfo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+#report #results .team .playerInfo .player {
+    flex:1;
+    min-width: 200px;
+    max-width: 230px;
+    background-color: white;
+    margin:10px;
+    padding:5px;
+    text-align: center;
+    border: solid 1px #23282D;
+    box-shadow:  4px 4px 5px #23282D;
+    color:black;
+}
+#report #results .team .playerInfo a {
+    text-decoration: none;
+    color:inherit;
+    transition: all ease 0.2s;
+}
+#report #results .team .playerInfo .player:hover {
+    box-shadow:  8px 8px 5px #23282D;
+}
+#report #results .team .playerInfo .player .playerName {
+    font-size: 110%;
+    padding-bottom: 5px;
 }
 
-::-webkit-scrollbar-track {
-    background: inherit;
+#report #results .team .playerInfo .player img {
+    height: 150px;
+    max-width:200px;
 }
+#report #results .team .playerInfo .player .playerPosition {
 
-::-webkit-scrollbar-thumb {
-    background: -webkit-linear-gradient(left, #FFFFFF, #C3C3C3);
-    border: 1px solid #333;
-    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.4);
-    border-radius: 5px;
+}
+#report #results .team .playerInfo .player .playerDOB {
+    font-size: 90%;
 }

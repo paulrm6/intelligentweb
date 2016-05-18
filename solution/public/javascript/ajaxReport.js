@@ -79,15 +79,17 @@ function populateReportData(data, team) {
 	$('#report #results #'+team+' .managerInfo').empty().append(managerInfo);
 	var playerInfo = ""
 	$.each(data[team].players.results.bindings, function(i, player) {
-		playerInfo += "<div class='player'><div class='playerName'>"
+		playerInfo += "<a target='_blank' href='"
+			+player.player.value
+			+"' class='player'><div class='playerName'>"
 			+player.playerName.value
 			+"</div><img src='"
 			+player.playerPhoto.value
 			+"'/><div class='playerPosition'>"
-			+player.playerPosition.value
-			+"</div><div class='playerDOB'>"
+			+player.playerPosition.value.replace(" (association football)","")
+			+"</div><div class='playerDOB'>DOB: "
 			+player.playerdob.value
-			+"</div></div>"
+			+"</div></a>"
 	});
 	$('#report #results #'+team+' .playerInfo').empty().append(playerInfo);
 }
