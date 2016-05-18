@@ -49,8 +49,8 @@ function callSearchReport() {
 	}
 
 function setColour(data, team) {
-	if(data[team].club.results.bindings[0].titlestyle) {
-		var titlestyle = data[team].club.results.bindings[0].titlestyle.value;
+	if(data.titlestyle) {
+		var titlestyle = data.titlestyle.value;
 		var index = titlestyle.indexOf("background:");
 		var backgroundColour = titlestyle.substring(index+11,index+18)
 		$('#report #results #'+team).css("backgroundColor",backgroundColour);
@@ -65,8 +65,15 @@ function setColour(data, team) {
 }
 
 function populateReportData(data, team) {
-	setColour(data,team);
-	$('#report #results #'+team+' h3').text(data[team].club.results.bindings[0].fullname.value)
+	var teamData = data[team].club.results.bindings[0];
+	setColour(teamData,team);
+	$('#report #results #'+team+' h3').text(teamData.fullname.value)
+	var teamInfo = "<div class='abstract'>"+teamData.abstract.value+"</div>";
+	$('#report #results #'+team+' .teamInfo').empty().append(teamInfo)
+	var stadiumInfo = "<div class='stadiumName'>"+teamData.groundName.value+"</div>"
+		+"<img src='"+teamData.groundThumbnail.value+"'/>"
+		+"<div class='abstract'>"+teamData.groundDescription.value+"</div>";
+	$('#report #results #'+team+' .stadiumInfo').empty().append(stadiumInfo)
 }
 
 function isDark(colour) {

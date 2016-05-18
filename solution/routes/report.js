@@ -81,14 +81,14 @@ function genClubData(team,callback){
 	var client = new SparqlClient(endpoint);
 	var resource = '<http://dbpedia.org/resource/'.concat(team).concat('> ');
 	var query = "PREFIX type: <http://dbpedia.org/class/yago/> PREFIX prop: <http://dbpedia.org/property/>"+
-					'SELECT ?team ?fullname ?manager ?titlestyle ?groundName ?groundThumbnail ?groundDescription ?abstract'+ 
+					'SELECT ?team ?fullname ?manager ?abstract ?titlestyle ?groundName ?groundDescription ?groundThumbnail '+ 
 					 	'WHERE {'+
 							 '?team '+
 							 'prop:fullname ?fullname;'+
 							 'prop:manager ?manager;'+
 							 'dbp:titlestyle ?titlestyle;'+
-							 'dbo:ground ?ground;'+
-							 'dbo:abstract ?abstract .'+
+							 'dbo:abstract ?abstract;'+
+							 'dbo:ground ?ground .'+
 							 '?ground dbp:stadiumName ?groundName;'+
 							 'dbo:thumbnail ?groundThumbnail ;'+
 							 'dbo:abstract ?groundDescription .'+

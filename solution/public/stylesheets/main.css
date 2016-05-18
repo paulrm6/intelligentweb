@@ -426,6 +426,7 @@ section#menu #buttons .menuBtn:hover {
     height: calc(100vh - 110px);
     position: absolute;
     width: calc(50% - 2px);
+    overflow-y: auto;
 }
 #report #results .team h3{
     text-align: center;
@@ -458,4 +459,18 @@ section#menu #buttons .menuBtn:hover {
     left: 0px !important;
     -webkit-transition: ease-in .47s all .83s;
     -moz-transition: ease-in .47s all .83s;
+}
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: inherit;
+}
+
+::-webkit-scrollbar-thumb {
+    background: -webkit-linear-gradient(left, #FFFFFF, #C3C3C3);
+    border: 1px solid #333;
+    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
 }
