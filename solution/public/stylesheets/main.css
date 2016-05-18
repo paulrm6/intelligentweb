@@ -483,6 +483,11 @@ section#menu #buttons .menuBtn:hover {
     line-height: 1em;
     color: black;
 }
+#report #results .team a {
+    display: block;
+    color:inherit;
+    text-decoration: none;
+}
 
 .readMoreState {
     display: none;
