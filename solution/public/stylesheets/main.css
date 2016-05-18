@@ -385,7 +385,7 @@ section#menu #buttons .menuBtn:hover {
 
 /* -----------SEARCHFIELDS----------- */
 #report #searchFields {
-    background-color: #3a3a3a;
+    background-color: #23282D;
     height:90px;
 }
 #report #searchFields #reportForm input {
