@@ -82,7 +82,7 @@ function genClubData(team,callback){
 	var resource = '<http://dbpedia.org/resource/'.concat(team).concat('> ');
 
 	var query = "PREFIX type: <http://dbpedia.org/class/yago/> PREFIX prop: <http://dbpedia.org/property/>"+
-					'SELECT ?team ?fullname ?manager ?managerFName ?managerLName ?abstract ?titlestyle ?groundName ?groundDescription ?groundThumbnail '+ 
+					'SELECT ?team ?fullname ?manager ?managerFName ?managerLName ?abstract ?titlestyle ?ground ?groundName ?groundDescription ?groundThumbnail '+ 
 					 	'WHERE {'+
 							 '?team '+
 							 'prop:fullname ?fullname;'+
