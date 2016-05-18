@@ -90,8 +90,8 @@ function genClubData(team,callback){
 							 'dbo:abstract ?abstract;'+
 							 'dbo:ground ?ground .'+
 							 'OPTIONAL {?team dbp:titlestyle ?titlestyle}'+
-							 '?manager foaf:givenName ?managerFName;'+
-        					 'foaf:surname ?managerLName .'+
+							 'OPTIONAL {?manager foaf:givenName ?managerFName}'+
+        					 'OPTIONAL {?manager foaf:surname ?managerLName}'+
 							 '?ground foaf:name ?groundName;'+
 							 'dbo:thumbnail ?groundThumbnail ;'+
 							 'dbo:abstract ?groundDescription .'+
