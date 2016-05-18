@@ -36,13 +36,9 @@ function callSearchReport() {
 			success: function(data) { //on success (200)
 				//Initiate data population
 				console.log(data);
-				setColour(data,"teamA");
-				setColour(data,"teamB");
-				addHeader(data);
-				$('#reportCover').delay(830).fadeOut(0);
-				$('#football').delay(830).fadeIn(0);
-				$('#report #results #teamA').show(0).addClass('flyInLeft');
-				$('#report #results #teamB').show(0).addClass('flyInRight');
+				populateReportData(data,"teamA");
+				populateReportData(data,"teamB");
+				showReport();
 			},
 			error: function(data) { //on error
 				//Initiate error population
@@ -68,9 +64,9 @@ function setColour(data, team) {
 	}
 }
 
-function addHeader(data) {
-	$('#report #results #teamA h3').text(data.teamA.club.results.bindings[0].fullname.value)
-	$('#report #results #teamB h3').text(data.teamB.club.results.bindings[0].fullname.value)
+function populateReportData(data, team) {
+	setColour(data,team);
+	$('#report #results #'+team+' h3').text(data[team].club.results.bindings[0].fullname.value)
 }
 
 function isDark(colour) {
@@ -83,4 +79,11 @@ function isDark(colour) {
 	} else {
 		return true;
 	}
+}
+
+function showReport() {
+	$('#reportCover').delay(830).fadeOut(0);
+	$('#football').delay(830).fadeIn(0);
+	$('#report #results #teamA').show(0).addClass('flyInLeft');
+	$('#report #results #teamB').show(0).addClass('flyInRight');
 }

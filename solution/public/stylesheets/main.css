@@ -406,10 +406,12 @@ section#menu #buttons .menuBtn:hover {
     width: 100%;
     opacity: 0.9;
     z-index: 5;
+    padding-top: 110px;
 }
 #report #results #football {
     background: url("/images/football.png") no-repeat scroll center center;
     background-size: 50px 50px;
+    padding-top: 110px;
     position: fixed;
     display: none;
     top:0;
