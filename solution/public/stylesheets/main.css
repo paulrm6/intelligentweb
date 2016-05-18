@@ -5,6 +5,7 @@ html, body {
     background-color: #c0deed;
     font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
     height: 100%;
+    overflow-x: hidden;
 }
 #cover {
     background: url("/images/gears.gif") no-repeat scroll center center #FFF;
@@ -383,6 +384,73 @@ section#menu #buttons .menuBtn:hover {
 /* ***********REPORT*********** */
 
 /* -----------SEARCHFIELDS----------- */
+#report #searchFields {
+    background-color: #3a3a3a;
+    height:90px;
+}
 #report #searchFields #reportForm input {
     margin: 10px 0;
+}
+#report #results {
+    background-color: #FFFFFF;
+    height: calc(100vh - 110px);
+}
+#report #results #reportCover {
+    background: url("/images/football.gif") no-repeat scroll center center #FFF;
+    background-size: 70px 70px;
+    display: none;
+    position: fixed;
+    top:0;
+    left:0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.9;
+    z-index: 5;
+}
+#report #results #football {
+    background: url("/images/football.png") no-repeat scroll center center;
+    background-size: 50px 50px;
+    position: fixed;
+    display: none;
+    top:0;
+    left:0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.9;
+    z-index: 5;
+    pointer-events:none;
+}
+#report #results #teamA, #report #results #teamB {
+    display: inline-block;
+    height: calc(100vh - 110px);
+    position: absolute;
+    width:50%;
+}
+#report #results #teamA {
+    background-color: red;
+    left:-50%;
+    display: none;
+    -webkit-transition: ease-out .47s all .83s;
+    -moz-transition: ease-out .47s all .83s;
+}
+#report #results #teamB {
+    background-color: blue;
+    right:-50%;
+    display: none;
+    -webkit-transition: ease-out .47s all .83s;
+    -moz-transition: ease-out .47s all .83s;
+}
+#report #results .flyOutLeft {
+}
+#report #results .flyOutRight {
+}
+#report #results .flyInRight {
+    right: 0px !important;
+    -webkit-transition: ease-in .47s all .83s;
+    -moz-transition: ease-in .47s all .83s;
+}
+#report #results .flyInLeft {
+    left: 0px !important;
+    -webkit-transition: ease-in .47s all .83s;
+    -moz-transition: ease-in .47s all .83s;
 }

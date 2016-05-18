@@ -22,7 +22,7 @@ $(document)
 			//If it's the first time a search has been run
 			if (firstTime) {
 				//Slide down the results section ready for the results
-				$("#results")
+				$("#twitter #results")
 					.show("slide", {
 						direction: "up"
 					}, 1000);
