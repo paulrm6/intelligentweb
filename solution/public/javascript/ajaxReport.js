@@ -67,19 +67,14 @@ function setColour(data, team) {
 function populateReportData(data, team) {
 	var teamData = data[team].club.results.bindings[0];
 	setColour(teamData,team);
-	var abstract = teamData.abstract.value.split(".")
 	$('#report #results #'+team+' h3').text(teamData.fullname.value)
-	var teamInfo = "<div class='abstract'>"
-		+abstract.slice(0,2).join(".")
-		+".<span class='readMore'>"
-		+abstract.slice(2,abstract.length).join(".")
-		+"</div>";
+	var teamInfo = "<div class='abstract readMore'>"+teamData.abstract.value+"</div>";
 	$('#report #results #'+team+' .teamInfo').empty().append(teamInfo)
-	var stadiumInfo = "<div class='stadiumName'>"+teamData.groundName.value+"</div>"
+	var stadiumInfo = "<div class='stadiumName'>Stadium: "+teamData.groundName.value+"</div>"
 		+"<img src='"+teamData.groundThumbnail.value+"'/>"
-		+"<div class='abstract'>"+teamData.groundDescription.value+"</div>";
+		+"<div class='abstract readMore'>"+teamData.groundDescription.value+"</div>";
 	$('#report #results #'+team+' .stadiumInfo').empty().append(stadiumInfo);
-	var managerInfo = "<div class='managerName'>"+teamData.managerName.value+"</div>"
+	var managerInfo = "<div class='managerName'>Manager: "+teamData.managerName.value+"</div>"
 		+"<img src='"+teamData.managerThumbnail.value+"'/>";
 	$('#report #results #'+team+' .managerInfo').empty().append(managerInfo);
 	var playerInfo = ""

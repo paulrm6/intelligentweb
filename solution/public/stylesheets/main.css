@@ -475,10 +475,71 @@ section#menu #buttons .menuBtn:hover {
     -webkit-transition: ease-in .47s all .83s;
     -moz-transition: ease-in .47s all .83s;
 }
-#report #results .team .teamInfo {
-
+#report #results .team .abstract {
+    background-color: white;
+    padding:5px;
+    border: solid 1px #23282D;
+    box-shadow:  4px 4px 5px #23282D;
+    line-height: 1em;
+    color: black;
 }
 
+.readMoreState {
+    display: none;
+}
+.readMoreTrigger {
+    font-size: 90%;
+    margin: 5px 0;
+    padding:5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    line-height: 2;
+    border: 1px solid #23282D;
+    border-top:none;
+    cursor: pointer;
+    background-color: white;
+    color:black;
+    position: relative;
+    box-shadow:  4px 4px 5px #23282D;
+    right: -90%;
+    top:-1px;
+    margin-left: -33px;
+    transition: all ease 0.3s;
+}
+.readMoreTrigger:hover {
+    box-shadow:  6px 6px 5px #23282D;
+}
+.readMoreState ~ .readMoreTrigger::before {
+    content: 'Show more...';
+
+}
+.readMoreState:checked ~ .readMoreTrigger::before {
+    content: 'Show less...';
+}
+#report #results .readMore {
+    height: calc(3em + 10px);
+    overflow-y: hidden;
+    transition: all ease 0.3;
+}
+.readMoreState:checked + .readMoreContainer .readMore {
+    height: auto !important;
+}
+#report #results .team .stadiumInfo .stadiumName, #report #results .team .managerInfo .managerName,
+    #report #results .team h4 {
+    font-size: 130%;
+    text-align: center;
+}
+#report #results .team .stadiumInfo img, #report #results .team .managerInfo img {
+    padding:10px;
+    border: 1px solid #23282D;
+    background-color: white;
+    margin: 5px auto;
+    width:40%;
+    position: relative;
+    left: 30%;
+}
+#report #results .team .stadiumInfo .abstract {
+}
 #report #results .team .playerInfo {
     display: flex;
     flex-wrap: wrap;
@@ -518,26 +579,4 @@ section#menu #buttons .menuBtn:hover {
 }
 #report #results .team .playerInfo .player .playerDOB {
     font-size: 90%;
-}
-.readMoreState {
-    display: none;
-}
-.readMoreState ~ .readMoreTrigger::before {
-    content: 'Show more...';
-}
-.readMoreState:checked ~ .readMoreTrigger::before {
-    content: 'Show less...';
-}
-#report #results .team .teamInfo .abstract .readMore {
-    opacity: 0;
-    max-height: 0;
-    font-size: 0;
-    transition: .25s ease;
-}
-.readMoreState:checked ~ .teamInfo .abstract .readMore {
-    opacity: 1 !important;
-    font-size: inherit !important;
-    max-height: 100vh !important;
-}
-.readMoreState ~ .teamInfo .abstract {
 }
