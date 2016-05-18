@@ -36,6 +36,9 @@ function callSearchReport() {
 			success: function(data) { //on success (200)
 				//Initiate data population
 				console.log(data);
+				setColour(data,"teamA");
+				setColour(data,"teamB");
+				addHeader(data);
 				$('#reportCover').delay(830).fadeOut(0);
 				$('#football').delay(830).fadeIn(0);
 				$('#report #results #teamA').show(0).addClass('flyInLeft');
@@ -48,3 +51,36 @@ function callSearchReport() {
 			}
 		});
 	}
+
+function setColour(data, team) {
+	if(data[team].club.results.bindings[0].titlestyle) {
+		var titlestyle = data[team].club.results.bindings[0].titlestyle.value;
+		var index = titlestyle.indexOf("background:");
+		var backgroundColour = titlestyle.substring(index+11,index+18)
+		$('#report #results #'+team).css("backgroundColor",backgroundColour);
+		if(isDark(backgroundColour)) {
+			$('#report #results #'+team).css("color","white");
+		} else {
+			$('#report #results #'+team).css("color","black");
+		}
+	} else {
+		$('#report #results #'+team).css("backgroundColor","white");
+	}
+}
+
+function addHeader(data) {
+	$('#report #results #teamA h3').text(data.teamA.club.results.bindings[0].fullname.value)
+	$('#report #results #teamB h3').text(data.teamB.club.results.bindings[0].fullname.value)
+}
+
+function isDark(colour) {
+	var red = parseInt(colour.substring(1,3),16);
+	var green = parseInt(colour.substring(3,5),16);
+	var blue = parseInt(colour.substring(5,7),16);
+	var luminance = 0.2126*red + 0.7152*green + 0.0722*blue;
+	if(luminance>50) {
+		return false;
+	} else {
+		return true;
+	}
+}

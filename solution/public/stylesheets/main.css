@@ -416,25 +416,28 @@ section#menu #buttons .menuBtn:hover {
     left:0;
     height: 100%;
     width: 100%;
-    opacity: 0.9;
     z-index: 5;
     pointer-events:none;
 }
-#report #results #teamA, #report #results #teamB {
+#report #results .team {
     display: inline-block;
     height: calc(100vh - 110px);
     position: absolute;
-    width:50%;
+    width: calc(50% - 2px);
+}
+#report #results .team h3{
+    text-align: center;
+    font-size: 160%;
+    padding: 5px;
 }
 #report #results #teamA {
-    background-color: red;
     left:-50%;
     display: none;
     -webkit-transition: ease-out .47s all .83s;
     -moz-transition: ease-out .47s all .83s;
+    border-right: solid 4px #23282D;
 }
 #report #results #teamB {
-    background-color: blue;
     right:-50%;
     display: none;
     -webkit-transition: ease-out .47s all .83s;
