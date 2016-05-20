@@ -46,7 +46,7 @@ strong{
 ::-webkit-scrollbar-thumb {
     background: -webkit-linear-gradient(left, #FFFFFF, #C3C3C3);
     border: 1px solid #333;
-    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.4);
+    /*box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.4);*/
     border-radius: 5px;
 }
 
@@ -445,7 +445,7 @@ section#menu #buttons .menuBtn:hover {
 }
 #report #results .team h3{
     text-align: center;
-    font-size: 160%;
+    font-size: 190%;
     padding: 5px;
 }
 #report #results #teamA {
@@ -478,10 +478,11 @@ section#menu #buttons .menuBtn:hover {
 #report #results .team .abstract {
     background-color: rgba(255,255,255,0.7);
     padding:5px;
-    border: solid 1px #23282D;
-    line-height: 1em;
+    border: solid 1px #4e4e4e;
+    line-height: 130%;
     color: black;
     border-radius: 5px;
+    z-index: 1;
 }
 #report #results .team a {
     display: block;
@@ -499,23 +500,20 @@ section#menu #buttons .menuBtn:hover {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     line-height: 2;
-    border: 1px solid #23282D;
+    border: 1px solid #4e4e4e;
     border-top:none;
     cursor: pointer;
-    background-color: white;
+    background-color: rgba(255,255,255,1);
     color:black;
     position: relative;
-    box-shadow:  4px 4px 5px #23282D;
     right: -90%;
-    top:-1px;
+    top:-2px;
     margin-left: -33px;
     transition: all ease 0.3s;
+    z-index: 2;
 }
 .readMoreTrigger:hover {
-    box-shadow:  2px 2px 5px #23282D;
-}
-.readMoreTrigger:active {
-    box-shadow:  0px 0px 5px #23282D;
+    background-color: rgba(255,255,255,0.7);
 }
 .readMoreState ~ .readMoreTrigger::before {
     content: 'Show more...';
@@ -539,14 +537,15 @@ section#menu #buttons .menuBtn:hover {
 }
 #report #results .team .stadiumInfo img, #report #results .team .managerInfo img {
     padding:10px;
-    border: 1px solid #23282D;
+    border: 1px solid #4e4e4e;
     background-color: white;
     margin: 5px auto;
     width:40%;
     position: relative;
     left: 30%;
 }
-#report #results .team .stadiumInfo .abstract {
+#report #results div.managerInfo{
+    padding-bottom: 25px;
 }
 #report #results .team .playerInfo {
     display: flex;
@@ -561,9 +560,11 @@ section#menu #buttons .menuBtn:hover {
     background-color: white;
     padding:5px;
     text-align: center;
-    border: solid 1px #23282D;
+    border: solid 1px #4e4e4e;
+    line-height: 120%;
     box-shadow:  4px 4px 5px #23282D;
     color:black;
+    transition: all ease 0.2s;
 }
 #report #results .team .playerInfo a {
     text-decoration: none;

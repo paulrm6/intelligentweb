@@ -75,12 +75,12 @@ function populateReportData(data, team) {
 		+"<a property='dbo:manager' href='"+teamData.manager.value+"'></a>";
 	var stadiumInfo = "<a target='_blank' href='"
 		+teamData.ground.value
-		+"' class='stadiumName'><span property='dbp:name'>Stadium: "+teamData.groundName.value+"</span></a>"
+		+"' class='stadiumName'>Stadium: <span property='dbp:name'>"+teamData.groundName.value+"</span></a>"
 		+"<img src='"+teamData.groundThumbnail.value+"' property='dbo:thumbnail'/>"
 		+"<div class='abstract readMore' property='dbo:abstract'>"+teamData.groundDescription.value+"</div>";
 	var managerInfo = "<a target='_blank' href='"
 		+teamData.manager.value
-		+"' class='managerName' property='dbp:name'>Manager: "+teamData.managerName.value+"</a>"
+		+"' class='managerName'>Manager: <span property='dbp:name'>"+teamData.managerName.value+"</span></a>"
 		+"<img src='"+teamData.managerThumbnail.value+"' property='dbo:thumbnail' />";
 	var playerInfo = ""
 	$.each(data[team].players.results.bindings, function(i, player) {
