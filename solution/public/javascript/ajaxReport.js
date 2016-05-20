@@ -67,27 +67,33 @@ function setColour(data, team) {
 function populateReportData(data, team) {
 	var teamData = data[team].club.results.bindings[0];
 	setColour(teamData,team);
-	$('#report #results #'+team+' h3').text(teamData.fullname.value)
-	var teamInfo = "<div class='abstract'>"+teamData.abstract.value+"</div>";
+	$('#report #results #'+team+' h3').html("<a target='_blank' href='"
+		+teamData['callret-0'].value
+		+" property='dbp:fullname'>"+teamData.fullname.value+"</a>")
+	var teamInfo = "<div class='abstract readMore' property='dbo:abstract'>"+teamData.abstract.value+"</div>";
 	$('#report #results #'+team+' .teamInfo').empty().append(teamInfo)
-	var stadiumInfo = "<div class='stadiumName'>"+teamData.groundName.value+"</div>"
-		+"<img src='"+teamData.groundThumbnail.value+"'/>"
-		+"<div class='abstract'>"+teamData.groundDescription.value+"</div>";
+	var stadiumInfo = "<a target='_blank' href='"
+		+teamData.ground.value
+		+"' class='stadiumName' property='dbo:ground'>Stadium: "+teamData.groundName.value+"</a>"
+		+"<img src='"+teamData.groundThumbnail.value+"' property='dbo:thumbnail'/>"
+		+"<div class='abstract readMore' property='rdfs:comment'>"+teamData.groundDescription.value+"</div>";
 	$('#report #results #'+team+' .stadiumInfo').empty().append(stadiumInfo);
-	var managerInfo = "<div class='managerName'>"+teamData.managerName.value+"</div>"
-		+"<img src='"+teamData.managerThumbnail.value+"'/>";
+	var managerInfo = "<a target='_blank' href='"
+		+teamData.manager.value
+		+"' class='managerName' property='dbp:name'>Manager: "+teamData.managerName.value+"</a>"
+		+"<img src='"+teamData.managerThumbnail.value+"' property='dbo:thumbnail' />";
 	$('#report #results #'+team+' .managerInfo').empty().append(managerInfo);
 	var playerInfo = ""
 	$.each(data[team].players.results.bindings, function(i, player) {
 		playerInfo += "<a target='_blank' href='"
 			+player.player.value
-			+"' class='player'><div class='playerName'>"
+			+"' class='player'><div class='playerName' property='dbp:name'>"
 			+player.playerName.value
 			+"</div><img src='"
 			+player.playerPhoto.value
-			+"'/><div class='playerPosition'>"
+			+"' property='dbo:thumbnail'/><div class='playerPosition' property='dbo:position'>"
 			+player.playerPosition.value.replace(" (association football)","")
-			+"</div><div class='playerDOB'>DOB: "
+			+"</div><div class='playerDOB' property='dbp:birthDate'>DOB: "
 			+player.playerdob.value
 			+"</div></a>"
 	});
