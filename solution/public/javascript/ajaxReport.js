@@ -69,34 +69,40 @@ function populateReportData(data, team) {
 	setColour(teamData,team);
 	$('#report #results #'+team+' h3').html("<a target='_blank' href='"
 		+teamData['callret-0'].value
-		+"'>"+teamData.fullname.value+"</a>")
-	var teamInfo = "<div class='abstract readMore'>"+teamData.abstract.value+"</div>";
-	$('#report #results #'+team+' .teamInfo').empty().append(teamInfo)
+		+" property='dbp:fullname'>"+teamData.fullname.value+"</a>");
+	var teamInfo = "<div class='abstract readMore' property='dbo:abstract'>"+teamData.abstract.value+"</div>"
+		+"<a property='dbo:ground' href='"+teamData.ground.value+"'></a>"
+		+"<a property='dbo:manager' href='"+teamData.manager.value+"'></a>";
 	var stadiumInfo = "<a target='_blank' href='"
 		+teamData.ground.value
-		+"' class='stadiumName'>Stadium: "+teamData.groundName.value+"</a>"
-		+"<img src='"+teamData.groundThumbnail.value+"'/>"
-		+"<div class='abstract readMore'>"+teamData.groundDescription.value+"</div>";
-	$('#report #results #'+team+' .stadiumInfo').empty().append(stadiumInfo);
+		+"' class='stadiumName'><span property='dbp:name'>Stadium: "+teamData.groundName.value+"</span></a>"
+		+"<img src='"+teamData.groundThumbnail.value+"' property='dbo:thumbnail'/>"
+		+"<div class='abstract readMore' property='dbo:abstract'>"+teamData.groundDescription.value+"</div>";
 	var managerInfo = "<a target='_blank' href='"
 		+teamData.manager.value
-		+"' class='managerName'>Manager: "+teamData.managerName.value+"</a>"
-		+"<img src='"+teamData.managerThumbnail.value+"'/>";
-	$('#report #results #'+team+' .managerInfo').empty().append(managerInfo);
+		+"' class='managerName' property='dbp:name'>Manager: "+teamData.managerName.value+"</a>"
+		+"<img src='"+teamData.managerThumbnail.value+"' property='dbo:thumbnail' />";
 	var playerInfo = ""
 	$.each(data[team].players.results.bindings, function(i, player) {
+		teamInfo += "<a property='dbp:name' href='"+player.player.value+"'></a>"
 		playerInfo += "<a target='_blank' href='"
 			+player.player.value
-			+"' class='player'><div class='playerName'>"
+			+"' class='player' about='"+player.player.value+"'><div class='playerName' property='dbp:name'>"
 			+player.playerName.value
 			+"</div><img src='"
 			+player.playerPhoto.value
-			+"'/><div class='playerPosition'>"
+			+"' property='dbo:thumbnail'/><div class='playerPosition' property='dbo:position'>"
 			+player.playerPosition.value.replace(" (association football)","")
-			+"</div><div class='playerDOB'>DOB: "
+			+"</div><div class='playerDOB'>DOB: <span property='dbp:birthDate'>"
 			+player.playerdob.value
-			+"</div></a>"
+			+"</span></div></a>"
 	});
+	$('#report #results #'+team+' .teamInfo').empty().append(teamInfo)
+		.attr('about',teamData['callret-0'].value)
+	$('#report #results #'+team+' .stadiumInfo').empty().append(stadiumInfo)
+		.attr('about',teamData.ground.value);
+	$('#report #results #'+team+' .managerInfo').empty().append(managerInfo)
+		.attr('about',teamData.manager.value);
 	$('#report #results #'+team+' .playerInfo').empty().append(playerInfo);
 }
 
