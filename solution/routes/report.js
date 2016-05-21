@@ -92,7 +92,7 @@ function genClubData(team,callback){
 	var client = new SparqlClient(endpoint);
 	var resource = '<http://dbpedia.org/resource/'.concat(team).concat('> ');
 
-	var query = "PREFIX type: <http://dbpedia.org/class/yago/> PREFIX prop: <http://dbpedia.org/property/>"+
+	var query = "PREFIX prop: <http://dbpedia.org/property/>"+
 					'SELECT ?team ?fullname ?manager ?managerName ?managerThumbnail ?abstract ?titlestyle ?ground ?groundName ?stadiumName ?groundDescription ?groundThumbnail '+ 
 					 	'WHERE {'+
 							 '?team '+
@@ -100,13 +100,13 @@ function genClubData(team,callback){
 							 'prop:manager ?manager;'+
 							 'dbo:abstract ?abstract .'+
 							 'OPTIONAL {?team dbo:ground ?ground}'+
+							 'OPTIONAL {?team dbo:ground ?ground . ?ground foaf:name ?groundName}'+
+							 'OPTIONAL {?team dbo:ground ?ground . ?ground dbp:stadiumName ?stadiumName}'+
+							 'OPTIONAL {?team dbo:ground ?ground . ?ground dbo:thumbnail ?groundThumbnail}'+
+							 'OPTIONAL {?team dbo:ground ?ground . ?ground dbo:abstract ?groundDescription}'+
 							 'OPTIONAL {?team dbp:titlestyle ?titlestyle}'+
 							 'OPTIONAL {?manager foaf:name ?managerName}'+
 							 'OPTIONAL {?manager dbo:thumbnail ?managerThumbnail}'+
-							 'OPTIONAL {?team dbo:ground ?ground; foaf:name ?groundName}'+
-							 'OPTIONAL {?team dbo:ground ?ground; dbp:stadiumName ?stadiumName}'+
-							 'OPTIONAL {?team dbo:ground ?ground; dbo:thumbnail ?groundThumbnail}'+
-							 'OPTIONAL {?team dbo:ground ?ground; dbo:abstract ?groundDescription}'+
 									 'FILTER ( langMatches(lang(?abstract), "EN")) .'+
 									 'FILTER(LANG(?groundDescription) = "" || LANGMATCHES(LANG(?groundDescription), "en")) }';
 
