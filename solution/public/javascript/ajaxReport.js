@@ -4,6 +4,7 @@ $(document)
 		var valid = $('#reportForm')[0].checkValidity();
 		if (valid) {
 			//If it's valid, fade in the loading cover
+			$('#report #results .error').hide()
 			$('#reportCover').fadeIn(500);
 			$('#football').hide(0);
 			$('#report #results #teamA').hide(0).removeClass('flyInLeft');
@@ -35,15 +36,15 @@ function callSearchReport() {
 			data: JSON.stringify(data), //Add the data, in a string format
 			success: function(data) { //on success (200)
 				//Initiate data population
-				console.log(data);
 				populateReportData(data,"teamA");
 				populateReportData(data,"teamB");
 				showReport();
 			},
-			error: function(data) { //on error
+			error: function(error) { //on error
 				//Initiate error population
-				console.log(data);
-				$('#cover').fadeOut(500);
+				console.log(error)
+				$('#report #results .error').text(error.responseText||error.statusError).show();
+				$('#reportCover').fadeOut(500);
 			}
 		});
 	}

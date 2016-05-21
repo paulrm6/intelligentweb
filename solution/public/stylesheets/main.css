@@ -589,3 +589,7 @@ section#menu #buttons .menuBtn:hover {
 #report #results .team .playerInfo .player .playerDOB {
     font-size: 90%;
 }
+#report #results .error {
+    text-align: center;
+    color:red;
+}

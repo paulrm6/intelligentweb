@@ -68,16 +68,20 @@ function genTeamData(team, callback){
 			callback(err,undefined);
 		}
 		else{
-			teamData['club'] = result;
-			genPlayerData(team,function(err,result){
-				if(err){
-					callback(err,undefined);
-				}
-				else{
-					teamData['players'] = result;
-					callback(undefined,teamData);
-				}
-			});
+			if(result.results.bindings.length==0) {
+				callback("No data returned for "+team,undefined);
+			} else {
+				teamData['club'] = result;
+				genPlayerData(team,function(err,result){
+					if(err){
+						callback(err,undefined);
+					}
+					else{
+						teamData['players'] = result;
+						callback(undefined,teamData);
+					}
+				});
+			}
 		}
 	});
 
