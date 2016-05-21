@@ -333,6 +333,7 @@ section#menu #buttons .menuBtn:hover {
     position: absolute;
     bottom:0;
     text-decoration: none;
+    font-style: italic;
     transition: all ease 0.3s;
 }
 #gallery #innerGallery .abstract a:hover {
