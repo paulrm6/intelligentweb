@@ -1,8 +1,8 @@
-var mysql = require('mysql')
-
 /*
  * @author Paul MacDonald
  */
+
+var mysql = require('mysql')
 
 //Create pooled connection for multiple access
 var pool = mysql.createPool({

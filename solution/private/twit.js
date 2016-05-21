@@ -1,8 +1,8 @@
-var Twit = require('twit');
-
 /*
  * @author Paul MacDonald
  */
+
+var Twit = require('twit');
 
 //Create twitter connection with access keys
 var client = new Twit({
