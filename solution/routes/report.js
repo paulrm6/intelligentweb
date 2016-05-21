@@ -1,10 +1,8 @@
-
 /**
+ * @author Alex Burley <aburley1@sheffield.ac.uk>
  * @author Paul MacDonald <prmacdonald1@sheffield.ac.uk>
- * @author Alex Burley <aburley1@sheffield.ac.ul>
+ * @module report
  */
-
-
 var express = require('express');
 var router = express.Router();
 var SparqlClient = require('sparql-client');

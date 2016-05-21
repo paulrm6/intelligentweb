@@ -144,7 +144,9 @@ function queryParser(q, callback) {
 		//Remove the last and/or from each string
 		sqlQ = sqlQ.substring(0, sqlQ.length - q.andor.length - 2);
 		twitQ = twitQ.substring(0, twitQ.length - q.andor.length - 2);
+		//Check if retweets should be excluded
 		if(q.rt === 'exclude') {
+			//Exclude retweets
 			sqlQ = "("+sqlQ+") AND retweeted_user.name IS NULL ";
 			twitQ += " exclude:retweets";
 		}

@@ -142,7 +142,10 @@ function getTwitterVariables(type) {
 		//Set the and/or for the whole search
 		data.andor = $("#twitter #andOrToggle")
 			.val();
-		if (!$('#twitter #includeRT').is(':checked')) {data.rt = 'exclude';}
+		//Check if retweets should be included
+		if (!$('#twitter #includeRT').is(':checked')) {
+			data.rt = 'exclude';
+		}
 		//Initiate the search
 		callTwitterSearch(type, data, flickr_data);
 	}
@@ -172,13 +175,22 @@ function callTwitterSearch(type, data, flickr_tags) {
 		});
 	}
 
+/**
+ * A function to query the flickr api
+ * @param {[string]} list of flickr tags
+ * @param {object} twitter_data data retrieved from the twitter call call
+ */
 function callFlickrSearch(flickr_tags, twitter_data) {
+	//Slice the flickr tags to 20 and join into a comma seperated list
 	flickr_tags = flickr_tags.slice(0,20).join(",");
+	//Get the /flickr data
 	$.get('/flickr', {tags: flickr_tags})
 		.done(function(flickr_data) {
+			//Populate the data with flickr and twitter
 			populateTwitterData(twitter_data, flickr_data.photos.photo)
 		})
 		.fail(function() {
+			//Populate the data with twitter
 			populateTwitterData(twitter_data, [])
 		});
 }
@@ -191,6 +203,7 @@ function twitterError(error) {
 		//Clear the tweets and analysis divs so we don't keep old searches
 		$('#tweets, #topUsers, #topKeywords, #topHashtags, #flickr')
 			.empty();
+		//Initialise the map
 		initMap();
 		//Append the error message to both the tweets and analysis divs
 		$('#tweets')
@@ -202,7 +215,8 @@ function twitterError(error) {
 
 /**
  * A function to iterate over the data and perform various functions
- * @param {object} data the data containing tweets
+ * @param {object} twitter_data the data containing tweets
+ * @param {object} flickr_data the data containing picture links
  */
 function populateTwitterData(data, flickr_data) {
 		//Hides the search bar
@@ -220,10 +234,14 @@ function populateTwitterData(data, flickr_data) {
 			addTwitterTweet(i, tweet);
 			addMapMarkers(i, tweet);
 		});
+		//Empty the flickr data
 		$('#flickr').empty();
+		//If the flickr data is empty
 		if(flickr_data.length === 0) {
+			//Hide the flickr container
 			$('#flickr').hide();
 		} else {
+			//Show the flickr container
 			$('#flickr').show();
 		}
 		//Fill the analysis div
@@ -234,8 +252,9 @@ function populateTwitterData(data, flickr_data) {
 		//Fade out the loading cover
 		$('#cover')
 			.fadeOut(500);
-
+		//For each photo in flickr data
 		$.each(flickr_data, function(i, photo) {
+			//Add the photo
 			addPhoto(photo);
 		});
 		//Fade in and out a tooltip giving meta-data
@@ -247,7 +266,12 @@ function populateTwitterData(data, flickr_data) {
 			.fadeOut();
 	}
 
+/**
+ * A function to add the photo to the page
+ * @param {object} photo The photo data
+ */
 function addPhoto(photo) {
+	//Append the image to the flickr container
 	$('#flickr').append("<img largesrc='"+photo.large+"' src='"+photo.thumbnail+"'>");
 }
 
@@ -381,22 +405,39 @@ function fillTwitterAnalysis() {
 			if (i == topHashtags.length - 1) {
 			}
 		});
+		//Empty and append the relevant containers
 		$('#topHashtags').empty().append(topHashtagsHTML);
 		$('#topKeywords').empty().append(keywordsHTML);
 		$('#topUsers').empty().append(topUsersHTML);
 	}
 
+/**
+ * A function that listens to clicks of top users
+ */
 $(document).on('click','#topUsers .link',function() {
+	//Get the author name
 	var author = $(this).attr('author');
+	//Filter the tweets by author
 	filterTweets(author);
 })
 
+/**
+ * A function to filter tweets based on a userhandle or id
+ * @param {string} userHandle The user handle to be filtered by
+ * @param {integer} id The user id to be filtered by
+ */
 function filterTweets(userHandle, id) {
-	$('#tweets h2').html("Tweets <span>(<i class='fa fa-filter' aria-hidden='true'></i> Filtered - click to reset)");
+	//Change the title of the tweets to have a undo filter button
+	$('#tweets h2')
+		.html("Tweets <span>(<i class='fa fa-filter' aria-hidden='true'></i> Filtered - click to reset)");
+	//Hide every tweet
 	$('#tweets div.resultBox').hide();
+	//If user handle is set
 	if(userHandle) {
+		//Show the tweets with that user handle
 		$('#tweets div.resultBox[author='+userHandle+']').show();
 	} else {
+		//Show the tweet with that id
 		$('#tweets div.resultBox#'+id).show();
 	}
 }
@@ -417,6 +458,7 @@ function initMap() {
 
 /**
  * A function to add markers to the map shown in analysis
+ * @param {integer} the id of the tweet
  * @param {object} data the tweets to add to the map
  */
 function addMapMarkers(i, tweet) {
@@ -442,8 +484,14 @@ function addMapMarkers(i, tweet) {
 		});
 	}
 }
+
+/**
+ * A function that listens to clicks of the span on the tweets title
+ */
 $(document).on('click','h2 span',function() {
+	//Remove the span
 	$(this).remove();
+	//Show all tweets
 	$('#tweets div.resultBox').show();
 })
 

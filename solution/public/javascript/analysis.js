@@ -1,38 +1,31 @@
-
 /**
-Tweet Analysis
-Alex Burley
-**/
-
+ * @author Alex Burley
+ * @module Tweet Analysis
+*/
 
 //Each unique word and it's number of appeareances in the collection
 var totalCount = {};
 //The list of users and their tweets
 var users = {};
-
-
 var numKeyWordsPerUser = 5;
 var numHashtags = 5
-
 //The dictionary of hashtags and their occurences
 var totalHashtags = {}
 
-
-//Function to reset the variables if a new search is made
+/**
+ * Function to reset the variables if a new search is made
+ */
 function analysisReset() {
 	totalCount = {};
 	users = {};
 	totalHashtags = {}
 }
 
-/*
-Purpose: Store all the words encountered in a text in an object with
-	corresponding value for the times the word has occured
-Parameters:
-	text - A tweet consisting of soley text
-Returns:
-	A javascript object in the format of {word:occurences}
-*/
+/**
+ * Store all the words encountered in a text in an object with corresponding value for the times the word has occured
+ * @param {string} text a tweet consisting of soley text
+ * @returns {object} a javascript object in the format of {word:occurences}
+ */
 function countWords(text){
 
 	var	wordCount = {};
@@ -81,13 +74,10 @@ function countWords(text){
 	return wordCount
 }
 
-/*
-Purpose: Populate a global variable containing words and their occurences in the collection
-Parameters: 
-	wordCount - A javascript object of words and their occurences in a text
-	totalCount - Global variable that contains every word encountered thus far when analysing tweets and their counts
-Returns:
-	VOID - For each word in the wordCount we add the word and it's total to totalCount
+/**
+ * Populate a global variable containing words and their occurences in the collection
+ * @param {object} words A javascript object of words and their occurences in a text
+ * @param {object} everyWord Global variable that contains every word encountered thus far when analysing tweets and their counts
 */
 function addWordCountToTotalCount(wordCount,totalCount){
 
@@ -104,15 +94,12 @@ function addWordCountToTotalCount(wordCount,totalCount){
 
 
 
-/*
-Purpose: Sorts a given list of words and values in descending order of value,
-	returning a specifed number.
-Parameters:
-	wordList - A list of words and their occurences
-	maxSize - How many of the top values we want to return
-Returns:
-	A list of [[word:occurences]] of maximum size maxSize
-*/
+/**
+ * Sorts a given list of words and values in descending order of value,	returning a specifed number.
+ * @param {[string]} wordList - A list of words and their occurences
+ * @param {integer} maxSize - How many of the top values we want to return
+ * @returns {[[string]]} A list of [[word:occurences]] of maximum size maxSize
+ */
 function sortWordCount(wordList,maxSize){
 
 	var sortedCount = [];
@@ -136,17 +123,11 @@ function sortWordCount(wordList,maxSize){
 								.slice(0,size);
 }
 
-
-/*
-Purpose: Populates the users variable with each users number of tweets,
-	 their total word/value pairs and the username as a string.
-Parameters: 
-	wordCount - javaScript object containing the word:count for the current tweet
-	user - The user whose tweet is being analysed
-Returns:
-	VOID - For the key 'tweet.user.screen_name' update the number of tweets, the 
-		current wordCount for that user and the users username as a string.
-*/
+/**
+ * Populates the users variable with each users number of tweets, their total word/value pairs and the username as a string.
+ * @param {object} wordCount javaScript object containing the word:count for the current tweet
+ * @param {string} user The user whose tweet is being analysed
+ */
 function userWordCount(wordCount, user){
 
 	//If the user is not present in users, initialise 
@@ -173,15 +154,10 @@ function userWordCount(wordCount, user){
 	});
 }
 
-
-
-/*
-Purpose: Returns the top 10 most active users and a numnber of their most commonly used words as a sorted array
-Parameters:
-	NONE
-Returns:
-	The sorted array of the top users, their number of tweets and their wordCount
-*/
+/**
+ * Returns the top 10 most active users and a numnber of their most commonly used words as a sorted array
+ * @returns {[object]} topUsers The sorted array of the top users, their number of tweets and their wordCount
+ */
 function returnTopUsers(){
 	var topUsers = [];
 
@@ -209,13 +185,19 @@ function returnTopUsers(){
 	return topUsers;
 }
 
-//Returns 20 most common words 
+/**
+ * Returns 20 most common words 
+ * @returns {[object]} topwords The 20 most commond words
+ */
 function returnTopWords(){
 	var totWords = sortWordCount(totalCount,20);
 	return totWords;
 }
 
-//Returns the most common hashtags
+/**
+ * Returns most common hashtags 
+ * @returns {[object]} tophashtags The most commond hashtags
+ */
 function returnTopHashtags(){
 	var hashtags = sortWordCount(totalHashtags,numHashtags);
 	return hashtags;

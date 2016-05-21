@@ -15,8 +15,6 @@ var app = express();
 
 //Set the favicon
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-//Enable logger (comment out to hide info)
-//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

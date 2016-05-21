@@ -8,8 +8,7 @@ html, body {
     overflow-x: hidden;
 }
 #cover {
-    background: url("/images/gears.gif") no-repeat scroll center center #FFF;
-    background-size: 50px 50px;
+    background: url("/images/ajax-loader.gif") no-repeat scroll center center #FFF;
     position: fixed;
     top:0;
     left:0;

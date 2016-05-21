@@ -1,9 +1,10 @@
-/*
- * @author Paul MacDonald
+/**
+ * @author Paul MacDonald <prmacdonald1@sheffield.ac.uk>
+ * @module searchOptions
  */
 
 /**
- * Adds a listener for a click to everything with id addBtn 
+ * Adds a listener for a click to everything with id addBtn
  */
 $(document).on("click", "#addBtn", function () {
 	//Checks to see if the search section is currently enabled
@@ -20,6 +21,7 @@ $(document).on("click", "#addBtn", function () {
 		updateAndOr($(this).closest(".searchContainer").find("select:first"));
 	}
 });
+
 /**
  * Adds a listener for a click to everything with id dltBtn
  */
@@ -30,6 +32,7 @@ $(document).on("click", "#dltBtn", function () {
 		$(this).parent().remove();
 	}
 });
+
 /**
  * Adds a listener for a click to everything with class enabler
  */
@@ -53,6 +56,7 @@ $(document).on("change", ".enabler", function() {
 		$("#"+parent).css("color","#939393")
 	}
 })
+
 /**
  * Adds a listener for a change to everything with class andor
  */
@@ -60,9 +64,10 @@ $(document).on("change", ".andor", function() {
 	//Updated the andors in this section
 	updateAndOr(this);
 });
+
 /**
  * Updates andors in the section given by the object to the object current value
- * @param object the object that has been changed
+ * @param {object} the object that has been changed
  */
 function updateAndOr(object) {
 	//Gets the value of the object
@@ -102,7 +107,7 @@ $(document).on("change", "#teamSelect", function() {
 				$("#playerSelect").show();
 			})
 			.fail(function(err) {
-				//do nothing
+				//do nothing - not a vital part of the system
 			});		
 	}
 });
@@ -154,21 +159,36 @@ $(document).ready(function() {
 		});
 });
 
+/**
+ * A function to sort the team and player names
+ * @param {string} name one
+ * @param {string} name two
+ */
 function sortName(a,b) {
 	return b.name < a.name ?  1 
 	 : b.name > a.name ? -1
 	 : 0; 
 }
 
-
+/**
+ * Add a listener to a click on the id hideSearchBtn
+ */
 $(document).on("click", "#hideSearchBtn", hideSearch);
 
+/**
+ * A function to hide the search bar
+ */
 function hideSearch() {
+	//If the children of the search bar are visible
 	if($('#searchFields').children().first().is(":visible")) {
+		//Change the button text to show
 		$('#hideSearchBtn').html("<i class='fa fa-plus fa-lg'></i> show the search bar");
+		//Hide the search bars children
 		$('#searchFields').children().hide(300);
 	} else {
+		//Change the button text to hide
 		$('#hideSearchBtn').html("<i class='fa fa-minus fa-lg'></i> hide the search bar");
+		//Hide the search bars children
 		$('#searchFields').children().show(300);
 	}
 }
