@@ -119,15 +119,18 @@ function genPlayerData(team,callback){
 
 	var client = new SparqlClient(endpoint);
 	var resource = '<http://dbpedia.org/resource/'.concat(team).concat('> ');
-	var query = 'SELECT ?player (SAMPLE(?name) AS ?playerName) (SAMPLE(?photo) AS ?playerPhoto) (SAMPLE(?position) AS ?playerPosition) (SAMPLE(?dob) AS ?playerdob) '+ 
+	var query = 'SELECT ?player (SAMPLE(?name) AS ?playerName) (SAMPLE(?photo) AS ?playerPhoto)' +
+	 '(SAMPLE(?position) AS ?playerPosition) (SAMPLE(?dob) AS ?playerdob) (SAMPLE(?abstract) AS ?playerAbstract)'+ 
 					 	'WHERE {'+
 							 '?team '+
 							 'dbp:name ?player . '+
 							 '?player dbp:name ?name;'+
+							 'dbo:abstract ?abstract;'+
 							 'dbo:thumbnail ?photo;'+
 							 'dbo:position ?pos;'+
 							 'dbo:birthDate ?dob . '+
 							 '?pos rdfs:label ?position . '+
+							 'FILTER ( langMatches(lang(?abstract), "EN")) .'+
 							 'FILTER ( langMatches(lang(?position), "EN")) .'+
 							 '} GROUP BY ?player';
 	client.query(query)
