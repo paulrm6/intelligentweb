@@ -1,3 +1,10 @@
+
+/**
+ * @author Paul MacDonald <prmacdonald1@sheffield.ac.uk>
+ * @author Alex Burley <aburley1@sheffield.ac.ul>
+ */
+
+
 var express = require('express');
 var router = express.Router();
 var SparqlClient = require('sparql-client');
@@ -82,7 +89,7 @@ function genClubData(team,callback){
 	var resource = '<http://dbpedia.org/resource/'.concat(team).concat('> ');
 
 	var query = "PREFIX type: <http://dbpedia.org/class/yago/> PREFIX prop: <http://dbpedia.org/property/>"+
-					'SELECT ?team ?fullname ?manager ?managerName ?managerThumbnail ?abstract ?titlestyle ?ground ?groundName ?groundDescription ?groundThumbnail '+ 
+					'SELECT ?team ?fullname ?manager ?managerName ?managerThumbnail ?abstract ?titlestyle ?ground ?groundName ?stadiumName ?groundDescription ?groundThumbnail '+ 
 					 	'WHERE {'+
 							 '?team '+
 							 'prop:fullname ?fullname;'+
@@ -92,9 +99,10 @@ function genClubData(team,callback){
 							 'OPTIONAL {?team dbp:titlestyle ?titlestyle}'+
 							 'OPTIONAL {?manager foaf:name ?managerName}'+
 							 'OPTIONAL {?manager dbo:thumbnail ?managerThumbnail}'+
-							 '?ground foaf:name ?groundName;'+
-							 'dbo:thumbnail ?groundThumbnail ;'+
-							 'dbo:abstract ?groundDescription .'+
+							 'OPTIONAL {?ground foaf:name ?groundName}'+
+							 'OPTIONAL {?ground dbp:stadiumName ?stadiumName}'+
+							 'OPTIONAL {?ground dbo:thumbnail ?groundThumbnail}'+
+							 'OPTIONAL {?ground dbo:abstract ?groundDescription}'+
 									 'FILTER ( langMatches(lang(?abstract), "EN")) .'+
 									 'FILTER ( langMatches(lang(?groundDescription), "EN")) . }';
 
