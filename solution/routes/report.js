@@ -125,10 +125,10 @@ function genPlayerData(team,callback){
 							 '?team '+
 							 'dbp:name ?player . '+
 							 '?player dbp:name ?name;'+
-							 'dbo:abstract ?abstract;'+
-							 'dbo:thumbnail ?photo;'+
 							 'dbo:position ?pos;'+
 							 'dbo:birthDate ?dob . '+
+							 'OPTIONAL {?player dbo:thumbnail ?photo}'+
+							 'OPTIONAL {?player dbo:abstract ?abstract}'+
 							 '?pos rdfs:label ?position . '+
 							 'FILTER ( langMatches(lang(?abstract), "EN")) .'+
 							 'FILTER ( langMatches(lang(?position), "EN")) .'+
