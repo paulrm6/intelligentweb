@@ -430,7 +430,7 @@ section#menu #buttons .menuBtn:hover {
 }
 #report #results {
     background-color: #FFFFFF;
-    height: calc(100vh - 110px);
+    height: calc(100vh - 150px);
 }
 #report #results #reportCover {
     background: url("/images/football.gif") no-repeat scroll center center #FFF;
@@ -460,7 +460,7 @@ section#menu #buttons .menuBtn:hover {
 }
 #report #results .team {
     display: inline-block;
-    height: calc(100vh - 110px);
+    height: calc(100vh - 150px);
     position: absolute;
     width: calc(50% - 42px);
     overflow-y: auto;
