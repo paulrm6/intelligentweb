@@ -36,6 +36,7 @@ function callSearchReport() {
 			data: JSON.stringify(data), //Add the data, in a string format
 			success: function(data) { //on success (200)
 				//Initiate data population
+				console.log(data)
 				populateReportData(data,"teamA");
 				populateReportData(data,"teamB");
 				showReport();
@@ -105,15 +106,14 @@ function populateReportData(data, team) {
 	$.each(data[team].players.results.bindings, function(i, player) {
 		if(player.playerName) {
 			teamInfo += "<a property='dbp:name' href='"+player.player.value+"'></a>"
-			playerInfo += "<a target='_blank' href='"
-				+player.player.value
-				+"' class='player' about='"+player.player.value+"'>"
+			playerInfo += "<div class='player' about='"+player.player.value+"'"
+				+((player.playerAbstract)?" abstract='"+player.playerAbstract.value+"'>" : ">")
 				+"<div class='playerName' property='dbp:name'>"+player.playerName.value+"</div><img src='"
 				+((player.playerPhoto) ? player.playerPhoto.value : "/images/generic_photo.png")
 				+"' property='dbo:thumbnail'/>"
 				+((player.playerPosition) ? "<div class='playerPosition' property='dbo:position'>"+player.playerPosition.value.replace(" (association football)","")+"</div>" : "")
 				+((player.playerdob) ? "<div class='playerDOB'>DOB: <span property='dbp:birthDate'>"+player.playerdob.value+"</span></div>" : "")
-				+"</a>"
+				+"</div>"
 		}
 	});
 	$('#report #results #'+team+' .teamInfo').empty().append(teamInfo)
@@ -141,3 +141,14 @@ function showReport() {
 	$('#report #results #teamA').show(0).addClass('flyInLeft');
 	$('#report #results #teamB').show(0).addClass('flyInRight');
 }
+
+$(document).on("click",".player", function() {
+	console.log($(this).attr("abstract"))
+	if($(this).attr("abstract")) {
+		$('#innerGallery').empty().append("<div class='abstract'>"+$(this).attr("abstract")
+			+"<a href='"+$(this).attr("about")+"' target='_blank'> Click here to view their profile.</a></div>");
+		$('#gallery').show();
+	} else {
+		window.open($(this).attr("about"), '_blank');
+	}
+})

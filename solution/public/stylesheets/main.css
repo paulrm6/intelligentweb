@@ -291,7 +291,7 @@ section#menu #buttons .menuBtn:hover {
     border-bottom: solid 1px #e1e8ed;
 }
 
-#twitter #gallery {
+#gallery {
     width:100%;
     height:100%;
     background-color: rgba(0,0,0,0.8);
@@ -299,21 +299,44 @@ section#menu #buttons .menuBtn:hover {
     top:0;
     left:0;
     background: url("/images/gears.gif") no-repeat scroll center center rgba(0,0,0,0.8);
+    z-index: 20;
 }
 
-#twitter #innerGallery {
+#innerGallery {
     float:left;
     position: relative;
     left:50%;
     margin-top: 10vh;
 }
 
-#twitter #gallery #innerGallery img {
+#gallery #innerGallery img {
     display: block;
     position: relative;
     left:-50%;
     height:80vh;
     border: 5px solid white;
+}
+
+#gallery #innerGallery .abstract {
+    display: block;
+    position: relative;
+    background-color: white;
+    left:-45%;
+    width:40vw;
+    height: 40vh;
+    border: 5px solid white;
+    margin-top:25vh;
+}
+#gallery #innerGallery .abstract a {
+    display: block;
+    color: inherit;
+    position: absolute;
+    bottom:0;
+    text-decoration: none;
+    transition: all ease 0.3s;
+}
+#gallery #innerGallery .abstract a:hover {
+    color: #1DCAFF;
 }
 
 /* -----------TWEETS + ANALYSIS----------- */
@@ -565,6 +588,7 @@ section#menu #buttons .menuBtn:hover {
     box-shadow:  4px 4px 5px #23282D;
     color:black;
     transition: all ease 0.2s;
+    cursor: pointer;
 }
 #report #results .team .playerInfo a {
     text-decoration: none;
