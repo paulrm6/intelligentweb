@@ -36,7 +36,6 @@ function callSearchReport() {
 			data: JSON.stringify(data), //Add the data, in a string format
 			success: function(data) { //on success (200)
 				//Initiate data population
-				console.log(data)
 				populateReportData(data,"teamA");
 				populateReportData(data,"teamB");
 				showReport();
@@ -143,7 +142,6 @@ function showReport() {
 }
 
 $(document).on("click",".player", function() {
-	console.log($(this).attr("abstract"))
 	if($(this).attr("abstract")) {
 		$('#innerGallery').empty().append("<div class='abstract'>"+$(this).attr("abstract")
 			+"<a href='"+$(this).attr("about")+"' target='_blank'> Click here to view their profile.</a></div>");
