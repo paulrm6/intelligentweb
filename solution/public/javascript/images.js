@@ -1,9 +1,11 @@
 /**
  * @author Paul MacDonald <prmacdonald1@sheffield.ac.uk>
- * @module images
+ * @module Images
  */
 
- //Add a listener to the thumbnail images
+ /**
+  * Add a listener to the thumbnail images
+  */
  $(document).on('click','#flickr img',function() {
  	//Hide the inner gallery so you can't see the picture loading
 	$('#innerGallery').empty().hide();
@@ -22,12 +24,16 @@
 	})
 })
 
-//On click of the hide gallery button
+/**
+ * On click of the hide gallery button
+ */
 $(document).on('click','#hideGallery',function() {
 	//Hide the gallery
 	$('#gallery').fadeOut(200);
 })
-//On click of the gallery window
+/**
+ * On click of the gallery window
+ */
 $(document).on('click','#gallery',function(e) {
 	//Check if the click was on the picture
 	if(e.target === this) {
@@ -35,7 +41,9 @@ $(document).on('click','#gallery',function(e) {
 		$('#gallery').fadeOut(200);
 	}
 })
-//On click of the inner gallery window
+/**
+ * On click of the inner gallery window
+ */
 $(document).on('click','#innerGallery',function(e) {
 	//Check if the click was on the picture
 	if(e.target === this) {

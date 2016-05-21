@@ -1,6 +1,6 @@
 /**
  * @author Paul MacDonald <prmacdonald1@sheffield.ac.uk>
- * @module ajaxTwitter
+ * @module Ajax Twitter
  */
 
 //Initiate some variables for functions

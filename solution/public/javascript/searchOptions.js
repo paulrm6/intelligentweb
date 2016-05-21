@@ -1,6 +1,6 @@
 /**
  * @author Paul MacDonald <prmacdonald1@sheffield.ac.uk>
- * @module searchOptions
+ * @module Search Options
  */
 
 /**

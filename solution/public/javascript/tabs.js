@@ -1,15 +1,19 @@
 /*
  * @author Paul MacDonald <prmacdonald1@sheffield.ac.uk>
- * @module tabs
+ * @module Tabs
  */
 
-//If a menu button is cicked
+/**
+ * If a menu button is cicked
+ */
 $(document).on("click", ".menuBtn, #menuBtn", function () {
 	//Change the hash to the id without Btn on the end
     window.location.hash = this.id.substring(0,this.id.length-3);
 });
 
-//When the document is loaded
+/**
+ * When the document is loaded
+ */
 $(document).ready(function() {
 	//Hide the results section
 	$('#results').hide();
@@ -22,7 +26,9 @@ $(document).ready(function() {
 	}
 })
 
-//When the hash is changed
+/**
+ * When the hash is changed
+ */
 $(window).on("hashchange", function() {
 	//If the hash is either tiwtter or the report
 	if(window.location.hash == "#twitter" || window.location.hash == "#report") {
