@@ -94,17 +94,17 @@ function genClubData(team,callback){
 							 '?team '+
 							 'prop:fullname ?fullname;'+
 							 'prop:manager ?manager;'+
-							 'dbo:abstract ?abstract;'+
-							 'dbo:ground ?ground .'+
+							 'dbo:abstract ?abstract .'+
+							 'OPTIONAL {?team dbo:ground ?ground}'+
 							 'OPTIONAL {?team dbp:titlestyle ?titlestyle}'+
 							 'OPTIONAL {?manager foaf:name ?managerName}'+
 							 'OPTIONAL {?manager dbo:thumbnail ?managerThumbnail}'+
-							 'OPTIONAL {?ground foaf:name ?groundName}'+
-							 'OPTIONAL {?ground dbp:stadiumName ?stadiumName}'+
-							 'OPTIONAL {?ground dbo:thumbnail ?groundThumbnail}'+
-							 'OPTIONAL {?ground dbo:abstract ?groundDescription}'+
+							 'OPTIONAL {?team dbo:ground ?ground; foaf:name ?groundName}'+
+							 'OPTIONAL {?team dbo:ground ?ground; dbp:stadiumName ?stadiumName}'+
+							 'OPTIONAL {?team dbo:ground ?ground; dbo:thumbnail ?groundThumbnail}'+
+							 'OPTIONAL {?team dbo:ground ?ground; dbo:abstract ?groundDescription}'+
 									 'FILTER ( langMatches(lang(?abstract), "EN")) .'+
-									 'FILTER ( langMatches(lang(?groundDescription), "EN")) . }';
+									 'FILTER(LANG(?groundDescription) = "" || LANGMATCHES(LANG(?groundDescription), "en")) }';
 
 
 	client.query(query)
