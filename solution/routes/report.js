@@ -12,18 +12,8 @@ var endpoint = 'http://dbpedia.org/sparql';
 
 //Expect only one type of post request
 router.post('/', function(req, res) {
-
-	//Extract data from req and form new json object
-	var teamA = req.body.teamA;
-	var teamB = req.body.teamB;
-	var data = {
-		success: "SUCCESS",
-		teamA: teamA,
-		teamB: teamB
-	}
-
 	//Generate the JSON that we want to send back through AJAX
-	generateData(data,function(err,json){
+	generateData(req.body,function(err,json){
 		if(err){
 			res.status(500).send(err);
 		}
@@ -36,8 +26,8 @@ router.post('/', function(req, res) {
 
 /**
  * Function to generate a json containing club and player data for two given teams
- * @param {data} The json object containing names for the two teams
- * @param {callback} The callback method used to send finish the AJAX data transfer
+ * @param {object} teams The json object containing names for the two teams
+ * @param {err-data} callback The callback method used to send finish the AJAX data transfer
  */
 function generateData(data,callback){
 
@@ -67,11 +57,17 @@ function generateData(data,callback){
 	});
 
 }
+	/**
+	 * This global callback provides an error/data response
+	 * @callback err-data
+	 * @param {string} error an error message or undefined if no error
+	 * @param {object|string} data data of successful function
+	 */
 
 /**
  * Function to generate team data for a given team
- * @param {team} The team whose data we want to collect
- * @param {callback} The callback method used to return to the request
+ * @param {object} teams The team whose data we want to collect
+ * @param {err-data} callback The callback method used to return to the request
  */
 function genTeamData(team, callback){
 
@@ -109,8 +105,8 @@ function genTeamData(team, callback){
 
 /**
  * Function to generate club data for a given team using SPARQL
- * @param {team} The team whose data we want to collect
- * @param {callback} The callback method used to return to the request
+ * @param {object} teams The team whose data we want to collect
+ * @param {err-data} callback The callback method used to return to the request
  */
 function genClubData(team,callback){
 
@@ -146,8 +142,8 @@ function genClubData(team,callback){
 
 /**
  * Function to generate player data for a given team using SPARQL
- * @param {team} The team whose data we want to collect
- * @param {callback} The callback method used to return to the request
+ * @param {string} team The team whose data we want to collect
+ * @param {err-data} callback The callback method used to return to the request
  */
 function genPlayerData(team,callback){
 
