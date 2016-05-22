@@ -270,6 +270,7 @@ strong {
     padding: 5px;
     width: calc(100% - 10px);
     background-color: #fff;
+    overflow-x: hidden;
 }
 
 #twitter #results #tweets {
