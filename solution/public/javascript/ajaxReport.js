@@ -236,10 +236,6 @@ function showReport() {
 		$('#reportCover')
 			.delay(830)
 			.fadeOut(0);
-		//Show the football
-		$('#football')
-			.delay(830)
-			.fadeIn(0);
 		//Fly in the teams
 		$('#report #results #teamA')
 			.show(0)
