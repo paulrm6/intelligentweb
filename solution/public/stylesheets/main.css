@@ -494,7 +494,7 @@ strong {
 
 #report #results {
     background-color: #FFF;
-    height: calc(100vh - 150px);
+    height: calc(100vh - 110px);
 }
 
 #report #results #reportCover {
