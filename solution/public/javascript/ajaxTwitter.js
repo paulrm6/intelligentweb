@@ -305,7 +305,7 @@ function addTwitterTweet(i, tweet) {
 		var HTML = "";
 		HTML += "<div id='" + i + "' class='resultBox' author='" + author + "'>";
 		//Check if the tweet is a retweet or not
-		if (tweet.rt_name !== null) {
+		if (tweet.rt_name != null) {
 			//If so include the retweeted authors info
 			HTML += "<div class='retweet'><div class='pictures'>" +
 				"<a target='_blank' href='https://twitter.com/" + tweet.rt_screen_name +
@@ -321,7 +321,7 @@ function addTwitterTweet(i, tweet) {
 			tweet.screen_name + "</span></a></div>" + "<div class='tweetContent'>" +
 			tweet.text + "</div>";
 		//Check if there is any media in the tweet
-		if (tweet.media !== null) {
+		if (tweet.media != null) {
 			var urls;
 			//If there is and there is more than one
 			if (tweet.media.indexOf(',') > -1) {
@@ -375,7 +375,7 @@ function fillTwitterAnalysis() {
 			//For each possible keyword (max 5)
 			for (var keyword = 0; keyword < 5; keyword++) {
 				//If the keyword exists then add it to the HTML
-				if (topUser.wordList[keyword] !== undefined) {
+				if (topUser.wordList[keyword] != undefined) {
 					topUsersHTML += "<div class='topUserkeyword'>" + topUser.wordList[
 						keyword][0] + " (" + topUser.wordList[keyword][1] + ")</div>";
 				}
@@ -471,7 +471,7 @@ function initMap() {
  */
 function addMapMarkers(i, tweet) {
 		//If the tweet has a location
-		if (tweet.place_full_name !== null) {
+		if (tweet.place_full_name != null) {
 			//Retrieve location based on place name & add marker to map
 			geocoder.geocode({
 				'address': tweet.place_full_name

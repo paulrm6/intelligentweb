@@ -298,7 +298,7 @@ function insertData(data) {
 						//Create a array for the media (as there could be multiple per tweet)					
 						var media = [];
 						//If there is media
-						if (tweet.media !== null) {
+						if (tweet.media != null) {
 							//Split the media (comma seperated)
 							tempList = tweet.media.split(",");
 							//For the list of media, iterate through it
@@ -316,7 +316,7 @@ function insertData(data) {
 									if (!err) {
 										//release this database connection as it may not be needed for media
 										database.release();
-										if (media.length !== 0) {
+										if (media.length != 0) {
 											//use a new database connection for the media
 											pool.query('INSERT INTO media (media_url_https,type,tweet_id_str) VALUES ? ' + 'ON DUPLICATE KEY UPDATE tweet_id_str=tweet_id_str', [media]);
 										}
@@ -349,7 +349,7 @@ function getDataFromTwitter(q, since_id, max_id, max_no, data, callback) {
 				since_id: since_id
 			};
 			//If max_id is set then add it to the query
-			if (max_id !== null) {
+			if (max_id != null) {
 				params.max_id = max_id;
 			}
 			//Query twitter
@@ -466,7 +466,7 @@ function convertTwitterData(tweets, callback) {
 				place_full_name: null
 			};
 			//If tweet is retweeted
-			if (tweet.retweeted_status !== undefined) {
+			if (tweet.retweeted_status != undefined) {
 				//Add retweeted information
 				newTweet.rt_id = tweet.user.id_str;
 				newTweet.rt_name = tweet.user.name;
@@ -482,11 +482,11 @@ function convertTwitterData(tweets, callback) {
 			newTweet.profile_image = tweet.user.profile_image_url_https;
 			newTweet.text = tweet.text;
 			newTweet.created_at = tweet.created_at;
-			if (tweet.place !== undefined) {
+			if (tweet.place != undefined) {
 				newTweet.place_full_name = tweet.place.full_name;
 			}
 			//Check if there is any media in the tweet
-			if (tweet.entities.media !== undefined) {
+			if (tweet.entities.media != undefined) {
 				var tempList = [];
 				//For each bit of media, add it to the temp list
 				for (var j = 0; j < tweet.entities.media.length; j++) {
@@ -527,13 +527,13 @@ function month(month) {
  */
 function getDataFromDatabase(q, count, callback) {
 	//Query the database returning only relevant info for each tweet
-	pool.query('SELECT	tweets.id_str AS tweet_id,' + 'tweets.created_at AS created_at,' + 'tweets.text AS text,' + 'tweets.place_full_name AS place_full_name,' + 'author.`name` AS `name`,' + 'author.screen_name AS screen_name,' + 'author.profile_image_url_https AS profile_image,' + 'retweeted_user.`name` AS rt_name,' + 'retweeted_user.screen_name AS rt_screen_name,' + 'retweeted_user.profile_image_url_https AS rt_profile_image,' + 'GROUP_CONCAT(DISTINCT media.media_url_https) AS media ' + 'FROM tweets ' + 'INNER JOIN users AS author ON tweets.user_id_str = author.id_str ' + 'LEFT JOIN media ON media.tweet_id_str = tweets.id_str ' + 'LEFT JOIN users AS retweeted_user ON tweets.retweeted_user_id_str = retweeted_user.id_str ' + ((q.length > 0) ? 'WHERE ' + q : 'WHERE "true"="false"') + 'GROUP BY tweets.id_str ' + 'ORDER BY tweets.date DESC ' + ((count !== 0) ? 'LIMIT ' + count : ''), function(err, results) {
+	pool.query('SELECT	tweets.id_str AS tweet_id,' + 'tweets.created_at AS created_at,' + 'tweets.text AS text,' + 'tweets.place_full_name AS place_full_name,' + 'author.`name` AS `name`,' + 'author.screen_name AS screen_name,' + 'author.profile_image_url_https AS profile_image,' + 'retweeted_user.`name` AS rt_name,' + 'retweeted_user.screen_name AS rt_screen_name,' + 'retweeted_user.profile_image_url_https AS rt_profile_image,' + 'GROUP_CONCAT(DISTINCT media.media_url_https) AS media ' + 'FROM tweets ' + 'INNER JOIN users AS author ON tweets.user_id_str = author.id_str ' + 'LEFT JOIN media ON media.tweet_id_str = tweets.id_str ' + 'LEFT JOIN users AS retweeted_user ON tweets.retweeted_user_id_str = retweeted_user.id_str ' + ((q.length > 0) ? 'WHERE ' + q : 'WHERE "true"="false"') + 'GROUP BY tweets.id_str ' + 'ORDER BY tweets.date DESC ' + ((count != 0) ? 'LIMIT ' + count : ''), function(err, results) {
 		//If there is an error
 		if (err) {
 			//Log and return the error
 			console.log(err);
 			callback("There was an error connecting to the Database", undefined);
-		} else if (results.length !== 0) {
+		} else if (results.length != 0) {
 			//Callback the results of the database query
 			callback(undefined, results);
 		} else {
