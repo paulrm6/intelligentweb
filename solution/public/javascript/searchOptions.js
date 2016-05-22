@@ -54,7 +54,7 @@ $(document)
 			.is(':checked')) {
 			//Removes the parent element
 			$(this)
-				.parent()
+				.parents(".searchInput")
 				.remove();
 		}
 	});

@@ -89,8 +89,10 @@
 
 
 					<div id="otherInput">
-						<label class='beforeInput'>@</label><input id="teamInput" placeholder=
-						"manutd" type="text">
+						<div class='prefix'>
+							<span>@</span>
+							<input id="teamInput" class='atPrefix' placeholder="manutd" type="text">
+						</div>
 					</div>
 					<label><input checked id="mentions" type="checkbox">Include
 					Mentions</label>
@@ -114,9 +116,12 @@
 
 					<div class="searchContainer">
 						<div class="searchInput">
-							<label class='beforeInput'>@</label><input id='playerInput' placeholder=
+							<div class='prefix'>
+							<span>@</span>
+							<input id='playerInput' class='atPrefix' placeholder=
 							'WayneRooney' type='text'><i class='fa fa-plus fa-lg' id=
 							'addBtn'></i><br>
+							</div>
 							<label><input checked id="playerMentions" type="checkbox">Include
 							Mentions</label>
 						</div>
@@ -132,9 +137,12 @@
 
 					<div class="searchContainer">
 						<div class="searchInput">
-							<label class='beforeInput'>#</label><input id='hashtagInput'
+							<div class='prefix'>
+							<span>#</span>
+							<input id='hashtagInput' class='hashtagPrefix' 
 							placeholder='ManUtdVArsenal' type='text'><i class='fa fa-plus fa-lg' id=
 							'addBtn'></i>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -220,26 +220,25 @@ strong {
     padding: 2px 0;
     border: none;
     outline: none;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-radius: 5px;
+    text-indent: 2px;
 }
-
-#twitter #searchFields .beforeInput {
-    background-color: #fff;
-    color: gray;
-    padding: 1px 0;
-    top: 1px;
+#twitter #searchFields .prefix {
     position: relative;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    padding-left: 1px;
-    padding-right: 1px;
 }
-
-#twitter #searchFields .fullBox,#report #searchFields .fullBox {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    padding-left: 1px !important;
+#twitter #searchFields .prefix span{
+  position: absolute;
+  transform: translate(0,-50%);
+  top: 50%;
+  pointer-events: none;
+  color:black;
+  padding-left:1px;
+}
+#twitter #searchFields .prefix .atPrefix{
+  text-indent: 1.4em !important;
+}
+#twitter #searchFields .prefix .hashtagPrefix{
+  text-indent: 0.8em !important;
 }
 
 /* -----------RESULTS----------- */
