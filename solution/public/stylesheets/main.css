@@ -1,39 +1,44 @@
 /*
  * @author Paul MacDonald
  */
-html, body {
+html,body {
     background-color: #c0deed;
-    font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-family: "Lucida Grande",Helvetica,Arial,sans-serif;
     height: 100%;
     overflow-x: hidden;
 }
+
 #cover {
-    background: url("/images/ajax-loader.gif") no-repeat scroll center center #FFF;
+    background: url(/images/ajax-loader.gif) no-repeat scroll center center #FFF;
     position: fixed;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
-    opacity: 0.9;
+    opacity: .9;
     z-index: 5;
 }
-img.emoji {
-    margin: 0px !important;
+
+.emoji {
+    margin: 0 !important;
     display: inline !important;
 }
+
 #tooltip {
     font-size: 80%;
     position: fixed;
     bottom: 0;
     right: 0;
-    background-color: white;
-    color:gray;
+    background-color: #fff;
+    color: gray;
     padding: 2px;
     border: 1px gray solid;
 }
-strong{
-    font-weight: bold;
+
+strong {
+    font-weight: 700;
 }
+
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -43,88 +48,95 @@ strong{
 }
 
 ::-webkit-scrollbar-thumb {
-    background: -webkit-linear-gradient(left, #FFFFFF, #C3C3C3);
+    background: -webkit-linear-gradient(left,#FFF,#C3C3C3);
     border: 1px solid #333;
-    /*box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.4);*/
+/*box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.4);*/
     border-radius: 5px;
 }
 
 /* ***********DIPLAY NONES*********** */
-#twitter, #report, article#searchFields form #team #otherInput, 
-    #playerSelect, #tooltip, #cover, #gallery{
-    display:none;
+#twitter,#report,#searchFields form #team #otherInput,#playerSelect,#tooltip,#cover,#gallery {
+    display: none;
 }
 
 /* ***********MENU*********** */
-section#menu {
+#menu {
     margin: 0 auto;
-    width:1000px;
+    width: 1000px;
 }
-section#menu h1 {
+
+#menu h1 {
     font-size: 400%;
     text-align: center;
-    padding:10px;
+    padding: 10px;
 }
-section#menu h2 {
+
+#menu h2 {
     font-size: 160%;
     text-align: center;
-    padding:10px;
+    padding: 10px;
 }
-section#menu #buttons {
+
+#menu #buttons {
     display: flex;
-    padding:10px;
+    padding: 10px;
 }
-section#menu #buttons .menuBtn {
+
+#menu #buttons .menuBtn {
     text-align: center;
-    flex:1;
+    flex: 1;
     font-size: 150%;
-    transition: all 0.2s ease;
+    transition: all .2s ease;
     cursor: pointer;
 }
-section#menu #buttons .menuBtn:hover {
-    color:#1DCAFF;
-    font-size: 160%
+
+#menu #buttons .menuBtn:hover {
+    color: #1DCAFF;
+    font-size: 160%;
 }
 
 /* ***********BUTTONS*********** */
 #menuBtn,#hideSearchBtn,#hideGallery {
-    font-size: 80%;
     position: fixed;
     top: 0;
     left: 0;
-    color:white;
+    color: #fff;
     font-size: 120%;
-    padding:5px;
-    transition: all 0.5s ease;
+    padding: 5px;
+    transition: all .5s ease;
     cursor: pointer;
 }
+
 #hideSearchBtn,#hideGallery {
-    right:0;
-    left:auto;
+    right: 0;
+    left: auto;
 }
-#hideSearchBtn:hover, #menuBtn:hover,#hideGallery:hover {
-    color:#1DCAFF !important;
+
+#hideSearchBtn:hover,#menuBtn:hover,#hideGallery:hover {
+    color: #1DCAFF !important;
 }
 
 /* ***********TWITTER*********** */
-
 /* -----------SEARCHFIELDS----------- */
-#twitter #searchFields, #report #searchFields {
+#twitter #searchFields,#report #searchFields {
     background-color: #0084b4;
     width: 100%;
     padding: 10px 0;
     min-width: 1200px;
     color: #f8f8ff;
     text-align: center;
-    min-height:10px;
+    min-height: 10px;
 }
-#twitter #searchFields h1, #report #searchFields h1 {
+
+#twitter #searchFields h1,#report #searchFields h1 {
     font-size: 200%;
-    z-index:2;
+    z-index: 2;
 }
+
 #twitter #searchFields select option {
-    color: #000000;
+    color: #000;
 }
+
 #twitter #searchFields select {
     background-color: inherit;
     border: none;
@@ -132,61 +144,77 @@ section#menu #buttons .menuBtn:hover {
     color: #f8f8ff;
     font-size: 100%;
 }
+
 #twitter #searchFields select:disabled {
     color: #6B8F9C;
 }
+
 #twitter #searchFields h1 select#andOrToggle {
     font-size: 70%;
 }
+
 #twitter #searchFields #twitterForm {
     display: flex;
     padding: 10px 0;
 }
+
 #twitter #searchFields #twitterForm .searchSection {
     border-right: 1px solid #c0deed;
     flex: 1;
     margin-right: 5px;
 }
+
 #twitter #searchFields #twitterForm .searchSection:last-child {
     margin-right: 0;
     border-right: 0;
 }
+
 #twitter #searchFields #twitterForm .searchSection h3 {
     font-size: 120%;
     padding-bottom: 10px;
 }
+
 #twitter #searchFields #twitterForm .searchSection .searchInput {
     padding-top: 0;
     padding-bottom: 3px;
 }
+
 #twitter #searchFields .fa {
     margin-left: 3px;
 }
+
 #twitter #searchFields #addBtn:hover {
     color: #00aced;
 }
+
 #twitter #searchFields #dltBtn:hover {
-    color: #000000;
+    color: #000;
 }
+
 #twitter #searchFields #submitButtons:hover .button:not(:hover) {
     color: #6B8F9C;
 }
+
 #twitter #searchFields #submitButtons:hover .button:not(:hover) i {
     color: #6B8F9C;
 }
-#twitter #searchFields .button, #report #searchFields .button {
+
+#twitter #searchFields .button,#report #searchFields .button {
     cursor: pointer;
     padding: 0 5px;
     font-size: 120%;
-    transition: all 0.5s ease;
+    transition: all .5s ease;
 }
+
 #twitter #searchFields .button i {
-    transition: all 0.5s ease;
+    transition: all .5s ease;
     color: #f8f8ff;
 }
+
 #twitter #searchFields .button:hover i,#report #searchFields .button:hover {
     color: #1dcaff;
 }
+
 #twitter #searchFields input[type="text"],#report #searchFields input[type="text"] {
     box-shadow: none;
     padding: 2px 0;
@@ -195,17 +223,19 @@ section#menu #buttons .menuBtn:hover {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+
 #twitter #searchFields .beforeInput {
-    background-color: white;
+    background-color: #fff;
     color: gray;
     padding: 1px 0;
-    top:1px;
+    top: 1px;
     position: relative;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     padding-left: 1px;
     padding-right: 1px;
 }
+
 #twitter #searchFields .fullBox,#report #searchFields .fullBox {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -218,183 +248,213 @@ section#menu #buttons .menuBtn:hover {
     background-color: #f8f8ff;
     height: calc(100vh - 30px);
 }
+
 #twitter .flex {
     display: flex;
 }
+
 #twitter #results h2 {
     font-size: 140%;
     color: #0084B4;
     text-align: center;
 }
+
 #twitter #results h2 span {
     font-size: 60%;
-    color: black;
+    color: #000;
     cursor: pointer;
 }
+
 #twitter #results .resultBox {
     border-bottom: solid 1px #e1e8ed;
     border-top: solid 1px #e1e8ed;
-    padding:5px;
-    width: calc( 100% - 10px);
-    background-color: white;
+    padding: 5px;
+    width: calc(100% - 10px);
+    background-color: #fff;
 }
+
 #twitter #results #tweets {
     min-width: 400px;
 }
+
 #twitter #results #topUsers {
-    min-width: 350px; 
+    min-width: 350px;
 }
-#twitter #tweets, #twitter #topUsers {
+
+#twitter #tweets,#twitter #topUsers {
     min-height: 550px;
-    flex:2;
-    overflow-y: auto; 
+    flex: 2;
+    overflow-y: auto;
     border-right: solid 4px #e1e8ed;
     height: calc(100vh - 30px);
 }
+
 #twitter #flickr {
-    overflow-y:scroll;
+    overflow-y: scroll;
     border-left: solid 4px #e1e8ed;
     flex: 0 0 100px;
     height: calc(100vh - 30px);
 }
+
 #twitter #flickr img {
     width: 100%;
     cursor: pointer;
 }
+
 #twitter #results .columnRight {
-    flex:2;
+    flex: 2;
     min-width: 450px;
     min-height: 600px;
 }
+
 #twitter #results #topKeywords,#twitter #results #topHashtags {
     overflow-y: auto;
     height: calc(60vh - 30px);
-    flex:1;
+    flex: 1;
     min-height: 360px;
     border-right: solid 4px #e1e8ed;
 }
+
 #twitter #results #topHashtags {
     border-right: none;
 }
+
 #twitter #results #map {
     height: 40vh;
-    width:100%;
+    width: 100%;
     min-height: 240px;
 }
+
 #twitter #results .error {
     text-align: center;
     color: red;
-    width: calc( 100% - 10px);
+    width: calc(100% - 10px);
     padding: 5px;
     border-top: solid 1px #e1e8ed;
     border-bottom: solid 1px #e1e8ed;
 }
 
 #gallery {
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0,0,0,0.8);
     position: fixed;
-    top:0;
-    left:0;
-    background: url("/images/gears.gif") no-repeat scroll center center rgba(0,0,0,0.8);
+    top: 0;
+    left: 0;
+    background: url(/images/gears.gif) no-repeat scroll center center rgba(0,0,0,0.8);
     z-index: 20;
 }
 
 #innerGallery {
-    float:left;
+    float: left;
     position: relative;
-    left:50%;
+    left: 50%;
     margin-top: 10vh;
 }
 
 #gallery #innerGallery img {
     display: block;
     position: relative;
-    left:-50%;
-    height:80vh;
-    border: 5px solid white;
+    left: -50%;
+    height: 80vh;
+    border: 5px solid #fff;
 }
 
 #gallery #innerGallery .abstract {
     display: block;
     position: relative;
-    background-color: white;
-    left:-45%;
-    width:40vw;
+    background-color: #fff;
+    left: -45%;
+    width: 40vw;
     height: 40vh;
-    border: 5px solid white;
-    margin-top:25vh;
+    border: 5px solid #fff;
+    margin-top: 25vh;
 }
+
 #gallery #innerGallery .abstract a {
     display: block;
     color: inherit;
     position: absolute;
-    bottom:0;
+    bottom: 0;
     text-decoration: none;
     font-style: italic;
-    transition: all ease 0.3s;
+    transition: all ease .3s;
 }
+
 #gallery #innerGallery .abstract a:hover {
     color: #1DCAFF;
 }
 
 /* -----------TWEETS + ANALYSIS----------- */
-#twitter #results #tweets .pictures, #twitter #results #topUsers .pictures {
+#twitter #results #tweets .pictures,#twitter #results #topUsers .pictures {
     width: 50px;
     text-align: right;
     display: inline-block;
     vertical-align: top;
 }
+
 #twitter #results #tweets .retweet i {
     color: #19CF86;
 }
-#twitter #results #tweets a, #topUsers a {
+
+#twitter #results #tweets a,#topUsers a {
     text-decoration: none;
     color: inherit;
 }
+
 #twitter #results #tweets a:hover .underline,#twitter #results #topUsers a:hover {
     text-decoration: underline;
     color: #1DCAFF;
 }
+
 #twitter #results #tweets .retweet {
     margin-bottom: 4px;
 }
+
 #twitter #results #tweets .pictures .profile {
     width: 100%;
 }
+
 #twitter #results #tweets .italic {
     font-style: italic;
 }
-#twitter #results #tweets .user,#twitter #results #topUsers .userHandle, .keyword {
+
+#twitter #results #tweets .user,#twitter #results #topUsers .userHandle,.keyword {
     font-size: 130%;
     padding-bottom: 5px;
 }
+
 #twitter #results #topUsers .userHandle .noOfTweets {
     padding-left: 5px;
     font-size: 75%;
 }
-#twitter #results #topKeywords .quantity, #twitter #results #topHashtags .quantity {
+
+#twitter #results #topKeywords .quantity,#twitter #results #topHashtags .quantity {
     padding-left: 10px;
     font-size: 80%;
 }
+
 #twitter #results #tweets .text,#twitter #results #topUsers .text {
-    width: calc( 100% - 58px);
+    width: calc(100% - 58px);
     margin-left: 4px;
     display: inline-block;
 }
+
 #twitter #results #tweets img.media {
     width: 80%;
     margin: 0 auto;
 }
+
 #twitter #results #tweets .error {
     color: red;
     text-align: center;
 }
+
 #twitter #results #tweets .clear {
     clear: both;
     width: 100%;
 }
+
 #twitter #results #tweets .time {
     display: inline-block;
     width: 70%;
@@ -402,6 +462,7 @@ section#menu #buttons .menuBtn:hover {
     color: #686868;
     font-size: 80%;
 }
+
 #twitter #results #tweets .link,#twitter #results #topUsers .link {
     display: inline-block;
     width: 30%;
@@ -411,193 +472,214 @@ section#menu #buttons .menuBtn:hover {
     cursor: pointer;
     font-size: 90%;
 }
-#twitter #results #tweets .link:hover, #twitter #results #topUsers .link:hover {
+
+#twitter #results #tweets .link:hover,#twitter #results #topUsers .link:hover {
     color: #323333;
 }
+
 #twitter #results .topUserKeywords {
     padding-left: 10px;
 }
 
 /* ***********REPORT*********** */
-
 /* -----------SEARCHFIELDS----------- */
 #report #searchFields {
     background-color: #23282D;
-    height:90px;
+    height: 90px;
 }
+
 #report #searchFields #reportForm input {
     margin: 10px 0;
 }
+
 #report #results {
-    background-color: #FFFFFF;
+    background-color: #FFF;
     height: calc(100vh - 150px);
 }
+
 #report #results #reportCover {
-    background: url("/images/football.gif") no-repeat scroll center center #FFF;
+    background: url(/images/football.gif) no-repeat scroll center center #FFF;
     background-size: 70px 70px;
     display: none;
     position: fixed;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
-    opacity: 0.9;
+    opacity: .9;
     z-index: 5;
     padding-top: 110px;
 }
+
 #report #results #football {
-    background: url("/images/football.png") no-repeat scroll center center;
+    background: url(/images/football.png) no-repeat scroll center center;
     background-size: 50px 50px;
     padding-top: 110px;
     position: fixed;
     display: none;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     z-index: 5;
-    pointer-events:none;
+    pointer-events: none;
 }
+
 #report #results .team {
     display: inline-block;
     height: calc(100vh - 150px);
     position: absolute;
     width: calc(50% - 42px);
     overflow-y: auto;
-    padding:20px;
+    padding: 20px;
 }
-#report #results .team h3{
+
+#report #results .team h3 {
     text-align: center;
     font-size: 190%;
     padding: 5px;
 }
+
 #report #results #teamA {
-    left:-50%;
+    left: -50%;
     display: none;
     -webkit-transition: ease-out .47s all .83s;
     -moz-transition: ease-out .47s all .83s;
     border-right: solid 4px #23282D;
 }
+
 #report #results #teamB {
-    right:-50%;
+    right: -50%;
     display: none;
     -webkit-transition: ease-out .47s all .83s;
     -moz-transition: ease-out .47s all .83s;
 }
-#report #results .flyOutLeft {
-}
-#report #results .flyOutRight {
-}
+
 #report #results .flyInRight {
-    right: 0px !important;
+    right: 0 !important;
     -webkit-transition: ease-in .47s all .83s;
     -moz-transition: ease-in .47s all .83s;
 }
+
 #report #results .flyInLeft {
-    left: 0px !important;
+    left: 0 !important;
     -webkit-transition: ease-in .47s all .83s;
     -moz-transition: ease-in .47s all .83s;
 }
+
 #report #results .team .abstract {
     background-color: rgba(255,255,255,0.7);
-    padding:5px;
+    padding: 5px;
     border: solid 1px #4e4e4e;
     line-height: 130%;
-    color: black;
+    color: #000;
     border-radius: 5px;
     z-index: 1;
 }
+
 #report #results .team a {
     display: block;
-    color:inherit;
+    color: inherit;
     text-decoration: none;
 }
 
 .readMoreState {
     display: none;
 }
+
 .readMoreTrigger {
     font-size: 90%;
     margin: 5px 0;
-    padding:5px;
+    padding: 5px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     line-height: 2;
     border: 1px solid #4e4e4e;
-    border-top:none;
+    border-top: none;
     cursor: pointer;
     background-color: rgba(255,255,255,1);
-    color:black;
+    color: #000;
     position: relative;
     right: -90%;
-    top:-2px;
+    top: -2px;
     margin-left: -33px;
-    transition: all ease 0.3s;
+    transition: all ease .3s;
     z-index: 2;
 }
+
 .readMoreTrigger:hover {
     background-color: rgba(255,255,255,0.7);
 }
+
 .readMoreState ~ .readMoreTrigger::before {
     content: 'Show more...';
-
 }
+
 .readMoreState:checked ~ .readMoreTrigger::before {
     content: 'Show less...';
 }
+
 #report #results .readMore {
     height: calc(3em + 10px);
     overflow-y: hidden;
-    transition: all ease 0.3;
+    transition: all ease .3;
 }
+
 .readMoreState:checked + .readMoreContainer .readMore {
     height: auto !important;
 }
-#report #results .team .stadiumInfo .stadiumName, #report #results .team .managerInfo .managerName,
-    #report #results .team h4 {
+
+#report #results .team .stadiumInfo .stadiumName,#report #results .team .managerInfo .managerName,#report #results .team h4 {
     font-size: 130%;
     text-align: center;
 }
-#report #results .team .stadiumInfo img, #report #results .team .managerInfo img {
-    padding:10px;
+
+#report #results .team .stadiumInfo img,#report #results .team .managerInfo img {
+    padding: 10px;
     border: 1px solid #4e4e4e;
-    background-color: white;
+    background-color: #fff;
     margin: 5px auto;
-    width:40%;
+    width: 40%;
     position: relative;
     left: 30%;
 }
-#report #results div.managerInfo{
+
+#report #results div.managerInfo {
     padding-bottom: 25px;
 }
+
 #report #results .team .playerInfo {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
 }
+
 #report #results .team .playerInfo .player {
-    flex:1;
+    flex: 1;
     margin: 5px;
     min-width: 150px;
     max-width: 230px;
-    background-color: white;
-    padding:5px;
+    background-color: #fff;
+    padding: 5px;
     text-align: center;
     border: solid 1px #4e4e4e;
     line-height: 120%;
-    box-shadow:  4px 4px 5px #23282D;
-    color:black;
-    transition: all ease 0.2s;
+    box-shadow: 4px 4px 5px #23282D;
+    color: #000;
+    transition: all ease .2s;
     cursor: pointer;
 }
+
 #report #results .team .playerInfo a {
     text-decoration: none;
-    color:inherit;
-    transition: all ease 0.2s;
+    color: inherit;
+    transition: all ease .2s;
 }
+
 #report #results .team .playerInfo .player:hover {
-    box-shadow:  8px 8px 5px #23282D;
+    box-shadow: 8px 8px 5px #23282D;
 }
+
 #report #results .team .playerInfo .player .playerName {
     font-size: 110%;
     padding-bottom: 5px;
@@ -605,15 +687,14 @@ section#menu #buttons .menuBtn:hover {
 
 #report #results .team .playerInfo .player img {
     max-height: 150px;
-    max-width:150px;
+    max-width: 150px;
 }
-#report #results .team .playerInfo .player .playerPosition {
 
-}
 #report #results .team .playerInfo .player .playerDOB {
     font-size: 90%;
 }
+
 #report #results .error {
     text-align: center;
-    color:red;
+    color: red;
 }

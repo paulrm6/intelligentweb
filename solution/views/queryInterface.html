@@ -2,156 +2,312 @@
 <html>
 <head>
 	<title>Intelligent Web App</title>
-	<meta name="author" content="Paul MacDonald, Ross Millward, Alex Burley">
-	<link href="http://meyerweb.com/eric/tools/css/reset/reset.css" rel="stylesheet">
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+	<meta content="Paul MacDonald, Ross Millward, Alex Burley" name="author">
+	<link href="http://meyerweb.com/eric/tools/css/reset/reset.css" rel=
+	"stylesheet">
+	<link href=
+	"https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+	rel="stylesheet">
 	<link href="/stylesheets/main.css" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYbcjgIyTc7xpZ8DZ_U2bSoQYI6J9W-hs"
-	async defer></script>
-	<script src="/javascript/ajaxTwitter.js"></script>
-	<script src="/javascript/ajaxReport.js"></script>
-	<script src="/javascript/searchOptions.js"></script>
-	<script src="/javascript/images.js"></script>
-	<script src="/javascript/tabs.js"></script>
-	<script src="/javascript/analysis.js"></script>
-	<script src="https://twemoji.maxcdn.com/twemoji.min.js"></script>  
+	<script src=
+	"https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js">
+	</script>
+	<script src=
+	"https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js">
+	</script>
+	<script async defer src=
+	"https://maps.googleapis.com/maps/api/js?key=AIzaSyBYbcjgIyTc7xpZ8DZ_U2bSoQYI6J9W-hs">
+	</script>
+	<script src="/javascript/ajaxTwitter.js">
+	</script>
+	<script src="/javascript/ajaxReport.js">
+	</script>
+	<script src="/javascript/searchOptions.js">
+	</script>
+	<script src="/javascript/images.js">
+	</script>
+	<script src="/javascript/tabs.js">
+	</script>
+	<script src="/javascript/analysis.js">
+	</script>
+	<script src="https://twemoji.maxcdn.com/twemoji.min.js">
+	</script>
 </head>
+
 <body>
-	<div id="cover"></div>
+	<div id="cover">
+	</div>
+
+
 	<section id="menu">
 		<h1>Hello!</h1>
-		<h2>Would you like to perform a Twitter Search or generate a Football Report?</h2>
+
+
+		<h2>Would you like to perform a Twitter Search or generate a Football
+		Report?</h2>
+
+
 		<div id="buttons">
-			<div id="twitterBtn" class="menuBtn"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i> Twitter Search</div>
-			<div id="reportBtn" class="menuBtn"><i class="fa fa-futbol-o fa-lg" aria-hidden="true"></i> Football Report</div>
+			<div class="menuBtn" id="twitterBtn">
+				<i aria-hidden="true" class="fa fa-twitter fa-lg"></i> Twitter Search
+			</div>
+
+
+			<div class="menuBtn" id="reportBtn">
+				<i aria-hidden="true" class="fa fa-futbol-o fa-lg"></i> Football Report
+			</div>
 		</div>
 	</section>
+
+
 	<section id="twitter">
-		<div id="menuBtn"><i class="fa fa-bars" aria-hidden="true"></i> Back to Menu</div>
-		<div id="hideSearchBtn"><i class='fa fa-minus fa-lg'></i> hide the search bar</div>
+		<div id="menuBtn">
+			<i aria-hidden="true" class="fa fa-bars"></i> Back to Menu
+		</div>
+
+
+		<div id="hideSearchBtn">
+			<i class='fa fa-minus fa-lg'></i> hide the search bar
+		</div>
+
+
 		<article id="searchFields">
-			<h1>Search Options
-				<br>
-				<select id="andOrToggle">
-					<option value="OR">OR</option>
-					<option value="AND">AND</option>
-				</select>
-			</h1>
-			<form id='twitterForm' onsubmit="return false;">
-				<div id="team" class="searchSection">
-					<h3><label>
-						<input type="checkbox" checked id="teamSearch" class="enabler">
-						Team
-					</label></h3>
+			<h1>Search Options<br>
+			<select id="andOrToggle">
+				<option value="OR">
+					OR
+				</option>
+
+				<option value="AND">
+					AND
+				</option>
+			</select></h1>
+
+
+			<form id='twitterForm' name="twitterForm" onsubmit="return false;">
+				<div class="searchSection" id="team">
+					<h3><label><input checked class="enabler" id="teamSearch" type="checkbox">
+					Team</label>
+					</h3>
 					<select id="teamSelect" required="required">
-						<option disabled selected value>Select Team</option>
-						<option name='other' value='other'>Other...</option>
-					</select>
-					<br />
+						<option disabled selected value="">
+							Select Team
+						</option>
+
+						<option name='other' value='other'>
+							Other...
+						</option>
+					</select><br>
+
+
 					<div id="otherInput">
-						<label class='beforeInput'>@</label><input type="text" id="teamInput" placeholder="manutd" />
+						<label class='beforeInput'>@</label><input id="teamInput" placeholder=
+						"manutd" type="text">
 					</div>
-					<label><input type="checkbox" checked id="mentions">Include Mentions</label>
+					<label><input checked id="mentions" type="checkbox">Include
+					Mentions</label>
 				</div>
-				<div id="players" class="searchSection">
-					<h3><label>
-						<input type="checkbox" class="enabler" checked id="playersSearch">
-						Players
-					</label></h3>
+
+
+				<div class="searchSection" id="players">
+					<h3><label><input checked class="enabler" id="playersSearch" type=
+					"checkbox"> Players</label>
+					</h3>
+
+
 					<div>
-					<select id="playerSelect">
-						<option id="initial" disabled selected value>Select Player</option>
-					</select>
+						<select id="playerSelect">
+							<option disabled id="initial" selected value="">
+								Select Player
+							</option>
+						</select>
 					</div>
+
+
 					<div class="searchContainer">
-						<div class="searchInput"><label class='beforeInput'>@</label><input type='text' id='playerInput' placeholder='WayneRooney' required/><i class='fa fa-plus fa-lg' id='addBtn'></i><br />
-						<label><input type="checkbox" checked id="playerMentions">Include Mentions</label></input></div>
+						<div class="searchInput">
+							<label class='beforeInput'>@</label><input id='playerInput' placeholder=
+							'WayneRooney' type='text'><i class='fa fa-plus fa-lg' id=
+							'addBtn'></i><br>
+							<label><input checked id="playerMentions" type="checkbox">Include
+							Mentions</label>
+						</div>
 					</div>
 				</div>
-				<div id="hashtags" class="searchSection">
-					<h3><label>
-						<input type="checkbox" class="enabler" checked id="hashtagSearch">
-						Hashtag
-					</label></h3>
+
+
+				<div class="searchSection" id="hashtags">
+					<h3><label><input checked class="enabler" id="hashtagSearch" type=
+					"checkbox"> Hashtag</label>
+					</h3>
+
+
 					<div class="searchContainer">
-						<div class="searchInput"><label class='beforeInput'>#</label><input type='text' id='hashtagInput' placeholder='ManUtdVArsenal' required/><i class='fa fa-plus fa-lg' id='addBtn'></i></div>
+						<div class="searchInput">
+							<label class='beforeInput'>#</label><input id='hashtagInput'
+							placeholder='ManUtdVArsenal' type='text'><i class='fa fa-plus fa-lg' id=
+							'addBtn'></i>
+						</div>
 					</div>
 				</div>
-				<div id="keywords" class="searchSection">
-					<h3><label>
-						<input type="checkbox" class="enabler" checked id="keywordSearch">
-						Keywords
-					</label></h3>
+
+
+				<div class="searchSection" id="keywords">
+					<h3><label><input checked class="enabler" id="keywordSearch" type=
+					"checkbox"> Keywords</label>
+					</h3>
+
+
 					<div class="searchContainer">
-						<div class="searchInput"><input type='text' id='keywordInput' class='fullBox' placeholder='football' required/><i class='fa fa-plus fa-lg' id='addBtn'></i></div>
+						<div class="searchInput">
+							<input class='fullBox' id='keywordInput' placeholder='football' type=
+							'text'><i class='fa fa-plus fa-lg' id='addBtn'></i>
+						</div>
 					</div>
 				</div>
 			</form>
-			<label><input type="checkbox" class="enabler" checked id="includeRT">Include Retweets?</label>
-			<br />
+			<label><input checked class="enabler" id="includeRT" type="checkbox">Include
+			Retweets?</label><br>
+
+
 			<div id="submitButtons">
-				<span type="database" class="button"><i class="fa fa-database"></i> Query the Database</span> or 
-				<span type="twitter" class="button"><i class="fa fa-twitter"></i> Query Twitter</span>
+				<span class="button" type="database"><i class="fa fa-database"></i> Query
+				the Database</span> or <span class="button" type="twitter"><i class=
+				"fa fa-twitter"></i> Query Twitter</span>
 			</div>
 		</article>
-		<article id="results" class="flex">
-			<div id='tweets'></div>
-			<div id='topUsers'></div>
+
+
+		<article class="flex" id="results">
+			<div id='tweets'>
+			</div>
+
+
+			<div id='topUsers'>
+			</div>
+
+
 			<div class="columnRight">
 				<div class="flex">
-					<div id='topKeywords'></div>
-					<div id="topHashtags"></div>
+					<div id='topKeywords'>
+					</div>
+
+
+					<div id="topHashtags">
+					</div>
 				</div>
-				<div id='map'></div>
+
+
+				<div id='map'>
+				</div>
 			</div>
-			<div id='flickr'></div>
+
+
+			<div id='flickr'>
+			</div>
 		</article>
-		<div id="tooltip"></div>
-	</section>
-		<div id='gallery'>
-			<div id="hideGallery">X</div>
-			<div id='innerGallery'>
-			</div>
+
+
+		<div id="tooltip">
 		</div>
+	</section>
+
+
+	<div id='gallery'>
+		<div id="hideGallery">
+			X
+		</div>
+
+
+		<div id='innerGallery'>
+		</div>
+	</div>
+
+
 	<section id="report">
-		<div id="menuBtn"><i class="fa fa-bars" aria-hidden="true"></i> Back to Menu</div>
+		<div id="menuBtn">
+			<i aria-hidden="true" class="fa fa-bars"></i> Back to Menu
+		</div>
+
+
 		<article id="searchFields">
 			<h1>Football Report</h1>
-			<form id='reportForm' onsubmit="return false;">
-				<input type='text' id='teamA' class='fullBox' value="Liverpool_F.C." required/> vs 
-				<input type='text' id='teamB' class='fullBox' value="Manchester_City_F.C." required/>
-				<div id="reportSubmit" class="button">Generate a Report</div>
+
+
+			<form id='reportForm' name="reportForm" onsubmit="return false;">
+				<input class='fullBox' id='teamA' type='text' value="Liverpool_F.C."> vs
+				<input class='fullBox' id='teamB' type='text' value="Manchester_City_F.C.">
+
+				<div class="button" id="reportSubmit">
+					Generate a Report
+				</div>
 			</form>
 		</article>
+
+
 		<article id='results'>
-			<div id='reportCover'></div>
-			<div id='football'></div>
-			<div class='error'></div>
-			<div id='teamA' class='team flyOutLeft'>
-				<h3></h3>
-				<input type="checkbox" class="readMoreState" id='teamInfoReadMore_teamA'>
-				<div class='teamInfo readMoreContainer'></div>
-				<label for='teamInfoReadMore_teamA' class='readMoreTrigger'></label>
-				<input type="checkbox" class="readMoreState" id='stadiumInfoReadMore_teamA'>
-				<div class='stadiumInfo readMoreContainer'></div>
-				<label for='stadiumInfoReadMore_teamA' class='readMoreTrigger'></label>
-				<div class='managerInfo'></div>
-				<h4>Players</h4>
-				<div class='playerInfo'></div>
+			<div id='reportCover'>
 			</div>
-			<div id='teamB' class='team flyOutRight'>
-				<h3></h3>
-				<input type="checkbox" class="readMoreState" id='teamInfoReadMoreB'>
-				<div class='teamInfo readMoreContainer'></div>
-				<label for='teamInfoReadMoreB' class='readMoreTrigger'></label>
-				<input type="checkbox" class="readMoreState" id='stadiumInfoReadMoreB'>
-				<div class='stadiumInfo readMoreContainer'></div>
-				<label for='stadiumInfoReadMoreB' class='readMoreTrigger'></label>
-				<div class='managerInfo'></div>
+
+
+			<div id='football'>
+			</div>
+
+
+			<div class='error'>
+			</div>
+
+
+			<div class='team flyOutLeft' id='teamA'>
+				<h3>
+				</h3>
+				<input class="readMoreState" id='teamInfoReadMore_teamA' type="checkbox">
+
+				<div class='teamInfo readMoreContainer'>
+				</div>
+				<label class='readMoreTrigger' for='teamInfoReadMore_teamA'></label>
+				<input class="readMoreState" id='stadiumInfoReadMore_teamA' type=
+				"checkbox">
+
+				<div class='stadiumInfo readMoreContainer'>
+				</div>
+				<label class='readMoreTrigger' for='stadiumInfoReadMore_teamA'></label>
+
+				<div class='managerInfo'>
+				</div>
+
+
 				<h4>Players</h4>
-				<div class='playerInfo'></div>
+
+
+				<div class='playerInfo'>
+				</div>
+			</div>
+
+
+			<div class='team flyOutRight' id='teamB'>
+				<h3>
+				</h3>
+				<input class="readMoreState" id='teamInfoReadMoreB' type="checkbox">
+
+				<div class='teamInfo readMoreContainer'>
+				</div>
+				<label class='readMoreTrigger' for='teamInfoReadMoreB'></label>
+				<input class="readMoreState" id='stadiumInfoReadMoreB' type="checkbox">
+
+				<div class='stadiumInfo readMoreContainer'>
+				</div>
+				<label class='readMoreTrigger' for='stadiumInfoReadMoreB'></label>
+
+				<div class='managerInfo'>
+				</div>
+
+
+				<h4>Players</h4>
+
+
+				<div class='playerInfo'>
+				</div>
 			</div>
 		</article>
 	</section>
