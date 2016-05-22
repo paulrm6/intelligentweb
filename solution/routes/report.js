@@ -65,7 +65,7 @@ function genTeamData(team, callback) {
 		//generate the club data first (club info, stadium and manager info)
 		genClubData(team, function(err, result) {
 			if (err) {
-				callback(err, undefined);
+				callback("There was an error accessing dbpedia.", undefined);
 			} else {
 				//If we the query fails
 				if (result.results.bindings.length === 0) {
@@ -75,7 +75,7 @@ function genTeamData(team, callback) {
 					teamData.club = result;
 					genPlayerData(team, function(err, result) {
 						if (err) {
-							callback(err, undefined);
+							callback("There was an error accessing dbpedia.", undefined);
 						} else {
 							teamData.players = result;
 							callback(undefined, teamData);

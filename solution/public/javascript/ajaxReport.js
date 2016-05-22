@@ -63,7 +63,7 @@ function callSearchReport() {
 				//Initiate error population
 				console.log(error);
 				$('#report #results .error')
-					.text(error.responseText || error.statusError)
+					.text(error.responseText)
 					.show();
 				$('#reportCover')
 					.fadeOut(500);
