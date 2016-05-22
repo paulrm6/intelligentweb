@@ -116,7 +116,7 @@ function populateReportData(data, team) {
 		//Add the title to each team
 		$('#report #results #' + team + ' h3')
 			.html("<a target='_blank' href='" + teamData['callret-0'].value +
-				" property='dbp:fullname'>" + teamData.fullname.value + "</a>");
+				"' property='dbp:fullname'>" + teamData.fullname.value + "</a>");
 		//Create variables for each html string
 		var teamInfo = "",
 			stadiumInfo = "",
