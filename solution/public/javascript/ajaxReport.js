@@ -13,9 +13,6 @@ $(document)
 			//If it's valid, fade in the loading cover
 			$('#reportCover')
 				.fadeIn(500);
-			//Hide the football
-			$('#football')
-				.hide(0);
 			//Hide any previous errors
 			$('#report #results .error')
 				.hide();
