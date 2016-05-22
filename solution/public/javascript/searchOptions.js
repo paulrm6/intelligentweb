@@ -73,10 +73,6 @@ $(document)
 				.parents('.searchSection')
 				.find('input,select')
 				.prop('disabled', false);
-			$(this)
-				.parents('.searchSection')
-				.find('.beforeInput')
-				.css("backgroundColor", "#FFFFFF");
 			//Change the colour of text back to normal
 			$("#" + parent)
 				.css("color", "inherit");
@@ -86,10 +82,6 @@ $(document)
 				.parents('.searchSection')
 				.find('input,select')
 				.prop('disabled', 'disabled');
-			$(this)
-				.parents('.searchSection')
-				.find('.beforeInput')
-				.css("backgroundColor", "#EBEBE4");
 			//Remove the disabled attribute on this button
 			$(this)
 				.removeAttr("disabled");
